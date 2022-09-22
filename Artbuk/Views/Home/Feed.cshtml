@@ -1,0 +1,35 @@
+﻿@model List<Artbuk.Models.Post>
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title>Лента</title>
+</head>
+<body>
+    <h3>Лента</h3>
+    <table>
+        <tr>
+            <td>Содержимое</td>
+            <td>Дата</td>
+            <td></td>
+        </tr>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>@post.Body</td>
+                <td>@post.CreatedDate</td>
+                <td>
+                    <form method="post" action="~/Home/DeletePost">
+                        <input type="hidden" name="postId" value="@post.Id" />
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <a href="~/Home/CreatePost">Добавить пост</a>
+</body>
+</html>
