@@ -1,6 +1,7 @@
 ﻿using Artbuk.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Artbuk.Controllers
 {
@@ -13,9 +14,36 @@ namespace Artbuk.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Feed()
         {
-            return View(_context.Posts.OrderByDescending(p => p.CreatedDate).ToList());
+            var feedData = new FeedData() 
+            { 
+                Posts = _context.Posts.OrderByDescending(p => p.CreatedDate).ToList(),
+                Genres = _context.Genres
+            };
+
+            return View(feedData);
+        }
+
+        [HttpPost]
+        public IActionResult Feed(Guid genreId)
+        {
+            var postsIds = _context.PostInGenres
+                .Where(p => p.GenreId == genreId)
+                .Select(p => p.PostId)
+                .Distinct()
+                .ToList();
+
+            var posts = _context.Posts.Where(p => postsIds.Contains(p.Id));
+
+            var feedData = new FeedData()
+            {
+                Posts = posts,
+                Genres = _context.Genres
+            };
+
+            return View(feedData);
         }
 
         public IActionResult CreatePost()

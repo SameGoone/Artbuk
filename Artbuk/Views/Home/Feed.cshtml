@@ -1,4 +1,4 @@
-﻿@model List<Artbuk.Models.Post>
+﻿@model FeedData
 @{
     Layout = null;
 }
@@ -9,13 +9,22 @@
 </head>
 <body>
     <h3>Лента</h3>
+    @foreach(var genre in Model.Genres)
+    {
+        <form method="post" action="~/Home/Feed">
+            <input type="hidden" name="genreId" value="@genre.Id" />
+            <button type="submit">@genre.Name</button>
+        </form>
+    }
+    <br />
+    <br />
     <table>
         <tr>
             <td>Содержимое</td>
             <td>Дата</td>
             <td></td>
         </tr>
-        @foreach (var post in Model)
+        @foreach (var post in Model.Posts)
         {
             <tr>
                 <td>@post.Body</td>
