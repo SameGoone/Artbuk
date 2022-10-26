@@ -46,9 +46,14 @@ namespace Artbuk.Controllers
             return View(feedData);
         }
 
+        [HttpGet]
         public IActionResult CreatePost()
         {
-            return View();
+            var feedData = new FeedData()
+            {
+                Genres = _context.Genres
+            };
+            return View(feedData);
         }
 
         [HttpPost]
