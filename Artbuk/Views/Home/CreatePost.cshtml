@@ -16,10 +16,10 @@
                 <label>Содержимое:</label><br />
                 <input type="text" name="Body" />
             </p>
-            <select name="id_genres" class="form-select" aria-label="Категории">
+            <select name="GenreId" class="form-select" aria-label="Категории">
                  @foreach(var genre in Model.Genres)
                  {
-                   <option name="genreId" value="@genre.Id">@genre.Name</option>
+                    <option value="@genre.Id">@genre.Name</option>
                  }
             </select>
             <input type='submit' value='Создать' />

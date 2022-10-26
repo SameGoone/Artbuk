@@ -53,16 +53,24 @@ namespace Artbuk.Controllers
             {
                 Genres = _context.Genres
             };
+
             return View(feedData);
         }
 
         [HttpPost]
-        public IActionResult CreatePost(Post? post)
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre)
         {
             if (post != null)
             {
                 _context.Posts.Add(post);
                 _context.SaveChanges();
+                
+                if(postInGenre != null)
+                {
+                    postInGenre.PostId = post.Id;
+                    _context.PostInGenres.Add(postInGenre);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction("Feed");
