@@ -1,4 +1,6 @@
 using Artbuk;
+using Artbuk.Core.Interfaces;
+using Artbuk.Infrastructure;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,6 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ArtbukContext>(options => options.UseSqlServer(connection));
+
+builder.Services.AddScoped<IPostRepository,
+    EfPostRepository>();
+builder.Services.AddScoped<IGenreRepository,
+    EfGenreRepository>();
+builder.Services.AddScoped<IPostInGenreRepository,
+    EfPostInGenreRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -42,7 +51,7 @@ app.UseAuthorization();   // добавление middleware авторизации
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Feed}/{id?}");
+    pattern: "{controller=Feed}/{action=Feed}/{id?}");
 
 using (var scope = app.Services.CreateScope())
 {

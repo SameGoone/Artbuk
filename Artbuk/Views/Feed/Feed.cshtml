@@ -1,4 +1,4 @@
-﻿@model FeedData
+﻿@model Artbuk.Controllers.FeedData
 @{
     Layout = null;
 }
@@ -9,9 +9,14 @@
 </head>
 <body>
     <h3>Лента</h3>
+
+    <form method="get" action="~/Feed/Feed">
+        <button type="submit">Все</button>
+    </form>
+
     @foreach(var genre in Model.Genres)
     {
-        <form method="post" action="~/Home/Feed">
+        <form method="post" action="~/Feed/Feed">
             <input type="hidden" name="genreId" value="@genre.Id" />
             <button type="submit">@genre.Name</button>
         </form>
@@ -24,14 +29,14 @@
             <td>Дата</td>
             <td></td>
         </tr>
-        @foreach (var post in Model.Posts)
+        @foreach (var postData in Model.PostDatas)
         {
             <tr>
-                <td>@post.Body</td>
-                <td>@post.CreatedDate</td>
+                <td>@postData.Post.Body</td>
+                <td>@postData.Post.CreatedDate</td>
                 <td>
-                    <form method="post" action="~/Home/DeletePost">
-                        <input type="hidden" name="postId" value="@post.Id" />
+                    <form method="post" action="~/Profile/DeletePost">
+                        <input type="hidden" name="postId" value="@postData.Post.Id" />
                         <button type="submit">Удалить</button>
                     </form>
                 </td>
@@ -39,6 +44,6 @@
         }
     </table>
 
-    <a href="~/Home/CreatePost">Добавить пост</a>
+    <a href="~/Feed/CreatePost">Добавить пост</a>
 </body>
 </html>

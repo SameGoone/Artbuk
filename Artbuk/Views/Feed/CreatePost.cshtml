@@ -1,4 +1,4 @@
-﻿@model FeedData
+﻿@model List<Genre>
 @{
     Layout = null;
 }
@@ -17,7 +17,7 @@
                 <input type="text" name="Body" />
             </p>
             <select name="GenreId" class="form-select" aria-label="Категории">
-                 @foreach(var genre in Model.Genres)
+                 @foreach(var genre in Model)
                  {
                     <option value="@genre.Id">@genre.Name</option>
                  }
