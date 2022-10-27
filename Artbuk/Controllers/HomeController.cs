@@ -1,6 +1,7 @@
 ﻿using Artbuk.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Artbuk.Controllers
 {
@@ -13,23 +14,63 @@ namespace Artbuk.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Feed()
         {
-            return View(_context.Posts.OrderByDescending(p => p.CreatedDate).ToList());
-        }
+            var feedData = new FeedData() 
+            { 
+                Posts = _context.Posts.OrderByDescending(p => p.CreatedDate).ToList(),
+                Genres = _context.Genres
+            };
 
-        public IActionResult CreatePost()
-        {
-            return View();
+            return View(feedData);
         }
 
         [HttpPost]
-        public IActionResult CreatePost(Post? post)
+        public IActionResult Feed(Guid genreId)
+        {
+            var postsIds = _context.PostInGenres
+                .Where(p => p.GenreId == genreId)
+                .Select(p => p.PostId)
+                .Distinct()
+                .ToList();
+
+            var posts = _context.Posts.Where(p => postsIds.Contains(p.Id));
+
+            var feedData = new FeedData()
+            {
+                Posts = posts,
+                Genres = _context.Genres
+            };
+
+            return View(feedData);
+        }
+
+        [HttpGet]
+        public IActionResult CreatePost()
+        {
+            var feedData = new FeedData()
+            {
+                Genres = _context.Genres
+            };
+
+            return View(feedData);
+        }
+
+        [HttpPost]
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre)
         {
             if (post != null)
             {
                 _context.Posts.Add(post);
                 _context.SaveChanges();
+                
+                if(postInGenre != null)
+                {
+                    postInGenre.PostId = post.Id;
+                    _context.PostInGenres.Add(postInGenre);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction("Feed");

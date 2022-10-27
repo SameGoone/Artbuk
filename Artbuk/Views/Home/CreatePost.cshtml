@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FeedData
+@{
     Layout = null;
 }
 
@@ -9,12 +10,20 @@
     </head>
     <body>
         <h2>Создать пост</h2>
+        <div class="col-2">
         <form method='post'>
             <p>
                 <label>Содержимое:</label><br />
                 <input type="text" name="Body" />
             </p>
+            <select name="GenreId" class="form-select" aria-label="Категории">
+                 @foreach(var genre in Model.Genres)
+                 {
+                    <option value="@genre.Id">@genre.Name</option>
+                 }
+            </select>
             <input type='submit' value='Создать' />
         </form>
+        </div>
     </body>
 </html>

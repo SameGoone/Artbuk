@@ -51,7 +51,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ArtbukContext>();
-        //SampleData.Initialize(context);
+        SampleData.Initialize(context);
     }
     catch (Exception ex)
     {
