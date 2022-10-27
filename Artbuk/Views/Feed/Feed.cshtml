@@ -32,23 +32,17 @@
         <tr>
             <td>Содержимое</td>
             <td>Дата</td>
-            <td></td>
         </tr>
         @foreach (var postData in Model.PostDatas)
         {
             <tr>
                 <td>@postData.Post.Body</td>
                 <td>@postData.Post.CreatedDate</td>
-                <td>
-                    <form method="post" action="~/Profile/DeletePost">
-                        <input type="hidden" name="postId" value="@postData.Post.Id" />
-                        <button type="submit">Удалить</button>
-                    </form>
-                </td>
             </tr>
         }
     </table>
 
     <a href="~/Feed/CreatePost">Добавить пост</a>
+    <a href="~/Profile/Profile">Профиль</a>
 </body>
 </html>

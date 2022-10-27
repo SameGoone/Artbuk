@@ -26,7 +26,7 @@ namespace Artbuk.Controllers
             (
                 _postRepository, 
                 _genreRepository.List(), 
-                _postRepository.List()
+                _postRepository.ListAll()
             );
 
             return View(feedData);

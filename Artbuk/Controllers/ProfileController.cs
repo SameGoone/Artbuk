@@ -7,14 +7,18 @@ namespace Artbuk.Controllers
     public class ProfileController : Controller
     {
         IPostRepository _postRepository;
-        IGenreRepository _genreRepository;
-        IPostInGenreRepository _postInGenreRepository;
+        IUserRepository _userRepository;
 
-        public ProfileController(IPostRepository postRepository, IGenreRepository genreRepository, IPostInGenreRepository postInGenreRepository)
+        public ProfileController(IPostRepository postRepository, IUserRepository userRepository)
         {
             _postRepository = postRepository;
-            _genreRepository = genreRepository;
-            _postInGenreRepository = postInGenreRepository;
+            _userRepository = userRepository;
+        }
+
+        public IActionResult Profile()
+        {
+            var userId = Tools.GetUserId(_userRepository, User);
+            return View(_postRepository.ListByUserId(userId));
         }
 
         public IActionResult DeletePost(Guid? postId)
@@ -31,7 +35,7 @@ namespace Artbuk.Controllers
             }
 
             _postRepository.Delete(post);
-            return RedirectToAction("Feed", "Feed");
+            return RedirectToAction("Profile");
         }
     }
 }

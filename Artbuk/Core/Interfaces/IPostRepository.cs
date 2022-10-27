@@ -8,7 +8,8 @@ namespace Artbuk.Core.Interfaces
     {
         Post GetById(Guid? id);
         List<Post> GetByIds(List<Guid> ids);
-        List<Post> List();
+        List<Post> ListAll();
+        List<Post> ListByUserId(Guid userId);
         void Add(Post post);
         void Update(Post post);
         void Delete(Post post);

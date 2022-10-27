@@ -22,9 +22,17 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Post> List()
+        public List<Post> ListAll()
         {
             return _dbContext.Posts
+                .OrderByDescending(i => i.CreatedDate)
+                .ToList();
+        }
+
+        public List<Post> ListByUserId(Guid userId)
+        {
+            return _dbContext.Posts
+                .Where(i => i.UserId == userId)
                 .OrderByDescending(i => i.CreatedDate)
                 .ToList();
         }
