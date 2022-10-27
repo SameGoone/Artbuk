@@ -1,22 +1,27 @@
 ﻿@model Artbuk.Controllers.FeedData
 @{
-    Layout = null;
+    //Layout = null;
 }
 
 <html>
 <head>
     <title>Лента</title>
 </head>
+<style>
+    .genre {
+        display: inline-block
+    }
+</style>
 <body>
     <h3>Лента</h3>
 
-    <form method="get" action="~/Feed/Feed">
+    <form class="genre" method="get" action="~/Feed/Feed">
         <button type="submit">Все</button>
     </form>
 
     @foreach(var genre in Model.Genres)
     {
-        <form method="post" action="~/Feed/Feed">
+        <form class="genre" method="post" action="~/Feed/Feed">
             <input type="hidden" name="genreId" value="@genre.Id" />
             <button type="submit">@genre.Name</button>
         </form>
