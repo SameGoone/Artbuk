@@ -17,20 +17,20 @@ namespace Artbuk.Controllers
             _postInGenreRepository = postInGenreRepository;
         }
 
-        public async Task<IActionResult> DeletePostAsync(Guid? postId)
+        public IActionResult DeletePost(Guid? postId)
         {
             if (postId == null)
             {
                 return new NoContentResult();
             }
 
-            var post = await _postRepository.GetByIdAsync(postId);
+            var post = _postRepository.GetById(postId);
             if (post == null)
             {
                 return new NoContentResult();
             }
 
-            await _postRepository.DeleteAsync(post);
+            _postRepository.Delete(post);
             return RedirectToAction("Feed", "Feed");
         }
     }

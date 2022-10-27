@@ -16,54 +16,54 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Task<Post> GetByIdAsync(Guid? id)
+        public Post GetById(Guid? id)
         {
             return _dbContext.Posts
-                .FirstOrDefaultAsync(i => i.Id == id);
+                .FirstOrDefault(i => i.Id == id);
         }
 
-        public Task<List<Post>> ListAsync()
+        public List<Post> List()
         {
             return _dbContext.Posts
                 .OrderByDescending(i => i.CreatedDate)
-                .ToListAsync();
+                .ToList();
         }
 
-        public Task AddAsync(Post post)
+        public void Add(Post post)
         {
             _dbContext.Posts.Add(post);
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
-        public Task UpdateAsync(Post post)
+        public void Update(Post post)
         {
             _dbContext.Entry(post).State = EntityState.Modified;
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
-        public Task<int> GetLikesCountAsync(Guid postId)
+        public int GetLikesCount(Guid postId)
         {
             return _dbContext.Likes
                 .Where(i => i.PostId == postId)
-                .CountAsync();
+                .Count();
         }
 
-        public Task<List<Post>> GetByIdsAsync(List<Guid> ids)
+        public List<Post> GetByIds(List<Guid> ids)
         {
             return _dbContext.Posts
                 .Where(i => ids.Contains(i.Id))
-                .ToListAsync();
+                .ToList();
         }
 
-        public Task DeleteAsync(Guid postId)
+        public void Delete(Guid postId)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(Post post)
+        public void Delete(Post post)
         {
             _dbContext.Posts.Remove(post);
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Artbuk.Controllers
         public PostData(IPostRepository postRepository, Post post)
         {
             Post = post;
-            LikesCount = postRepository.GetLikesCountAsync(post.Id).Result;
+            LikesCount = postRepository.GetLikesCount(post.Id);
         }
     }
 }

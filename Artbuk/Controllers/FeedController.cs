@@ -25,20 +25,20 @@ namespace Artbuk.Controllers
             var feedData = new FeedData
             (
                 _postRepository, 
-                _genreRepository.ListAsync().Result, 
-                _postRepository.ListAsync().Result
+                _genreRepository.List(), 
+                _postRepository.List()
             );
 
             return View(feedData);
         }
 
         [HttpPost]
-        public async Task<IActionResult> FeedAsync(Guid genreId)
+        public IActionResult Feed(Guid genreId)
         {
-            var postsIds = await _postInGenreRepository.GetPostIdsByGenreIdAsync(genreId);
-            var posts = await _postRepository.GetByIdsAsync(postsIds);
+            var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId);
+            var posts = _postRepository.GetByIds(postsIds);
 
-            var feedData = new FeedData(_postRepository, _genreRepository.ListAsync().Result, posts);
+            var feedData = new FeedData(_postRepository, _genreRepository.List(), posts);
 
             return View(feedData);
         }
@@ -46,20 +46,20 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult CreatePost()
         {
-            return View(_genreRepository.ListAsync().Result);
+            return View(_genreRepository.List());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync(Post? post, PostInGenre? postInGenre)
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre)
         {
             if (post != null)
             {
-                await _postRepository.AddAsync(post);
+                _postRepository.Add(post);
 
                 if (postInGenre != null)
                 {
                     postInGenre.PostId = post.Id;
-                    await _postInGenreRepository.AddAsync(postInGenre);
+                    _postInGenreRepository.Add(postInGenre);
                 }
             }
 

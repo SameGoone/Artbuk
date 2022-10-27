@@ -6,13 +6,13 @@ namespace Artbuk.Core.Interfaces
 {
     public interface IPostRepository
     {
-        Task<Post> GetByIdAsync(Guid? id);
-        Task<List<Post>> GetByIdsAsync(List<Guid> ids);
-        Task<List<Post>> ListAsync();
-        Task AddAsync(Post post);
-        Task UpdateAsync(Post post);
-        Task DeleteAsync(Post post);
-        Task DeleteAsync(Guid postId);
-        Task<int> GetLikesCountAsync(Guid postId);
+        Post GetById(Guid? id);
+        List<Post> GetByIds(List<Guid> ids);
+        List<Post> List();
+        void Add(Post post);
+        void Update(Post post);
+        void Delete(Post post);
+        void Delete(Guid postId);
+        int GetLikesCount(Guid postId);
     }
 }

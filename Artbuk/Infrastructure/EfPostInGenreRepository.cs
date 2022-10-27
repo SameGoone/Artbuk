@@ -16,19 +16,19 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Task AddAsync(PostInGenre postInGenre)
+        public void Add(PostInGenre postInGenre)
         {
             _dbContext.PostInGenres.Add(postInGenre);
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
-        public Task<List<Guid>> GetPostIdsByGenreIdAsync(Guid genreId)
+        public List<Guid> GetPostIdsByGenreId(Guid genreId)
         {
             return _dbContext.PostInGenres
                 .Where(i => i.GenreId == genreId)
                 .Select(i => i.PostId)
                 .Distinct()
-                .ToListAsync();
+                .ToList();
         }
     }
 }

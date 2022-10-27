@@ -6,7 +6,7 @@ namespace Artbuk.Core.Interfaces
 {
     public interface IPostInGenreRepository
     {
-        Task<List<Guid>> GetPostIdsByGenreIdAsync(Guid genreId);
-        Task AddAsync(PostInGenre postInGenre);
+        List<Guid> GetPostIdsByGenreId(Guid genreId);
+        void Add(PostInGenre postInGenre);
     }
 }

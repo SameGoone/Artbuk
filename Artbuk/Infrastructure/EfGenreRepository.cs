@@ -16,28 +16,28 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Task<Genre> GetByIdAsync(Guid id)
+        public Genre GetById(Guid id)
         {
             return _dbContext.Genres
-                .FirstOrDefaultAsync(i => i.Id == id);
+                .FirstOrDefault(i => i.Id == id);
         }
 
-        public Task<List<Genre>> ListAsync()
+        public List<Genre> List()
         {
             return _dbContext.Genres
-                .ToListAsync();
+                .ToList();
         }
 
-        public Task AddAsync(Genre genre)
+        public void Add(Genre genre)
         {
             _dbContext.Genres.Add(genre);
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
-        public Task UpdateAsync(Genre genre)
+        public void Update(Genre genre)
         {
             _dbContext.Entry(genre).State = EntityState.Modified;
-            return _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
     }
 }
