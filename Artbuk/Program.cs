@@ -23,6 +23,10 @@ builder.Services.AddScoped<IPostInGenreRepository,
     EfPostInGenreRepository>();
 builder.Services.AddScoped<IUserRepository,
     EfUserRepository>();
+builder.Services.AddScoped<ISoftwareRepository,
+    EfSoftwareRepository>();
+builder.Services.AddScoped<IPostInSoftwareRepository,
+    EfPostInSoftwareRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

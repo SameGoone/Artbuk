@@ -1,4 +1,5 @@
-﻿@model List<Genre>
+﻿@model Artbuk.Controllers.FeedData
+
 @{
     //Layout = null;
 }
@@ -17,10 +18,16 @@
                 <input type="text" name="Body" />
             </p>
             <select name="GenreId" class="form-select" aria-label="Категории">
-                 @foreach(var genre in Model)
+                 @foreach(var genre in Model.Genres)
                  {
                     <option value="@genre.Id">@genre.Name</option>
                  }
+            </select>
+            <select name="SoftwareId" class="form-select" aria-label="Категории">
+                @foreach (var software in Model.Software)
+                {
+                    <option value="@software.Id">@software.Name</option>
+                }
             </select>
             <input type='submit' value='Создать' />
         </form>

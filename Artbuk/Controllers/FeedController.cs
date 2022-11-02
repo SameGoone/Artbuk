@@ -1,8 +1,6 @@
 ﻿using Artbuk.Core.Interfaces;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace Artbuk.Controllers
 {
@@ -11,12 +9,18 @@ namespace Artbuk.Controllers
         IPostRepository _postRepository;
         IGenreRepository _genreRepository;
         IPostInGenreRepository _postInGenreRepository;
+        ISoftwareRepository _softwareRepository;
+        IPostInSoftwareRepository _postInSoftwareRepository;
+        IUserRepository _userRepository;
 
-        public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, IPostInGenreRepository postInGenreRepository)
+        public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, IPostInGenreRepository postInGenreRepository, ISoftwareRepository softwareRepository, IPostInSoftwareRepository postInSoftwareRepository, IUserRepository userRepository)
         {
             _postRepository = postRepository;
             _genreRepository = genreRepository;
             _postInGenreRepository = postInGenreRepository;
+            _softwareRepository = softwareRepository;
+            _postInSoftwareRepository = postInSoftwareRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -24,21 +28,22 @@ namespace Artbuk.Controllers
         {
             var feedData = new FeedData
             (
-                _postRepository, 
-                _genreRepository.List(), 
-                _postRepository.ListAll()
+                _postRepository,
+                _genreRepository.List(),
+                _postRepository.ListAll(),
+                _softwareRepository.List()
             );
 
             return View(feedData);
         }
 
         [HttpPost]
-        public IActionResult Feed(Guid genreId)
+        public IActionResult Feed(Guid genreId, Guid softwareId)
         {
             var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId);
             var posts = _postRepository.GetByIds(postsIds);
 
-            var feedData = new FeedData(_postRepository, _genreRepository.List(), posts);
+            var feedData = new FeedData(_postRepository, _genreRepository.List(), posts, _softwareRepository.List());
 
             return View(feedData);
         }
@@ -46,23 +51,48 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult CreatePost()
         {
-            return View(_genreRepository.List());
+            var feedData = new FeedData
+            (
+                _postRepository,
+                _genreRepository.List(),
+                _postRepository.ListAll(),
+                _softwareRepository.List()
+            );
+            return View(feedData);
         }
 
         [HttpPost]
-        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre)
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware)
         {
             if (post != null)
             {
                 _postRepository.Add(post);
 
-                if (postInGenre != null)
+                if (postInGenre != null && postInSoftware != null)
                 {
                     postInGenre.PostId = post.Id;
+                    postInSoftware.PostId = post.Id;
                     _postInGenreRepository.Add(postInGenre);
+                    _postInSoftwareRepository.Add(postInSoftware);
                 }
             }
 
+            return RedirectToAction("Feed");
+        }
+
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registration(User? user)
+        {
+            if (user != null)
+            {
+                _userRepository.Add(user);
+            }
             return RedirectToAction("Feed");
         }
     }
