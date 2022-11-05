@@ -1,0 +1,32 @@
+﻿@model Artbuk.Controllers.FeedData
+
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Регистрация</title>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <div class="col-2">
+        <form method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Введите почту</label>
+                <input type="email" class="form-control" name="Email">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
+                <input type="text" class="form-control" name="Login">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
+                <input type="password" class="form-control" name="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+    </div>
+</body>
+</html>
