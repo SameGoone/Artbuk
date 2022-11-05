@@ -39,5 +39,23 @@ namespace Artbuk.Infrastructure
             return _dbContext.Users
                 .FirstOrDefault(i => i.Login == login);
         }
+
+        public User CheckUserLogin(User user)
+        {
+            return _dbContext.Users
+                .FirstOrDefault(u => u.Login == user.Login);
+        }
+
+        public User CheckUserEmail(User user)
+        {
+            return _dbContext.Users
+                .FirstOrDefault(u => u.Email == user.Email);
+        }
+
+        public User CheckUserExistence(string login, string password)
+        {
+            return _dbContext.Users
+                .FirstOrDefault(u => u.Login == login && u.Password == password);
+        }
     }
 }

@@ -79,21 +79,5 @@ namespace Artbuk.Controllers
 
             return RedirectToAction("Feed");
         }
-
-        [HttpGet]
-        public IActionResult Registration()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Registration(User? user)
-        {
-            if (user != null)
-            {
-                _userRepository.Add(user);
-            }
-            return RedirectToAction("Feed");
-        }
     }
 }
