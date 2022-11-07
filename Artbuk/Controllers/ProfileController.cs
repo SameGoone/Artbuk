@@ -61,13 +61,16 @@ namespace Artbuk.Controllers
             {
                 var checkUserLogin = _userRepository.CheckUserLogin(user);
                 var checkUserEmail = _userRepository.CheckUserEmail(user);
+
                 if (checkUserLogin != null)
                 {
-                    return Content($"Пользователь с таким логином уже существует.");
+                    ViewBag.Message = "Пользователь с таким логином уже существует.";
+                    return View();
                 }
                 else if (checkUserEmail != null)
                 {
-                    return Content($"Пользователь с такой почтой уже существует.");
+                    ViewBag.Message = "Пользователь с такой почтой уже существует.";
+                    return View();
                 }
                 else
                 {
@@ -112,7 +115,11 @@ namespace Artbuk.Controllers
 
             User? user = _userRepository.CheckUserExistence(login, password);
 
-            if (user is null) return Content($"Такого пользователя не существует.");
+            if (user is null)
+            {
+                ViewBag.Message = "Такого пользователя не существует.";
+                return View();
+            };
 
             var RoleName = _roleRepository.GetRoleNameById(user.RoleId);
 
