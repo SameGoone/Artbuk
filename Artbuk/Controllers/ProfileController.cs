@@ -105,9 +105,20 @@ namespace Artbuk.Controllers
         {
             var form = Request.Form;
 
-            if (!form.ContainsKey("Login") || !form.ContainsKey("Password"))
+            if (string.IsNullOrEmpty(form["Login"]) && string.IsNullOrEmpty(form["Password"]))
             {
-                return BadRequest("Логин и/или пароль не установлены");
+                ViewBag.Message = "Заполните поля!";
+                return View();
+            }
+            else if (string.IsNullOrEmpty(form["Login"]))
+            {
+                ViewBag.Message = "Введите логин!";
+                return View();
+            }
+            else if (string.IsNullOrEmpty(form["Password"]))
+            {
+                ViewBag.Message = "Введите пароль!";
+                return View();
             }
 
             string login = form["Login"];
