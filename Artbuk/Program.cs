@@ -35,7 +35,7 @@ builder.Services.AddControllersWithViews();
 
 // аутентификация с помощью куки
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => { options.LoginPath = "/Home/Login"; options.AccessDeniedPath = "/Home/AccessDenied"; });
+    .AddCookie(options => { options.LoginPath = "/Profile/Login"; options.AccessDeniedPath = "/Home/AccessDenied"; });
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

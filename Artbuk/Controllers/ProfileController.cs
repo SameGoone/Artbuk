@@ -24,12 +24,14 @@ namespace Artbuk.Controllers
             _roleRepository = roleRepository;
         }
 
+        [Authorize]
         public IActionResult Profile()
         {
             var userId = Tools.GetUserId(_userRepository, User);
             return View(_postRepository.ListByUserId(userId));
         }
 
+        [Authorize]
         public IActionResult DeletePost(Guid? postId)
         {
             if (postId == null)
@@ -46,7 +48,6 @@ namespace Artbuk.Controllers
             _postRepository.Delete(post);
             return RedirectToAction("Profile");
         }
-
 
         [HttpGet]
         public IActionResult Registration()
@@ -80,7 +81,6 @@ namespace Artbuk.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                         new Claim(ClaimsIdentity.DefaultRoleClaimType, RoleId.Name)
                     };
                     // создаем объект ClaimsIdentity
@@ -101,7 +101,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync()
+        public async Task<IActionResult> LoginAsync(string? returnUrl)
         {
             var form = Request.Form;
 
@@ -137,7 +137,6 @@ namespace Artbuk.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, RoleName)
             };
 
@@ -145,9 +144,10 @@ namespace Artbuk.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return RedirectToAction("Feed", "Feed");
+            return Redirect(returnUrl ?? "/");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {

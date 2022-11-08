@@ -1,5 +1,7 @@
 ﻿using Artbuk.Core.Interfaces;
+using Artbuk.Infrastructure;
 using Artbuk.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Artbuk.Controllers
@@ -48,6 +50,7 @@ namespace Artbuk.Controllers
             return View(feedData);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult CreatePost()
         {
@@ -61,11 +64,14 @@ namespace Artbuk.Controllers
             return View(feedData);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware)
         {
             if (post != null)
             {
+                post.UserId = Tools.GetUserId(_userRepository, User);
+
                 _postRepository.Add(post);
 
                 if (postInGenre != null && postInSoftware != null)
