@@ -32,12 +32,21 @@
         <tr>
             <td>Содержимое</td>
             <td>Дата</td>
+            <td>Лайки</td>
         </tr>
         @foreach (var postData in Model.PostDatas)
         {
             <tr>
                 <td>@postData.Post.Body</td>
                 <td>@postData.Post.CreatedDate</td>
+                <td>@postData.LikesCount</td>
+                <td>
+                    <form method="post" action="~/Like/AddLike">
+                        <input type="hidden" name="postId" value="@postData.Post.Id">
+                        <input type="checkbox" name="isLiked" value="true">
+                        <input type="submit" value="Поставить"/>
+                    </form>
+                </td>      
             </tr>
         }
     </table>

@@ -29,6 +29,8 @@ builder.Services.AddScoped<IPostInSoftwareRepository,
     EfPostInSoftwareRepository>();
 builder.Services.AddScoped<IRoleRepository,
     EfRoleRepository>();
+builder.Services.AddScoped<ILikeRepository,
+    EfLikeRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
