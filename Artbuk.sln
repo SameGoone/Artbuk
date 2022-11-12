@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artbuk", "Artbuk\Artbuk.csproj", "{D81DEA58-E689-4D51-B70D-329597F437BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artbuk", "Artbuk\Artbuk.csproj", "{D81DEA58-E689-4D51-B70D-329597F437BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artbuk.Tests", "Artbuk.Tests\Artbuk.Tests.csproj", "{E9522B8A-8546-4F8E-B162-2F5E93AC936E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D81DEA58-E689-4D51-B70D-329597F437BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81DEA58-E689-4D51-B70D-329597F437BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81DEA58-E689-4D51-B70D-329597F437BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9522B8A-8546-4F8E-B162-2F5E93AC936E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9522B8A-8546-4F8E-B162-2F5E93AC936E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9522B8A-8546-4F8E-B162-2F5E93AC936E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9522B8A-8546-4F8E-B162-2F5E93AC936E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
