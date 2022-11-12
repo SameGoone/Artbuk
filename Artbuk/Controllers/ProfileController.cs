@@ -8,14 +8,44 @@ using Microsoft.VisualBasic;
 using System.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Artbuk.Controllers
 {
+    public struct TestForm
+    {
+        public string Login;
+        public string Password;
+
+        public TestForm(string login, string password)
+        {
+            Login = login;
+            Password = password;
+        }
+    }
+
     public class ProfileController : Controller
     {
         IPostRepository _postRepository;
         IUserRepository _userRepository;
         IRoleRepository _roleRepository;
+
+        private IFormCollection Form
+        {
+            get
+            {
+                if (Request == null)
+                {
+                    return TestForm;
+                }
+                else
+                {
+                    return Request.Form;
+                }
+            }
+        }
+
+        public IFormCollection TestForm;
 
         public ProfileController(IPostRepository postRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
@@ -60,15 +90,15 @@ namespace Artbuk.Controllers
         {
             if (user != null)
             {
-                var checkUserLogin = _userRepository.CheckUserLogin(user);
-                var checkUserEmail = _userRepository.CheckUserEmail(user);
+                var checkUserLogin = _userRepository.CheckUserExistsWithLogin(user.Login);
+                var checkUserEmail = _userRepository.CheckUserExistsWithEmail(user.Email);
 
-                if (checkUserLogin != null)
+                if (checkUserLogin)
                 {
                     ViewBag.Message = "Пользователь с таким логином уже существует.";
                     return View();
                 }
-                else if (checkUserEmail != null)
+                else if (checkUserEmail)
                 {
                     ViewBag.Message = "Пользователь с такой почтой уже существует.";
                     return View();
@@ -103,7 +133,7 @@ namespace Artbuk.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(string? returnUrl)
         {
-            var form = Request.Form;
+            var form = Form;
 
             if (string.IsNullOrEmpty(form["Login"]) && string.IsNullOrEmpty(form["Password"]))
             {
@@ -124,7 +154,7 @@ namespace Artbuk.Controllers
             string login = form["Login"];
             string password = form["Password"];
 
-            User? user = _userRepository.CheckUserExistence(login, password);
+            User? user = _userRepository.GetByCredentials(login, password);
 
             if (user is null)
             {
@@ -132,12 +162,12 @@ namespace Artbuk.Controllers
                 return View();
             };
 
-            var RoleName = _roleRepository.GetRoleNameById(user.RoleId);
+            var roleName = _roleRepository.GetRoleNameById(user.RoleId);
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, RoleName)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");

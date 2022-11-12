@@ -10,8 +10,8 @@ namespace Artbuk.Core.Interfaces
         User GetByLogin(string? login);
         void Add(User user);
         void Update(User user);
-        User CheckUserLogin(User user);
-        User CheckUserEmail(User user);
-        User CheckUserExistence(string login, string password);
+        bool CheckUserExistsWithLogin(string login);
+        bool CheckUserExistsWithEmail(string email);
+        User GetByCredentials(string login, string password);
     }
 }

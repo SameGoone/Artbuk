@@ -40,19 +40,19 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Login == login);
         }
 
-        public User CheckUserLogin(User user)
+        public bool CheckUserExistsWithLogin(string login)
         {
             return _dbContext.Users
-                .FirstOrDefault(u => u.Login == user.Login);
+                .Any(u => u.Login == login);
         }
 
-        public User CheckUserEmail(User user)
+        public bool CheckUserExistsWithEmail(string email)
         {
             return _dbContext.Users
-                .FirstOrDefault(u => u.Email == user.Email);
+                .Any(u => u.Email == email);
         }
 
-        public User CheckUserExistence(string login, string password)
+        public User GetByCredentials(string login, string password)
         {
             return _dbContext.Users
                 .FirstOrDefault(u => u.Login == login && u.Password == password);
