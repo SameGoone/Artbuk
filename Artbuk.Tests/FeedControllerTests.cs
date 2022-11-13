@@ -270,6 +270,33 @@ namespace Artbuk.Tests
         }
 
         [Fact]
+        public void CreatePost_AllIsNull()
+        {
+            // Arrange
+            var postMock = new Mock<IPostRepository>();
+            var postInGenreMock = new Mock<IPostInGenreRepository>();
+            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+
+            Post post = null;
+            PostInGenre postInGenre = null;
+            PostInSoftware postInSoftware = null;
+
+            var controller = new FeedController(postMock.Object, null, postInGenreMock.Object, null, postInSoftwareMock.Object, null);
+
+            // Act
+            var result = controller.CreatePost(post, postInGenre, postInSoftware);
+
+            // Assert
+            postMock.Verify(r => r.Add(post), Times.Never);
+            postInGenreMock.Verify(r => r.Add(postInGenre), Times.Never);
+            postInSoftwareMock.Verify(r => r.Add(postInSoftware), Times.Never);
+
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Feed", redirectToActionResult.ActionName);
+            Assert.Null(redirectToActionResult.ControllerName);
+        }
+
+        [Fact]
         public void CreatePost_CorrectData()
         {
             // Arrange
