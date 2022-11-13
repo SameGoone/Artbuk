@@ -96,42 +96,74 @@ namespace Artbuk.Tests
             Assert.Equal(postDatas[2].LikesCount, likesCount2);
         }
 
-        //[Fact]
-        //public void Feed_ReturnsACorrectFeedDatas()
-        //{
-        //    var postMock = new Mock<IPostRepository>();
-        //    var posts = TestTools.GetTestPost();
+        [Fact]
+        public void Feed_ReturnsACorrectFeedDatas()
+        {
+            // Arrange
+            var ids = TestTools.GetTestIds();
 
-        //    var genreMock = new Mock<IGenreRepository>();
-        //    var genres = TestTools.GetTestGenre();
+            var postMock = new Mock<IPostRepository>();
+            var posts = TestTools.GetTestPosts();
+            postMock.Setup(repo => repo.GetByIds(ids)).Returns(posts);
 
-        //    var postInGenreMock = new Mock<IPostInGenreRepository>();
-        //    var postInGenre = TestTools.GetTestPostInGenre();
+            var genreMock = new Mock<IGenreRepository>();
+            var genres = TestTools.GetTestGenres();
+            genreMock.Setup(repo => repo.List()).Returns(genres);
 
-        //    var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
-        //    var postInSoftware = TestTools.GetTestPostInSoftware();
+            var postInGenreMock = new Mock<IPostInGenreRepository>();
+            var postInGenre = TestTools.GetTestPostInGenre();
+            postInGenreMock.Setup(repo => repo.GetPostIdsByGenreId(genres[0].Id)).Returns(ids);
 
-        //    var sofrwareMock = new Mock<ISoftwareRepository>();
-        //    var softwares = TestTools.GetTestSoftware();
+            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postInSoftware = TestTools.GetTestPostInSoftware();
 
-        //    var controller = new FeedController
-        //    (
-        //        postMock.Object,
-        //        genreMock.Object,
-        //        postInGenreMock.Object,
-        //        sofrwareMock.Object,
-        //        postInSoftwareMock.Object,
-        //        null
-        //    );
+            var softwareMock = new Mock<ISoftwareRepository>();
+            var softwares = TestTools.GetTestSoftwares();
+            softwareMock.Setup(repo => repo.List()).Returns(softwares);
 
-        //    var result = controller.Feed(genres.Id);
+            var controller = new FeedController
+            (
+                postMock.Object,
+                genreMock.Object,
+                postInGenreMock.Object,
+                softwareMock.Object,
+                postInSoftwareMock.Object,
+                null
+            );
 
-        //    Assert.NotNull(result);
-        //}
+            // Act
+            var result = controller.Feed(genres[0].Id);
+
+            // Assert
+            postMock.Verify(r => r.GetByIds(ids));
+            postMock.Verify(r => r.GetLikesCount(posts[0].Id));
+            postMock.Verify(r => r.GetLikesCount(posts[1].Id));
+            postMock.Verify(r => r.GetLikesCount(posts[2].Id));
+
+            postInGenreMock.Verify(r => r.GetPostIdsByGenreId(genres[0].Id));
+
+            genreMock.Verify(r => r.List());
+
+            softwareMock.Verify(r => r.List());
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<FeedData>(viewResult.Model);
+
+            Assert.Equal(genres, model.Genres);
+            Assert.Equal(softwares, model.Software);
+
+            var postDatas = model.PostDatas;
+            Assert.Equal(postDatas[0].Post, posts[0]);
+            Assert.Equal(postDatas[1].Post, posts[1]);
+            Assert.Equal(postDatas[2].Post, posts[2]);
+
+            Assert.NotNull(result);
+        }
 
         [Fact]
         public void CreatePost_ReturnsAViewResultWithCorrectModel()
         {
+            // Arrange
             var genreMock = new Mock<IGenreRepository>();
             var genres = TestTools.GetTestGenres();
             genreMock.Setup(repo => repo.List()).Returns(genres);
@@ -237,31 +269,31 @@ namespace Artbuk.Tests
             Assert.Null(redirectToActionResult.ControllerName);
         }
 
-        //[Fact]
-        //public void CreatePost_CorrectData()
-        //{
-        //    // Arrange
-        //    var postMock = new Mock<IPostRepository>();
-        //    var postInGenreMock = new Mock<IPostInGenreRepository>();
-        //    var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+        [Fact]
+        public void CreatePost_CorrectData()
+        {
+            // Arrange
+            var postMock = new Mock<IPostRepository>();
+            var postInGenreMock = new Mock<IPostInGenreRepository>();
+            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
 
-        //    Post post = TestTools.GetTestPost();
-        //    PostInGenre postInGenre = TestTools.GetTestPostInGenre();
-        //    PostInSoftware postInSoftware = TestTools.GetTestPostInSoftware();
+            Post post = TestTools.GetTestPost();
+            PostInGenre postInGenre = TestTools.GetTestPostInGenre();
+            PostInSoftware postInSoftware = TestTools.GetTestPostInSoftware();
 
-        //    var controller = new FeedController(postMock.Object, null, postInGenreMock.Object, null, postInSoftwareMock.Object, null);
+            var controller = new FeedController(postMock.Object, null, postInGenreMock.Object, null, postInSoftwareMock.Object, null);
 
-        //    // Act
-        //    var result = controller.CreatePost(post, postInGenre, postInSoftware);
+            // Act
+            var result = controller.CreatePost(post, postInGenre, postInSoftware);
 
-        //    // Assert
-        //    postMock.Verify(r => r.Add(post));
-        //    postInGenreMock.Verify(r => r.Add(postInGenre));
-        //    postInSoftwareMock.Verify(r => r.Add(postInSoftware));
+            // Assert
+            postMock.Verify(r => r.Add(post));
+            postInGenreMock.Verify(r => r.Add(postInGenre));
+            postInSoftwareMock.Verify(r => r.Add(postInSoftware));
 
-        //    var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-        //    Assert.Equal("Feed", redirectToActionResult.ActionName);
-        //    Assert.Null(redirectToActionResult.ControllerName);
-        //}
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Feed", redirectToActionResult.ActionName);
+            Assert.Null(redirectToActionResult.ControllerName);
+        }
     }
 }
