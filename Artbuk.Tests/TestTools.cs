@@ -27,5 +27,59 @@ namespace Artbuk.Tests
 
             return posts;
         }
+
+        public static List<Genre> GetTestGenres()
+        {
+            var genres = new List<Genre>()
+            {
+                new Genre() {Id = Guid1, Name = "genre1"},
+                new Genre() {Id = Guid2, Name = "genre2"},
+                new Genre() {Id = Guid3, Name = "genre3"}
+            };
+
+            return genres;
+        }
+
+        public static List<Software> GetTestSoftwares()
+        {
+            var softwares = new List<Software>()
+            {
+                new Software() {Id = Guid1, Name = "software1"},
+                new Software() {Id = Guid2, Name = "software2"},
+                new Software() {Id = Guid3, Name = "software3"}
+            };
+
+            return softwares;
+        }
+
+        public static PostInGenre GetTestPostInGenre()
+        {
+            var postInGenre = new PostInGenre() { Id = Guid1, GenreId = Guid1, PostId = Guid1};
+            return postInGenre;
+        }
+
+        public static PostInSoftware GetTestPostInSoftware()
+        {
+            var postInSoftware = new PostInSoftware() { Id = Guid1, SoftwareId = Guid1, PostId = Guid1 };
+            return postInSoftware;
+        }
+
+        public static Post GetTestPost()
+        {
+            var post = new Post() { Body = "post1", CreatedDate = DateTime.Now, Id = Guid1};
+            return post;
+        }
+
+        public static Genre GetTestGenre()
+        {
+            var genre = new Genre() { Id = Guid1, Name = "genre1"};
+            return genre;
+        }
+
+        public static Software GetTestSoftware()
+        {
+            var software = new Software() { Id = Guid1, Name = "software1" };
+            return software;
+        }
     }
 }

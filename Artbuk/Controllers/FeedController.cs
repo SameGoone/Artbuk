@@ -40,12 +40,18 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Feed(Guid genreId, Guid softwareId)
+        public IActionResult Feed(Guid genreId)
         {
             var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId);
             var posts = _postRepository.GetByIds(postsIds);
 
-            var feedData = new FeedData(_postRepository, _genreRepository.List(), posts, _softwareRepository.List());
+            var feedData = new FeedData
+            (
+                _postRepository, 
+                _genreRepository.List(), 
+                posts, 
+                _softwareRepository.List()
+            );
 
             return View(feedData);
         }
@@ -54,33 +60,27 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult CreatePost()
         {
-            var feedData = new FeedData
+            var createPostData = new CreatePostData
             (
-                _postRepository,
                 _genreRepository.List(),
-                _postRepository.ListAll(),
                 _softwareRepository.List()
             );
-            return View(feedData);
+            return View(createPostData);
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware)
         {
-            if (post != null)
+            if (post != null && postInGenre != null && postInSoftware != null)
             {
                 post.UserId = Tools.GetUserId(_userRepository, User);
 
                 _postRepository.Add(post);
-
-                if (postInGenre != null && postInSoftware != null)
-                {
-                    postInGenre.PostId = post.Id;
-                    postInSoftware.PostId = post.Id;
-                    _postInGenreRepository.Add(postInGenre);
-                    _postInSoftwareRepository.Add(postInSoftware);
-                }
+                postInGenre.PostId = post.Id;
+                postInSoftware.PostId = post.Id;
+                _postInGenreRepository.Add(postInGenre);
+                _postInSoftwareRepository.Add(postInSoftware);
             }
 
             return RedirectToAction("Feed");
