@@ -179,10 +179,9 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Logout()
+        public async Task LogoutAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Feed", "Feed");
         }
     }
 }

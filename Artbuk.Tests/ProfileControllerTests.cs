@@ -1,21 +1,18 @@
 ﻿using Artbuk.Controllers;
 using Artbuk.Core.Interfaces;
-using Artbuk.Infrastructure;
 using Artbuk.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Hosting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Primitives;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Moq;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace Artbuk.Tests
 {
@@ -44,7 +41,8 @@ namespace Artbuk.Tests
             var postMock = new Mock<IPostRepository>();
             Post post = null;
             Guid postId = TestTools.Guid1;
-            postMock.Setup(r => r.GetById(postId)).Returns(post);
+            postMock.Setup(r => r.GetById(postId))
+                .Returns(post);
             var controller = new ProfileController(postMock.Object, null, null);
 
             // Act
@@ -63,7 +61,8 @@ namespace Artbuk.Tests
             var postMock = new Mock<IPostRepository>();
             Post post = TestTools.GetTestPosts()[0];
             Guid postId = TestTools.Guid1;
-            postMock.Setup(r => r.GetById(postId)).Returns(post);
+            postMock.Setup(r => r.GetById(postId))
+                .Returns(post);
             var controller = new ProfileController(postMock.Object, null, null);
 
             // Act
@@ -115,7 +114,8 @@ namespace Artbuk.Tests
             // Arrange
             var userMock = new Mock<IUserRepository>();
             var user = new User { Login = "login" };
-            userMock.Setup(r => r.CheckUserExistsWithLogin(user.Login)).Returns(true);
+            userMock.Setup(r => r.CheckUserExistsWithLogin(user.Login))
+                .Returns(true);
 
             var controller = new ProfileController(null, userMock.Object, null);
 
@@ -135,7 +135,8 @@ namespace Artbuk.Tests
             // Arrange
             var userMock = new Mock<IUserRepository>();
             var user = new User { Email = "email" };
-            userMock.Setup(r => r.CheckUserExistsWithEmail(user.Email)).Returns(true);
+            userMock.Setup(r => r.CheckUserExistsWithEmail(user.Email))
+                .Returns(true);
 
             var controller = new ProfileController(null, userMock.Object, null);
 
@@ -216,7 +217,8 @@ namespace Artbuk.Tests
             User user = null;
             var login = "login";
             var password = "password";
-            userMock.Setup(r => r.GetByCredentials(login, password)).Returns(user);
+            userMock.Setup(r => r.GetByCredentials(login, password))
+                .Returns(user);
 
             var controller = new ProfileController(null, userMock.Object, null);
             controller.TestForm = ConstructLoginForm(login, password);
@@ -230,12 +232,126 @@ namespace Artbuk.Tests
             userMock.Verify(r => r.GetByCredentials(login, password));
         }
 
+        [Fact]
+        public async Task Login_CorrectCredentials()
+        {
+            // Arrange
+            var userMock = new Mock<IUserRepository>();
+            var login = "login";
+            var password = "password";
+            User user = new User { Login = login, Password = password, RoleId = TestTools.Guid1 };
+            userMock.Setup(r => r.GetByCredentials(login, password))
+                .Returns(user);
+
+            var roleMock = new Mock<IRoleRepository>();
+            var roleName = "roleName";
+            roleMock.Setup(r => r.GetRoleNameById(user.RoleId))
+                .Returns(roleName);
+
+            var authServiceMock = new Mock<IAuthenticationService>();
+            authServiceMock
+                .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
+                .Returns(Task.FromResult((object)null));
+
+            var services = new ServiceCollection();
+            services.AddSingleton<IAuthenticationService>(authServiceMock.Object);
+
+            var controller = new ProfileController(null, userMock.Object, roleMock.Object)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        RequestServices = services.BuildServiceProvider()
+                    }
+                }
+            };
+
+            controller.Request.Form = ConstructLoginForm(login, password);
+
+            var returnUrl = "returnUrl";
+
+            // Act
+            var result = await controller.LoginAsync(returnUrl);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectResult>(result);
+            Assert.Equal(returnUrl, redirectResult.Url);
+            userMock.Verify(r => r.GetByCredentials(login, password));
+            roleMock.Verify(r => r.GetRoleNameById(user.RoleId));
+            authServiceMock.Verify(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()));
+        }
+        
+        [Fact]
+        public async Task Logout_Success()
+        {
+            var authServiceMock = new Mock<IAuthenticationService>();
+            authServiceMock
+                .Setup(_ => _.SignOutAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<AuthenticationProperties>()))
+                .Returns(Task.FromResult((object)null));
+
+            var services = new ServiceCollection();
+            services.AddSingleton<IAuthenticationService>(authServiceMock.Object);
+
+            var controller = new ProfileController(null, null, null)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        RequestServices = services.BuildServiceProvider()
+                    }
+                }
+            };
+
+            // Act
+            await controller.LogoutAsync();
+
+            // Assert
+            authServiceMock.Verify(_ => _.SignOutAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<AuthenticationProperties>()));
+        }
+
+        [Fact]
+        public void Profile_ReturnsViewResultWithCorrectModel()
+        {
+            var userMock = new Mock<IUserRepository>();
+            var login = "login";
+            User user = new User { Login = login, Id = TestTools.Guid1 };
+            userMock.Setup(r => r.GetByLogin(login))
+                .Returns(user);
+
+            var postMock = new Mock<IPostRepository>();
+            var posts = TestTools.GetTestPosts();
+            postMock.Setup(r => r.ListByUserId(user.Id))
+                .Returns(posts);
+
+            var controller = new ProfileController(postMock.Object, userMock.Object, null);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new MyIdentity(login)))
+                }
+            };
+
+            // Act
+            var result = controller.Profile();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<List<Post>>(viewResult.Model);
+            Assert.Equal(posts, model);
+
+            userMock.Verify(r => r.GetByLogin(login));
+            postMock.Verify(r => r.ListByUserId(user.Id));
+        }
+
         public FormCollection ConstructLoginForm(string login, string password)
         {
             return new FormCollection
             (
-                new Dictionary<string, StringValues> 
-                { 
+                new Dictionary<string, StringValues>
+                {
                     { "Login", new StringValues(login) },
                     { "Password", new StringValues(password) }
                 }
