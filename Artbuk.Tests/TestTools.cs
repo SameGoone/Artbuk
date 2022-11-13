@@ -28,6 +28,17 @@ namespace Artbuk.Tests
             return posts;
         }
 
+        public static List<Guid> GetTestIds()
+        {
+            var guids = new List<Guid>()
+            {
+                Guid1,
+                Guid2,
+                Guid3,
+            };
+            return guids;
+        }
+
         public static List<Genre> GetTestGenres()
         {
             var genres = new List<Genre>()
