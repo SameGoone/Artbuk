@@ -339,6 +339,7 @@ namespace Artbuk.Tests
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Feed", redirectToActionResult.ActionName);
             Assert.Null(redirectToActionResult.ControllerName);
+            Assert.Equal(user.Id, post.UserId);
         }
     }
 }
