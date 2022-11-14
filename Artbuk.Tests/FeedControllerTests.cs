@@ -1,11 +1,15 @@
 ﻿using Artbuk.Controllers;
 using Artbuk.Core.Interfaces;
 using Artbuk.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -304,11 +308,25 @@ namespace Artbuk.Tests
             var postInGenreMock = new Mock<IPostInGenreRepository>();
             var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
 
+            var userMock = new Mock<IUserRepository>();
+            var login = "login";
+            User user = new User { Login = login, Id = TestTools.Guid1 };
+            userMock.Setup(r => r.GetByLogin(login))
+                .Returns(user);
+
             Post post = TestTools.GetTestPost();
             PostInGenre postInGenre = TestTools.GetTestPostInGenre();
             PostInSoftware postInSoftware = TestTools.GetTestPostInSoftware();
 
-            var controller = new FeedController(postMock.Object, null, postInGenreMock.Object, null, postInSoftwareMock.Object, null);
+            var controller = new FeedController(postMock.Object, null, postInGenreMock.Object, null, postInSoftwareMock.Object, userMock.Object);
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new MyIdentity(login)))
+                }
+            };
 
             // Act
             var result = controller.CreatePost(post, postInGenre, postInSoftware);
