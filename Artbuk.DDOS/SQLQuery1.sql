@@ -1,0 +1,6 @@
+﻿DELETE FROM Posts
+DELETE FROM Users
+
+SELECT COUNT(*) FROM Posts
+
+SELECT COUNT(*) FROM Users
