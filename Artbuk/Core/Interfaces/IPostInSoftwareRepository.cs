@@ -6,7 +6,7 @@ namespace Artbuk.Core.Interfaces
 {
     public interface IPostInSoftwareRepository
     {
-        List<Guid>? GetPostIdsBySoftwareId(Guid softwareId);
+        List<Guid> GetPostIdsBySoftwareId(Guid softwareId);
         void Add(PostInSoftware postInSoftware);
     }
 }

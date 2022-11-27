@@ -14,8 +14,12 @@ namespace Artbuk.Controllers
         ISoftwareRepository _softwareRepository;
         IPostInSoftwareRepository _postInSoftwareRepository;
         IUserRepository _userRepository;
+        ILikeRepository _likeRepository;
 
-        public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, IPostInGenreRepository postInGenreRepository, ISoftwareRepository softwareRepository, IPostInSoftwareRepository postInSoftwareRepository, IUserRepository userRepository)
+        public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, 
+            IPostInGenreRepository postInGenreRepository, ISoftwareRepository softwareRepository, 
+            IPostInSoftwareRepository postInSoftwareRepository, IUserRepository userRepository, 
+            ILikeRepository likeRepository = null)
         {
             _postRepository = postRepository;
             _genreRepository = genreRepository;
@@ -23,6 +27,7 @@ namespace Artbuk.Controllers
             _softwareRepository = softwareRepository;
             _postInSoftwareRepository = postInSoftwareRepository;
             _userRepository = userRepository;
+            _likeRepository = likeRepository;
         }
 
         [HttpGet]
@@ -30,7 +35,7 @@ namespace Artbuk.Controllers
         {
             var feedData = new FeedData
             (
-                _postRepository,
+                _likeRepository,
                 _genreRepository.List(),
                 _postRepository.ListAll(),
                 _softwareRepository.List()
@@ -47,7 +52,7 @@ namespace Artbuk.Controllers
 
             var feedData = new FeedData
             (
-                _postRepository, 
+                _likeRepository, 
                 _genreRepository.List(), 
                 posts, 
                 _softwareRepository.List()

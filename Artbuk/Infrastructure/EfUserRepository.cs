@@ -16,7 +16,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public User GetById(Guid? id)
+        public User GetById(Guid id)
         {
             return _dbContext.Users
                 .FirstOrDefault(i => i.Id == id);
@@ -34,7 +34,7 @@ namespace Artbuk.Infrastructure
             _dbContext.SaveChanges();
         }
 
-        public User GetByLogin(string? login)
+        public User GetByLogin(string login)
         {
             return _dbContext.Users
                 .FirstOrDefault(i => i.Login == login);

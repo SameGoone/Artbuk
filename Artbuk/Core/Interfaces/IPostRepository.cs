@@ -14,6 +14,5 @@ namespace Artbuk.Core.Interfaces
         void Update(Post post);
         void Delete(Post post);
         void Delete(Guid postId);
-        int GetLikesCount(Guid postId);
     }
 }

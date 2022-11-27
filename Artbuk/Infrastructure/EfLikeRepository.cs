@@ -41,11 +41,23 @@ namespace Artbuk.Infrastructure
             _dbContext.SaveChanges();
         }
 
-        public Like CheckIsLiked(Guid postId, Guid userId)
+        public bool CheckIsPostLikedByUser(Guid postId, Guid userId)
+        {
+            return _dbContext.Likes
+                .Any(i => i.PostId == postId && i.UserId == userId);
+        }
+
+        public int GetPostLikesCount(Guid postId)
+        {
+            return _dbContext.Likes
+                .Where(i => i.PostId == postId)
+                .Count();
+        }
+
+        public Like GetLikeOnPostByUser(Guid postId, Guid userId)
         {
             return _dbContext.Likes
                 .FirstOrDefault(i => i.PostId == postId && i.UserId == userId);
         }
-
     }
 }

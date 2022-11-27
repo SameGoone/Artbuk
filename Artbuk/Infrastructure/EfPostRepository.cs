@@ -49,13 +49,6 @@ namespace Artbuk.Infrastructure
             _dbContext.SaveChanges();
         }
 
-        public int GetLikesCount(Guid postId)
-        {
-            return _dbContext.Likes
-                .Where(i => i.PostId == postId)
-                .Count();
-        }
-
         public List<Post> GetByIds(List<Guid> ids)
         {
             return _dbContext.Posts

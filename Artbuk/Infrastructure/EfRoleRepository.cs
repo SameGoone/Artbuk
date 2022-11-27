@@ -1,6 +1,7 @@
 ﻿using Artbuk.Core.Interfaces;
 using Artbuk.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Artbuk.Infrastructure
 {
@@ -19,23 +20,38 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public Role GetRoleIdAtUser()
+        public Guid GetUserRoleId()
         {
-            return _dbContext.Roles
-                .FirstOrDefault(i => i.Name == Constants.RoleNames.User);
+            return GetRoleIdByName(Constants.RoleNames.User);
         }
-        public Role GetRoleIdAtAdmin()
+        public Guid GetAdminRoleId()
         {
-            return _dbContext.Roles
-                .FirstOrDefault(i => i.Name == Constants.RoleNames.Admin);
+            return GetRoleIdByName(Constants.RoleNames.Admin);
+        }
+
+        public Guid GetRoleIdByName(string name)
+        {
+            var role = _dbContext.Roles
+                .FirstOrDefault(i => i.Name == name);
+
+            if (role == null)
+            {
+                throw new Exception($"Role with name {name} not exists.");
+            }
+
+            return role.Id;
         }
 
         public string GetRoleNameById(Guid roleId)
         {
-            return _dbContext.Roles
-                .Where(r => r.Id == roleId)
-                .Select(r => r.Name)
-                .Single();
+            var role = GetById(roleId);
+
+            if (role == null)
+            {
+                throw new Exception($"Role with Id {roleId} not exists.");
+            }
+
+            return role.Name;
         }
     }
 }

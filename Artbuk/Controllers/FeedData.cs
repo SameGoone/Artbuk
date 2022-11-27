@@ -9,12 +9,12 @@ namespace Artbuk.Controllers
         public List<Software> Software { get; set; }
         public List<PostData> PostDatas { get; set; }
 
-        public FeedData(IPostRepository postRepository, List<Genre> genres, List<Post> posts, List<Software> softwares)
+        public FeedData(ILikeRepository likeRepository, List<Genre> genres, List<Post> posts, List<Software> softwares)
         {
             Genres = genres;
             Software = softwares;
             PostDatas = posts
-                .Select(i => new PostData(postRepository, i))
+                .Select(i => new PostData(likeRepository, i))
                 .ToList();
         }
     }

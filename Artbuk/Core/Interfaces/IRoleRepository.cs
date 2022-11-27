@@ -5,8 +5,9 @@ namespace Artbuk.Core.Interfaces
     public interface IRoleRepository
     {
         Role GetById(Guid id);
-        Role GetRoleIdAtUser();
-        Role GetRoleIdAtAdmin();
+        Guid GetUserRoleId();
+        Guid GetAdminRoleId();
         string GetRoleNameById(Guid roleId);
+        Guid GetRoleIdByName(string name);
     }
 }

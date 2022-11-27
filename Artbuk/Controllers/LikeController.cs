@@ -28,21 +28,21 @@ namespace Artbuk.Controllers
         public IActionResult AddLike(Guid postId, bool isLiked)
         {
             var userId = Tools.GetUserId(_userRepository, User);
-            Like likeCkeck = _likeRepository.CheckIsLiked(postId, userId);
+            var like = _likeRepository.GetLikeOnPostByUser(postId, userId);
 
-            if (isLiked == true)
+            if (isLiked)
             {
-                if (likeCkeck == null)
+                if (like == null)
                 {
-                    Like like = new Like(postId, userId);
-                    _likeRepository.Add(like);
+                    Like newLike = new Like(postId, userId);
+                    _likeRepository.Add(newLike);
                 }
             }
             else
             {
-                if (likeCkeck != null)
+                if (like != null)
                 {
-                    _likeRepository.Delete(likeCkeck);
+                    _likeRepository.Delete(like);
                 }
             }
 

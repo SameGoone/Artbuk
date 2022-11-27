@@ -105,13 +105,14 @@ namespace Artbuk.Controllers
                 }
                 else
                 {
-                    var RoleId = _roleRepository.GetRoleIdAtUser();
-                    user.RoleId = RoleId.Id;
+                    var roleId = _roleRepository.GetUserRoleId();
+                    user.RoleId = roleId;
+                    var roleName = _roleRepository.GetRoleNameById(roleId);
 
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                        new Claim(ClaimsIdentity.DefaultRoleClaimType, RoleId.Name)
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)
                     };
                     // создаем объект ClaimsIdentity
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
