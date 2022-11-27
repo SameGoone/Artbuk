@@ -160,6 +160,8 @@ namespace Artbuk.Tests
             Assert.Equal(postDatas[0].Post, posts[0]);
             Assert.Equal(postDatas[1].Post, posts[1]);
             Assert.Equal(postDatas[2].Post, posts[2]);
+            Assert.Equal(postInGenre.PostId, posts[0].Id);
+            Assert.Equal(postInGenre.GenreId, genres[0].Id);
 
             Assert.NotNull(result);
         }

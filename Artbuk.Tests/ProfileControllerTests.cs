@@ -242,7 +242,7 @@ namespace Artbuk.Tests
             User user = new User { Login = login, Password = password, RoleId = TestTools.Guid1 };
             userMock.Setup(r => r.GetByCredentials(login, password))
                 .Returns(user);
-
+            
             var roleMock = new Mock<IRoleRepository>();
             var roleName = "roleName";
             roleMock.Setup(r => r.GetRoleNameById(user.RoleId))
