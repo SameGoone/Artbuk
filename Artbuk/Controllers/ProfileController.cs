@@ -90,6 +90,22 @@ namespace Artbuk.Controllers
         {
             if (user != null)
             {
+                if (string.IsNullOrEmpty(user.Login) && string.IsNullOrEmpty(user.Password))
+                {
+                    ViewBag.Message = "Заполните поля!";
+                    return View();
+                }
+                else if (string.IsNullOrEmpty(user.Login))
+                {
+                    ViewBag.Message = "Введите логин!";
+                    return View();
+                }
+                else if (string.IsNullOrEmpty(user.Password))
+                {
+                    ViewBag.Message = "Введите пароль!";
+                    return View();
+                }
+
                 var checkUserLogin = _userRepository.CheckUserExistsWithLogin(user.Login);
                 var checkUserEmail = _userRepository.CheckUserExistsWithEmail(user.Email);
 
@@ -180,10 +196,10 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> LogoutAsync()
+        public async Task LogoutAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Feed", "Feed");
+            //return RedirectToAction("Feed", "Feed");
         }
     }
 }

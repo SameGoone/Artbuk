@@ -19,7 +19,7 @@ namespace Artbuk.Controllers
         public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, 
             IPostInGenreRepository postInGenreRepository, ISoftwareRepository softwareRepository, 
             IPostInSoftwareRepository postInSoftwareRepository, IUserRepository userRepository, 
-            ILikeRepository likeRepository = null)
+            ILikeRepository likeRepository)
         {
             _postRepository = postRepository;
             _genreRepository = genreRepository;

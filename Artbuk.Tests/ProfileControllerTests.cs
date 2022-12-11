@@ -113,7 +113,7 @@ namespace Artbuk.Tests
         {
             // Arrange
             var userMock = new Mock<IUserRepository>();
-            var user = new User { Login = "login" };
+            var user = new User { Login = "login", Password = "password" };
             userMock.Setup(r => r.CheckUserExistsWithLogin(user.Login))
                 .Returns(true);
 
@@ -134,7 +134,7 @@ namespace Artbuk.Tests
         {
             // Arrange
             var userMock = new Mock<IUserRepository>();
-            var user = new User { Email = "email" };
+            var user = new User { Email = "email", Login = "login", Password = "password" };
             userMock.Setup(r => r.CheckUserExistsWithEmail(user.Email))
                 .Returns(true);
 
@@ -148,6 +148,51 @@ namespace Artbuk.Tests
             Assert.Equal("Пользователь с такой почтой уже существует.", controller.ViewBag.Message);
             userMock.Verify(r => r.CheckUserExistsWithEmail(user.Email));
             userMock.Verify(r => r.Add(user), Times.Never);
+        }
+
+        [Fact]
+        public async Task Registration_UserWithEmptyLoginAndPassword()
+        {
+            // Arrange
+            var user = new User { Login = "", Password = "" };
+            var controller = new ProfileController(null, null, null);
+
+            // Act
+            var result = await controller.RegistrationAsync(user);
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal("Заполните поля!", controller.ViewBag.Message);
+        }
+
+        [Fact]
+        public async Task Registration_UserWithEmptyLogin()
+        {
+            // Arrange
+            var user = new User { Login = "", Password = "password" };
+            var controller = new ProfileController(null, null, null);
+
+            // Act
+            var result = await controller.RegistrationAsync(user);
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal("Введите логин!", controller.ViewBag.Message);
+        }
+
+        [Fact]
+        public async Task Registration_UserWithEmptyPassword()
+        {
+            // Arrange
+            var user = new User { Login = "login", Password = "" };
+            var controller = new ProfileController(null, null, null);
+
+            // Act
+            var result = await controller.RegistrationAsync(user);
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+            Assert.Equal("Введите пароль!", controller.ViewBag.Message);
         }
 
         [Fact]
