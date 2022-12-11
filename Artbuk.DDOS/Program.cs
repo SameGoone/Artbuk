@@ -46,13 +46,15 @@ public class DDOS
             CookieContainer = cookieContainer
         };
 
+        httpClientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
         var httpClient = new HttpClient(httpClientHandler);
         httpClient.BaseAddress = new Uri($"https://localhost:{_port}");
 
         (_, var password, var email) = GenerateAuthData(login);
         await Registration(httpClient, login, password, email);
 
-        await CreatePost(httpClient, $"Body for post. {login}", "ec4e70b4-0dcb-40cf-9a31-08dac86d3527", "c51c0d28-4b6d-4839-53bf-08dac86d3541");
+        await CreatePost(httpClient, $"Body for post. {login}", "6bccb30c-5123-4517-4df2-08dad0a3dad5", "dc25ddce-5982-472b-3afd-08dad0a3dade");
     }
 
     static (string, string, string) GenerateAuthData(string input)
