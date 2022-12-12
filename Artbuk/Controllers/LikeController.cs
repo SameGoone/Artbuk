@@ -16,14 +16,12 @@ namespace Artbuk.Controllers
             _likeRepository = likeRepository;
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult AddLike()
         {
             return RedirectToAction("Feed", "Feed");
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult AddLike(Guid postId, bool isLiked)
         {
