@@ -1,0 +1,37 @@
+﻿@model Artbuk.Controllers.PostData
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Лента</title>
+</head>
+<style>
+    .genre {
+        display: inline-block
+    }
+</style>
+<body>
+    <h3>Лента</h3>
+
+    <br />
+    <br />
+    <p>@Model.Post.Body</p>
+    <p>@Model.Post.CreatedDate</p>
+    <p>@Model.LikesCount</p>
+    <p>Жанр: @Model.Genre.Name</p>
+    <p>Софт: @Model.Software.Name</p>
+    <form method="post" action="~/Like/AddLike">
+    <input type="hidden" name="postId" value="@Model.Post.Id">
+    <input type="checkbox" name="isLiked" value="true">
+    <input type="submit" value="Поставить"/>
+    </form>
+
+    <a href="~/Feed/CreatePost">Добавить пост</a>
+    <a href="~/Profile/Registration">Регистрация</a>
+    <a href="~/Profile/Login">Авторизация</a>
+    <a href="~/Profile/Profile">Профиль</a>
+    <a href="~/Profile/Logout">Выйти</a>
+</body>
+</html>

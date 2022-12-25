@@ -30,5 +30,11 @@ namespace Artbuk.Infrastructure
                 .Distinct()
                 .ToList();
         }
+
+        public PostInGenre GetPostInGenreByPostId(Guid postId)
+        {
+            return _dbContext.PostInGenres
+                .FirstOrDefault(i => i.PostId == postId);
+        }
     }
 }
