@@ -22,6 +22,7 @@ namespace Artbuk.Controllers
             return RedirectToAction("Feed", "Feed");
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddLike(Guid postId, bool isLiked)
         {
