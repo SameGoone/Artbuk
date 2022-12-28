@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Artbuk.Core.Interfaces;
+﻿using Artbuk.Core.Interfaces;
 using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
@@ -31,6 +27,12 @@ namespace Artbuk.Infrastructure
                 .Select(i => i.PostId)
                 .Distinct()
                 .ToList();
+        }
+
+        public PostInSoftware GetPostInSoftwareByPostId(Guid postId)
+        {
+            return _dbContext.PostInSoftware
+                .FirstOrDefault(i => i.PostId == postId);
         }
     }
 }
