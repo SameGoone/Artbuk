@@ -60,35 +60,5 @@ namespace Artbuk.Controllers
 
             return View(feedData);
         }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult CreatePost()
-        {
-            var createPostData = new CreatePostData
-            (
-                _genreRepository.List(),
-                _softwareRepository.List()
-            );
-            return View(createPostData);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware)
-        {
-            if (post != null && postInGenre != null && postInSoftware != null)
-            {
-                post.UserId = Tools.GetUserId(_userRepository, User);
-
-                _postRepository.Add(post);
-                postInGenre.PostId = post.Id;
-                postInSoftware.PostId = post.Id;
-                _postInGenreRepository.Add(postInGenre);
-                _postInSoftwareRepository.Add(postInSoftware);
-            }
-
-            return RedirectToAction("Feed");
-        }
     }
 }
