@@ -14,6 +14,8 @@ namespace Artbuk.Controllers
 
         public Software Software { get; set; }
 
+        public List<Comment>? Comment { get; set; }
+
         public PostData(ILikeRepository likeRepository, Post post)
         {
             Post = post;
@@ -22,7 +24,8 @@ namespace Artbuk.Controllers
         public PostData(ILikeRepository likeRepository, IPostRepository postRepository, 
             IPostInGenreRepository postInGenreRepository, 
             IGenreRepository genreRepository, IPostInSoftwareRepository postInSoftwareRepository, 
-            ISoftwareRepository softwareRepository, Guid postId)
+            ISoftwareRepository softwareRepository, ICommentRepository commentRepository,
+            Guid postId)
         {
             var postInGenre = postInGenreRepository.GetPostInGenreByPostId(postId);
             var postInSoftware = postInSoftwareRepository.GetPostInSoftwareByPostId(postId);
@@ -30,6 +33,7 @@ namespace Artbuk.Controllers
             Genre = genreRepository.GetById(postInGenre.GenreId);
             Post = postRepository.GetById(postId);
             LikesCount = likeRepository.GetPostLikesCount(postId);
+            Comment = commentRepository.GetCommentsByPostId(postId);
         }
     }
 }

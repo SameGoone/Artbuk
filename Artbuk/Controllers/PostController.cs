@@ -14,11 +14,12 @@ namespace Artbuk.Controllers
         IPostInSoftwareRepository _postInSoftwareRepository;
         IUserRepository _userRepository;
         ILikeRepository _likeRepository;
+        ICommentRepository _commentRepository;
 
         public PostController(IPostRepository postRepository, IPostInGenreRepository postInGenreRepository, 
             IGenreRepository genreRepository, IPostInSoftwareRepository postInSoftwareRepository, 
             ISoftwareRepository softwareRepository, IUserRepository userRepository,
-            ILikeRepository likeRepository = null)
+            ICommentRepository commentRepository, ILikeRepository likeRepository = null)
         {
             _postRepository = postRepository;
             _likeRepository = likeRepository;
@@ -27,6 +28,7 @@ namespace Artbuk.Controllers
             _softwareRepository = softwareRepository;
             _postInSoftwareRepository = postInSoftwareRepository;
             _userRepository = userRepository;
+            _commentRepository = commentRepository;
         }
 
         [HttpGet]
@@ -40,6 +42,7 @@ namespace Artbuk.Controllers
                 _genreRepository,
                 _postInSoftwareRepository,
                 _softwareRepository,
+                _commentRepository,
                 id
             );
 
@@ -74,6 +77,21 @@ namespace Artbuk.Controllers
             }
 
             return RedirectToAction("Feed", "Feed");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateComment(Comment? comment)
+        {
+            if(comment != null)
+            {
+                if(comment.PostId != null)
+                {
+                    comment.UserId = Tools.GetUserId(_userRepository, User);
+                    _commentRepository.Add(comment);
+                }
+            }
+            return RedirectToAction("Post", "Post", new {id = comment.PostId});
         }
     }
 }
