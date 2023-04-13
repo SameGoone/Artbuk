@@ -1,13 +1,13 @@
-﻿function onLikeClick(url, postId) {
+﻿function onLikeClick(postId) {
     $.ajax({
         type: 'POST',
-        url: url,
+        url: '?handler=AddLike',
         data: { postId: postId },
         success: function (data) {
-            window.location.reload();
+            alert(data);
         },
         error: function (error) {
-            console.error("Error: " + error);
+            alert("Error: " + error);
         }
     })
 }

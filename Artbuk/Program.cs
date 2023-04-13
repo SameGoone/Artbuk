@@ -1,36 +1,22 @@
 using Artbuk;
-using Artbuk.Core.Interfaces;
 using Artbuk.Infrastructure;
 using Artbuk.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ArtbukContext>(options => options.UseSqlServer(connection));
 
-builder.Services.AddScoped<IPostRepository,
-    EfPostRepository>();
-builder.Services.AddScoped<IGenreRepository,
-    EfGenreRepository>();
-builder.Services.AddScoped<IPostInGenreRepository,
-    EfPostInGenreRepository>();
-builder.Services.AddScoped<IUserRepository,
-    EfUserRepository>();
-builder.Services.AddScoped<ISoftwareRepository,
-    EfSoftwareRepository>();
-builder.Services.AddScoped<IPostInSoftwareRepository,
-    EfPostInSoftwareRepository>();
-builder.Services.AddScoped<IRoleRepository,
-    EfRoleRepository>();
-builder.Services.AddScoped<ILikeRepository,
-    EfLikeRepository>();
+builder.Services.AddScoped<PostRepository>();
+builder.Services.AddScoped<GenreRepository>();
+builder.Services.AddScoped<PostInGenreRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<SoftwareRepository>();
+builder.Services.AddScoped<PostInSoftwareRepository>();
+builder.Services.AddScoped<RoleRepository>();
+builder.Services.AddScoped<LikeRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

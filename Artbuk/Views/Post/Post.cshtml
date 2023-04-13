@@ -19,15 +19,12 @@
     <br />
     <p>Содержание: @Model.Post.Body</p>
     <p>Дата создания: @Model.Post.CreatedDate</p>
-    <p>Лайки: @Model.LikesCount</p>
     <p>Жанр: @Model.Genre.Name</p>
     <p>Софт: @Model.Software.Name</p>
-    <form method="post" action="~/Like/AddLike">
-    <input type="hidden" name="postId" value="@Model.Post.Id">
-    <input type="checkbox" name="isLiked" value="true">
-    <input type="submit" value="Поставить"/>
-    </form>
-
+    <p>Лайки: @Model.LikesCount</p>
+    <div display:"inline">
+    <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
+    </div>
     <a href="~/Feed/CreatePost">Добавить пост</a>
     <a href="~/Profile/Registration">Регистрация</a>
     <a href="~/Profile/Login">Авторизация</a>

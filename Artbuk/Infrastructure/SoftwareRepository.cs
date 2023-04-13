@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Artbuk.Models;
 using Microsoft.EntityFrameworkCore;
-using Artbuk.Core.Interfaces;
-using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
 {
-    public class EfSoftwareRepository : ISoftwareRepository
+    public class SoftwareRepository
     {
         private readonly ArtbukContext _dbContext;
 
-        public EfSoftwareRepository(ArtbukContext dbContext)
+        public SoftwareRepository(ArtbukContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,7 +18,7 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Software> List()
+        public List<Software> GetAll()
         {
             return _dbContext.Software
                 .ToList();

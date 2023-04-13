@@ -1,14 +1,10 @@
-﻿using Artbuk.Core.Interfaces;
+﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using System.Data;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace Artbuk.Controllers
 {
@@ -26,9 +22,9 @@ namespace Artbuk.Controllers
 
     public class ProfileController : Controller
     {
-        IPostRepository _postRepository;
-        IUserRepository _userRepository;
-        IRoleRepository _roleRepository;
+        PostRepository _postRepository;
+        UserRepository _userRepository;
+        RoleRepository _roleRepository;
 
         private IFormCollection Form
         {
@@ -47,7 +43,7 @@ namespace Artbuk.Controllers
 
         public IFormCollection TestForm;
 
-        public ProfileController(IPostRepository postRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+        public ProfileController(PostRepository postRepository, UserRepository userRepository, RoleRepository roleRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
@@ -58,7 +54,7 @@ namespace Artbuk.Controllers
         public IActionResult Profile()
         {
             var userId = Tools.GetUserId(_userRepository, User);
-            return View(_postRepository.ListByUserId(userId));
+            return View(_postRepository.GetPostsByUserId(userId));
         }
 
         [Authorize]

@@ -1,5 +1,4 @@
-﻿using Artbuk.Core.Interfaces;
-using Artbuk.Models;
+﻿using Artbuk.Models;
 
 namespace Artbuk.Controllers
 {

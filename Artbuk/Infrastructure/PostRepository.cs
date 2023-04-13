@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Artbuk.Models;
 using Microsoft.EntityFrameworkCore;
-using Artbuk.Core.Interfaces;
-using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
 {
-    public class EfPostRepository : IPostRepository
+    public class PostRepository
     {
         private readonly ArtbukContext _dbContext;
 
-        public EfPostRepository(ArtbukContext dbContext)
+        public PostRepository(ArtbukContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,14 +18,14 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Post> ListAll()
+        public List<Post> GetAll()
         {
             return _dbContext.Posts
                 .OrderByDescending(i => i.CreatedDate)
                 .ToList();
         }
 
-        public List<Post> ListByUserId(Guid userId)
+        public List<Post> GetPostsByUserId(Guid userId)
         {
             return _dbContext.Posts
                 .Where(i => i.UserId == userId)

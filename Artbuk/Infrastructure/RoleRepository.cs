@@ -1,15 +1,12 @@
-﻿using Artbuk.Core.Interfaces;
-using Artbuk.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
+﻿using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
 {
-    public class EfRoleRepository : IRoleRepository
+    public class RoleRepository
     {
         private readonly ArtbukContext _dbContext;
 
-        public EfRoleRepository(ArtbukContext dbContext)
+        public RoleRepository(ArtbukContext dbContext)
         {
             _dbContext = dbContext;
         }

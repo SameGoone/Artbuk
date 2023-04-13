@@ -1,5 +1,4 @@
-﻿using Artbuk.Core.Interfaces;
-using Artbuk.Infrastructure;
+﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,18 +7,18 @@ namespace Artbuk.Controllers
 {
     public class FeedController : Controller
     {
-        IPostRepository _postRepository;
-        IGenreRepository _genreRepository;
-        IPostInGenreRepository _postInGenreRepository;
-        ISoftwareRepository _softwareRepository;
-        IPostInSoftwareRepository _postInSoftwareRepository;
-        IUserRepository _userRepository;
-        ILikeRepository _likeRepository;
+        PostRepository _postRepository;
+        GenreRepository _genreRepository;
+        PostInGenreRepository _postInGenreRepository;
+        SoftwareRepository _softwareRepository;
+        PostInSoftwareRepository _postInSoftwareRepository;
+        UserRepository _userRepository;
+        LikeRepository _likeRepository;
 
-        public FeedController(IPostRepository postRepository, IGenreRepository genreRepository, 
-            IPostInGenreRepository postInGenreRepository, ISoftwareRepository softwareRepository, 
-            IPostInSoftwareRepository postInSoftwareRepository, IUserRepository userRepository, 
-            ILikeRepository likeRepository)
+        public FeedController(PostRepository postRepository, GenreRepository genreRepository,
+            PostInGenreRepository postInGenreRepository, SoftwareRepository softwareRepository,
+            PostInSoftwareRepository postInSoftwareRepository, UserRepository userRepository,
+            LikeRepository likeRepository)
         {
             _postRepository = postRepository;
             _genreRepository = genreRepository;
@@ -33,12 +32,15 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Feed()
         {
+            var userId = Tools.GetUserId(_userRepository, User);
+
             var feedData = new FeedData
             (
                 _likeRepository,
-                _genreRepository.List(),
-                _postRepository.ListAll(),
-                _softwareRepository.List()
+                _genreRepository.GetAll(),
+                _postRepository.GetAll(),
+                _softwareRepository.GetAll(),
+                userId
             );
 
             return View(feedData);
@@ -47,15 +49,18 @@ namespace Artbuk.Controllers
         [HttpPost]
         public IActionResult Feed(Guid genreId)
         {
+            var userId = Tools.GetUserId(_userRepository, User);
+
             var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId);
             var posts = _postRepository.GetByIds(postsIds);
 
             var feedData = new FeedData
             (
-                _likeRepository, 
-                _genreRepository.List(), 
-                posts, 
-                _softwareRepository.List()
+                _likeRepository,
+                _genreRepository.GetAll(),
+                posts,
+                _softwareRepository.GetAll(),
+                userId
             );
 
             return View(feedData);
@@ -67,8 +72,8 @@ namespace Artbuk.Controllers
         {
             var createPostData = new CreatePostData
             (
-                _genreRepository.List(),
-                _softwareRepository.List()
+                _genreRepository.GetAll(),
+                _softwareRepository.GetAll()
             );
             return View(createPostData);
         }

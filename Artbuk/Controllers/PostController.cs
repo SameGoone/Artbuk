@@ -1,23 +1,21 @@
-﻿using Artbuk.Core.Interfaces;
-using Artbuk.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Artbuk.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Artbuk.Controllers
 {
     public class PostController : Controller
     {
-        IPostRepository _postRepository;
-        IGenreRepository _genreRepository;
-        IPostInGenreRepository _postInGenreRepository;
-        ISoftwareRepository _softwareRepository;
-        IPostInSoftwareRepository _postInSoftwareRepository;
-        IUserRepository _userRepository;
-        ILikeRepository _likeRepository;
+        PostRepository _postRepository;
+        GenreRepository _genreRepository;
+        PostInGenreRepository _postInGenreRepository;
+        SoftwareRepository _softwareRepository;
+        PostInSoftwareRepository _postInSoftwareRepository;
+        UserRepository _userRepository;
+        LikeRepository _likeRepository;
 
-        public PostController(IPostRepository postRepository, IPostInGenreRepository postInGenreRepository, 
-            IGenreRepository genreRepository, IPostInSoftwareRepository postInSoftwareRepository, 
-            ISoftwareRepository softwareRepository, ILikeRepository likeRepository = null)
+        public PostController(PostRepository postRepository, PostInGenreRepository postInGenreRepository,
+            GenreRepository genreRepository, PostInSoftwareRepository postInSoftwareRepository,
+            SoftwareRepository softwareRepository, LikeRepository likeRepository, UserRepository userRepository)
         {
             _postRepository = postRepository;
             _likeRepository = likeRepository;
@@ -25,6 +23,7 @@ namespace Artbuk.Controllers
             _genreRepository = genreRepository;
             _softwareRepository = softwareRepository;
             _postInSoftwareRepository = postInSoftwareRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -38,7 +37,8 @@ namespace Artbuk.Controllers
                 _genreRepository,
                 _postInSoftwareRepository,
                 _softwareRepository,
-                id
+                id,
+                Tools.GetUserId(_userRepository, User)
             );
 
             return View(postData);

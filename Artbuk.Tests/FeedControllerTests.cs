@@ -1,17 +1,10 @@
 ﻿using Artbuk.Controllers;
-using Artbuk.Core.Interfaces;
+using Artbuk.Infrastructure;
 using Artbuk.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Artbuk.Tests
 {
@@ -21,13 +14,13 @@ namespace Artbuk.Tests
         public void Feed_ReturnsAViewResult()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             var posts = TestTools.GetTestPosts();
             postMock.Setup(repo => repo.ListAll()).Returns(posts);
 
-            var genreMock = new Mock<IGenreRepository>();
-            var sofrwareMock = new Mock<ISoftwareRepository>();
-            var likeMock = new Mock<ILikeRepository>();
+            var genreMock = new Mock<GenreRepository>();
+            var sofrwareMock = new Mock<SoftwareRepository>();
+            var likeMock = new Mock<LikeRepository>();
             var controller = new FeedController(postMock.Object, genreMock.Object, null, sofrwareMock.Object, null, null, likeMock.Object);
 
             // Act
@@ -41,7 +34,7 @@ namespace Artbuk.Tests
         public void Feed_ReturnsResultWithCorrectModel()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             var posts = TestTools.GetTestPosts();
             postMock.Setup(repo => repo.ListAll()).Returns(posts);
 
@@ -49,7 +42,7 @@ namespace Artbuk.Tests
             var postId1 = TestTools.Guid2;
             var postId2 = TestTools.Guid3;
 
-            var likeMock = new Mock<ILikeRepository>();
+            var likeMock = new Mock<LikeRepository>();
 
             var likesCount0 = 1;
             var likesCount1 = 4;
@@ -58,11 +51,11 @@ namespace Artbuk.Tests
             likeMock.Setup(repo => repo.GetPostLikesCount(postId1)).Returns(likesCount1);
             likeMock.Setup(repo => repo.GetPostLikesCount(postId2)).Returns(likesCount2);
 
-            var genreMock = new Mock<IGenreRepository>();
+            var genreMock = new Mock<GenreRepository>();
             var genres = TestTools.GetTestGenres();
             genreMock.Setup(repo => repo.List()).Returns(genres);
 
-            var sofrwareMock = new Mock<ISoftwareRepository>();
+            var sofrwareMock = new Mock<SoftwareRepository>();
             var softwares = TestTools.GetTestSoftwares();
             sofrwareMock.Setup(repo => repo.List()).Returns(softwares);
 
@@ -110,26 +103,26 @@ namespace Artbuk.Tests
             // Arrange
             var ids = TestTools.GetTestIds();
 
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             var posts = TestTools.GetTestPosts();
             postMock.Setup(repo => repo.GetByIds(ids)).Returns(posts);
 
-            var genreMock = new Mock<IGenreRepository>();
+            var genreMock = new Mock<GenreRepository>();
             var genres = TestTools.GetTestGenres();
             genreMock.Setup(repo => repo.List()).Returns(genres);
 
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
             var postInGenre = TestTools.GetTestPostInGenre();
             postInGenreMock.Setup(repo => repo.GetPostIdsByGenreId(genres[0].Id)).Returns(ids);
 
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
             var postInSoftware = TestTools.GetTestPostInSoftware();
 
-            var softwareMock = new Mock<ISoftwareRepository>();
+            var softwareMock = new Mock<SoftwareRepository>();
             var softwares = TestTools.GetTestSoftwares();
             softwareMock.Setup(repo => repo.List()).Returns(softwares);
 
-            var likeMock = new Mock<ILikeRepository>();
+            var likeMock = new Mock<LikeRepository>();
             likeMock.Setup(repo => repo.GetPostLikesCount(posts[0].Id)).Returns(0);
             likeMock.Setup(repo => repo.GetPostLikesCount(posts[1].Id)).Returns(0);
             likeMock.Setup(repo => repo.GetPostLikesCount(posts[2].Id)).Returns(0);
@@ -178,11 +171,11 @@ namespace Artbuk.Tests
         public void CreatePost_ReturnsAViewResultWithCorrectModel()
         {
             // Arrange
-            var genreMock = new Mock<IGenreRepository>();
+            var genreMock = new Mock<GenreRepository>();
             var genres = TestTools.GetTestGenres();
             genreMock.Setup(repo => repo.List()).Returns(genres);
 
-            var softwareMock = new Mock<ISoftwareRepository>();
+            var softwareMock = new Mock<SoftwareRepository>();
             var softwares = TestTools.GetTestSoftwares();
             softwareMock.Setup(repo => repo.List()).Returns(softwares);
 
@@ -206,9 +199,9 @@ namespace Artbuk.Tests
         public void CreatePost_PostIsNull()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postMock = new Mock<PostRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
 
             Post post = null;
             PostInGenre postInGenre = TestTools.GetTestPostInGenre();
@@ -233,9 +226,9 @@ namespace Artbuk.Tests
         public void CreatePost_GenreIsNull()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postMock = new Mock<PostRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
 
             Post post = TestTools.GetTestPost();
             PostInGenre postInGenre = null;
@@ -260,9 +253,9 @@ namespace Artbuk.Tests
         public void CreatePost_SoftwareIsNull()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postMock = new Mock<PostRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
 
             Post post = TestTools.GetTestPost();
             PostInGenre postInGenre = TestTools.GetTestPostInGenre();
@@ -287,9 +280,9 @@ namespace Artbuk.Tests
         public void CreatePost_AllIsNull()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postMock = new Mock<PostRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
 
             Post post = null;
             PostInGenre postInGenre = null;
@@ -314,11 +307,11 @@ namespace Artbuk.Tests
         public void CreatePost_CorrectData()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
-            var postInGenreMock = new Mock<IPostInGenreRepository>();
-            var postInSoftwareMock = new Mock<IPostInSoftwareRepository>();
+            var postMock = new Mock<PostRepository>();
+            var postInGenreMock = new Mock<PostInGenreRepository>();
+            var postInSoftwareMock = new Mock<PostInSoftwareRepository>();
 
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             var login = "login";
             User user = new User { Login = login, Id = TestTools.Guid1 };
             userMock.Setup(r => r.GetByLogin(login))

@@ -13,6 +13,7 @@
     }
 </style>
 <body>
+
     <h3>Лента</h3>
 
     <form class="genre" method="get" action="~/Feed/Feed">
@@ -41,11 +42,7 @@
                     <td>@postData.Post.CreatedDate</td>
                     <td>@postData.LikesCount</td>
                     <td>
-                        <form method="post" action="~/Like/AddLike">
-                            <input type="hidden" name="postId" value="@postData.Post.Id">
-                            <input type="checkbox" name="isLiked" value="true">
-                            <input type="submit" value="Поставить"/>
-                        </form>
+                        <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@postData.Post.Id');" checked="@postData.IsLiked" />
                     </td>      
                 </tr>
             }
@@ -56,5 +53,7 @@
     <a href="~/Profile/Login">Авторизация</a>
     <a href="~/Profile/Profile">Профиль</a>
     <a href="~/Profile/Logout">Выйти</a>
+
+    <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>

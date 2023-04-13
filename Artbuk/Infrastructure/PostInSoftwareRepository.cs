@@ -1,12 +1,11 @@
-﻿using Artbuk.Core.Interfaces;
-using Artbuk.Models;
+﻿using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
 {
-    public class EfPostInSoftwareRepository : IPostInSoftwareRepository
+    public class PostInSoftwareRepository
     {
         private readonly ArtbukContext _dbContext;
-        public EfPostInSoftwareRepository(ArtbukContext dbContext)
+        public PostInSoftwareRepository(ArtbukContext dbContext)
         {
             _dbContext = dbContext;
         }

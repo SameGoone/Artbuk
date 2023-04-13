@@ -1,17 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Artbuk.Core.Interfaces;
-using Artbuk.Models;
-using Microsoft.Extensions.Hosting;
+﻿using Artbuk.Models;
 
 namespace Artbuk.Infrastructure
 {
-    public class EfLikeRepository : ILikeRepository
+    public class LikeRepository
     {
         private readonly ArtbukContext _dbContext;
-        public EfLikeRepository(ArtbukContext dbContext)
+        public LikeRepository(ArtbukContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,15 +16,16 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == likeId);
         }
 
-        public List<Like> GetListByUserId(Guid userId)
+        public List<Like> GetLikesByUserId(Guid userId)
         {
             return _dbContext.Likes
                 .Where(i => i.UserId == userId)
                 .ToList();
         }
 
-        public void Add(Like like)
+        public void Create(Guid postId, Guid userId)
         {
+            Like like = new Like(postId, userId);
             _dbContext.Likes.Add(like);
             _dbContext.SaveChanges();
         }

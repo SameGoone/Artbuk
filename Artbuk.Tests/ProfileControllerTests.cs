@@ -22,7 +22,7 @@ namespace Artbuk.Tests
         public void DeletePost_NullPostId()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             Post post = null;
             var controller = new ProfileController(postMock.Object, null, null);
 
@@ -38,7 +38,7 @@ namespace Artbuk.Tests
         public void DeletePost_NotExistsPostId()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             Post post = null;
             Guid postId = TestTools.Guid1;
             postMock.Setup(r => r.GetById(postId))
@@ -58,7 +58,7 @@ namespace Artbuk.Tests
         public void DeletePost_CorrectPostId()
         {
             // Arrange
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             Post post = TestTools.GetTestPosts()[0];
             Guid postId = TestTools.Guid1;
             postMock.Setup(r => r.GetById(postId))
@@ -94,7 +94,7 @@ namespace Artbuk.Tests
         public async Task Registration_UserIsNullAsync()
         {
             // Arrange
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             User user = null;
             var controller = new ProfileController(null, userMock.Object, null);
 
@@ -112,7 +112,7 @@ namespace Artbuk.Tests
         public async Task Registration_UserLoginAlreadyExistsAsync()
         {
             // Arrange
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             var user = new User { Login = "login", Password = "password" };
             userMock.Setup(r => r.CheckUserExistsWithLogin(user.Login))
                 .Returns(true);
@@ -133,7 +133,7 @@ namespace Artbuk.Tests
         public async Task Registration_UserEmailAlreadyExistsAsync()
         {
             // Arrange
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             var user = new User { Email = "email", Login = "login", Password = "password" };
             userMock.Setup(r => r.CheckUserExistsWithEmail(user.Email))
                 .Returns(true);
@@ -258,7 +258,7 @@ namespace Artbuk.Tests
         public async Task Login_UserNotExists()
         {
             // Arrange
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             User user = null;
             var login = "login";
             var password = "password";
@@ -281,14 +281,14 @@ namespace Artbuk.Tests
         public async Task Login_CorrectCredentials()
         {
             // Arrange
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             var login = "login";
             var password = "password";
             User user = new User { Login = login, Password = password, RoleId = TestTools.Guid1 };
             userMock.Setup(r => r.GetByCredentials(login, password))
                 .Returns(user);
 
-            var roleMock = new Mock<IRoleRepository>();
+            var roleMock = new Mock<RoleRepository>();
             var roleName = "roleName";
             roleMock.Setup(r => r.GetRoleNameById(user.RoleId))
                 .Returns(roleName);
@@ -359,13 +359,13 @@ namespace Artbuk.Tests
         [Fact]
         public void Profile_ReturnsViewResultWithCorrectModel()
         {
-            var userMock = new Mock<IUserRepository>();
+            var userMock = new Mock<UserRepository>();
             var login = "login";
             User user = new User { Login = login, Id = TestTools.Guid1 };
             userMock.Setup(r => r.GetByLogin(login))
                 .Returns(user);
 
-            var postMock = new Mock<IPostRepository>();
+            var postMock = new Mock<PostRepository>();
             var posts = TestTools.GetTestPosts();
             postMock.Setup(r => r.ListByUserId(user.Id))
                 .Returns(posts);
