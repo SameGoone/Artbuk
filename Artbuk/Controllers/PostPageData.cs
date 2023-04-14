@@ -3,11 +3,9 @@ using Artbuk.Models;
 
 namespace Artbuk.Controllers
 {
-    public class PostData
+    public class PostPageData
     {
         public Post Post { get; set; }
-
-        public int LikesCount { get; set; }
 
         public Genre Genre { get; set; }
 
@@ -15,17 +13,14 @@ namespace Artbuk.Controllers
 
         public bool IsLiked { get; set; }
 
-        public PostData(LikeRepository likeRepository, Post post, Guid userId)
-        {
-            Post = post;
-            LikesCount = likeRepository.GetPostLikesCount(post.Id);
-            IsLiked = likeRepository.CheckIsPostLikedByUser(post.Id, userId);
-        }
+        public int LikesCount { get; set; }
 
-        public PostData(LikeRepository likeRepository, PostRepository postRepository,
+        public List<Comment> Comments { get; set; }
+
+        public PostPageData(Guid postId, Guid userId, LikeRepository likeRepository, PostRepository postRepository,
             PostInGenreRepository postInGenreRepository,
             GenreRepository genreRepository, PostInSoftwareRepository postInSoftwareRepository,
-            SoftwareRepository softwareRepository, Guid postId, Guid userId)
+            SoftwareRepository softwareRepository, CommentRepository commentRepository)
         {
             var postInGenre = postInGenreRepository.GetPostInGenreByPostId(postId);
             var postInSoftware = postInSoftwareRepository.GetPostInSoftwareByPostId(postId);
@@ -34,6 +29,7 @@ namespace Artbuk.Controllers
             Post = postRepository.GetById(postId);
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
+            Comments = commentRepository.GetComments(postId);
         }
     }
 }

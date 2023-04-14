@@ -3,8 +3,8 @@
         type: 'POST',
         url: url,
         data: { postId: postId },
-        success: function (data) {
-            window.location.reload();
+        success: function (likesCount) {
+            $("#likes-count").text(likesCount);
         },
         error: function (error) {
             console.error("Error: " + error);

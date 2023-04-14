@@ -26,23 +26,6 @@ namespace Artbuk.Controllers
         UserRepository _userRepository;
         RoleRepository _roleRepository;
 
-        private IFormCollection Form
-        {
-            get
-            {
-                if (Request == null)
-                {
-                    return TestForm;
-                }
-                else
-                {
-                    return Request.Form;
-                }
-            }
-        }
-
-        public IFormCollection TestForm;
-
         public ProfileController(PostRepository postRepository, UserRepository userRepository, RoleRepository roleRepository)
         {
             _postRepository = postRepository;
@@ -146,7 +129,7 @@ namespace Artbuk.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(string? returnUrl)
         {
-            var form = Form;
+            var form = Request.Form;
 
             if (string.IsNullOrEmpty(form["Login"]) && string.IsNullOrEmpty(form["Password"]))
             {

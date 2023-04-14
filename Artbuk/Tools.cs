@@ -12,7 +12,7 @@ namespace Artbuk
 
             if (userEntity == null)
             {
-                throw new Exception("Пользователь не найден.");
+                return Guid.Empty;
             }
 
             return userEntity.Id;

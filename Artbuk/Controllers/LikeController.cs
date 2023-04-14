@@ -18,7 +18,7 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddLike(Guid postId)
+        public int AddLike(Guid postId)
         {
             var userId = Tools.GetUserId(_userRepository, User);
             var like = _likeRepository.GetLikeOnPostByUser(postId, userId);
@@ -32,7 +32,7 @@ namespace Artbuk.Controllers
                 _likeRepository.Delete(like);
             }
 
-            return RedirectToAction("Feed", "Feed");
+            return _likeRepository.GetPostLikesCount(postId);
         }
     }
 }

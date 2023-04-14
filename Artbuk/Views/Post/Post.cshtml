@@ -1,4 +1,4 @@
-﻿@model Artbuk.Controllers.PostData
+﻿@model Artbuk.Controllers.PostPageData
 @{
     //Layout = null;
 }
@@ -6,6 +6,8 @@
 <html>
 <head>
     <title>Лента</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 </head>
 <style>
     .genre {
@@ -21,14 +23,28 @@
     <p>Дата создания: @Model.Post.CreatedDate</p>
     <p>Жанр: @Model.Genre.Name</p>
     <p>Софт: @Model.Software.Name</p>
-    <p>Лайки: @Model.LikesCount</p>
-    <div display:"inline">
-    <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
+    <div>
+        <p>Лайки: <span id="likes-count">@Model.LikesCount</span></p>
+        <div display:"inline">
+            <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
+        </div>
     </div>
-    <a href="~/Feed/CreatePost">Добавить пост</a>
-    <a href="~/Profile/Registration">Регистрация</a>
-    <a href="~/Profile/Login">Авторизация</a>
-    <a href="~/Profile/Profile">Профиль</a>
-    <a href="~/Profile/Logout">Выйти</a>
+    <div id="comment-container">
+        <h3>Комментарии</h3>
+        <form class="comment-form" method="post" action="~/Post/AddComment">
+            <input type="text" name="body" />
+            <input type="hidden" name="postId" value="@Model.Post.Id" />
+            <button type="submit">Создать комментарий</button>
+        </form>
+        @foreach (var comment in Model.Comments)
+        {
+            <div>
+                <p>
+                    @comment.User.Login: @comment.Body
+                </p>
+            </div>
+        }
+    </div>
+    <a href="~/Feed/Feed">Назад</a>
 </body>
 </html>

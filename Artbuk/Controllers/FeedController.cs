@@ -29,10 +29,16 @@ namespace Artbuk.Controllers
             _likeRepository = likeRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Feed()
         {
             var userId = Tools.GetUserId(_userRepository, User);
+
+            if (userId == Guid.Empty)
+            {
+                return RedirectToAction("Logout", "Profile");
+            }
 
             var feedData = new FeedData
             (
@@ -46,6 +52,7 @@ namespace Artbuk.Controllers
             return View(feedData);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Feed(Guid genreId)
         {

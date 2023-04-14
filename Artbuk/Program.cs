@@ -17,6 +17,7 @@ builder.Services.AddScoped<SoftwareRepository>();
 builder.Services.AddScoped<PostInSoftwareRepository>();
 builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<LikeRepository>();
+builder.Services.AddScoped<CommentRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -38,7 +38,7 @@
             @foreach (var postData in Model.PostDatas)
             {
                 <tr>
-                    <td><a href="~/Post/Post?id=@postData.Post.Id">@postData.Post.Body</a></td>
+                    <td><a href="~/Post/Post?postId=@postData.Post.Id">@postData.Post.Body</a></td>
                     <td>@postData.Post.CreatedDate</td>
                     <td>@postData.LikesCount</td>
                     <td>
