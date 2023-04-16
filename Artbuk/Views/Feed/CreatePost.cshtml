@@ -11,8 +11,8 @@
     </head>
     <body>
         <h2>Создать пост</h2>
-        <div class="col-2">
-        <form method='post'>
+        <div class="col-4">
+        <form method='post' enctype="multipart/form-data">
             <p>
                 <label>Содержимое:</label><br />
                 <input type="text" name="Body" />
@@ -29,6 +29,10 @@
                     <option value="@software.Id">@software.Name</option>
                 }
             </select>
+            <div class="col-12">
+                <label for="formFile" class="form-label">Выберите изображение</label>
+                <input class="form-control" type="file" name="formFile" id="formFile" accept="image/png, image/jpeg">
+            </div>
             <input type='submit' value='Создать' />
         </form>
         </div>

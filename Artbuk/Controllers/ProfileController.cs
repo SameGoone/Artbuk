@@ -25,12 +25,15 @@ namespace Artbuk.Controllers
         PostRepository _postRepository;
         UserRepository _userRepository;
         RoleRepository _roleRepository;
+        ImageInPostRepository _imageInPostRepository;
 
-        public ProfileController(PostRepository postRepository, UserRepository userRepository, RoleRepository roleRepository)
+        public ProfileController(PostRepository postRepository, UserRepository userRepository, 
+            RoleRepository roleRepository, ImageInPostRepository imageInPostRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _imageInPostRepository = imageInPostRepository;
         }
 
         [Authorize]
@@ -49,12 +52,14 @@ namespace Artbuk.Controllers
             }
 
             var post = _postRepository.GetById(postId);
-            if (post == null)
+            var imageInPost = _imageInPostRepository.GetByPostId(postId);
+            if (post == null || imageInPost == null)
             {
                 return new NoContentResult();
             }
 
             _postRepository.Delete(post);
+            _imageInPostRepository.Delete(imageInPost);
             return RedirectToAction("Profile");
         }
 

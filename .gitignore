@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Artbuk/wwwroot/images
+/Artbuk/images/63f71312-2217-473b-f8f7-08db3e77e81a/a50557e1-5802-4f90-3022-08db3e7930d5

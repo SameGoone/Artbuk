@@ -38,6 +38,7 @@
             @foreach (var postData in Model.PostDatas)
             {
                 <tr>
+                    <td><img width="200px" height="200px" src=@Url.Content(@postData.ImageInPost.ImagePath) runat="server" /></td>
                     <td><a href="~/Post/Post?postId=@postData.Post.Id">@postData.Post.Body</a></td>
                     <td>@postData.Post.CreatedDate</td>
                     <td>@postData.LikesCount</td>

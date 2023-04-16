@@ -15,11 +15,12 @@ namespace Artbuk.Controllers
         UserRepository _userRepository;
         LikeRepository _likeRepository;
         CommentRepository _commentRepository;
+        ImageInPostRepository _imageInPostRepository;
 
         public PostController(PostRepository postRepository, PostInGenreRepository postInGenreRepository,
             GenreRepository genreRepository, PostInSoftwareRepository postInSoftwareRepository,
             SoftwareRepository softwareRepository, LikeRepository likeRepository, UserRepository userRepository,
-            CommentRepository commentRepository)
+            CommentRepository commentRepository, ImageInPostRepository imageInPostRepository)
         {
             _postRepository = postRepository;
             _likeRepository = likeRepository;
@@ -29,6 +30,7 @@ namespace Artbuk.Controllers
             _postInSoftwareRepository = postInSoftwareRepository;
             _userRepository = userRepository;
             _commentRepository = commentRepository;
+            _imageInPostRepository = imageInPostRepository;
         }
 
         [HttpGet]
@@ -45,7 +47,8 @@ namespace Artbuk.Controllers
                 _genreRepository,
                 _postInSoftwareRepository,
                 _softwareRepository,
-                _commentRepository
+                _commentRepository,
+                _imageInPostRepository
             );
 
             return View(postData);
@@ -55,6 +58,11 @@ namespace Artbuk.Controllers
         [HttpPost]
         public IActionResult AddComment(Guid postId, string body)
         {
+            if (string.IsNullOrEmpty(body))
+            {
+                return RedirectToAction("Post", new { postId = postId });
+            }
+
             Comment comment = new Comment
             {
                 PostId = postId,
