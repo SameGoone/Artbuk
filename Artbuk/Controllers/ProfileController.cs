@@ -26,14 +26,17 @@ namespace Artbuk.Controllers
         UserRepository _userRepository;
         RoleRepository _roleRepository;
         ImageInPostRepository _imageInPostRepository;
+        CommentRepository _commentRepository;
 
         public ProfileController(PostRepository postRepository, UserRepository userRepository, 
-            RoleRepository roleRepository, ImageInPostRepository imageInPostRepository)
+            RoleRepository roleRepository, ImageInPostRepository imageInPostRepository,
+            CommentRepository commentRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _imageInPostRepository = imageInPostRepository;
+            _commentRepository = commentRepository;
         }
 
         [Authorize]
@@ -53,14 +56,23 @@ namespace Artbuk.Controllers
 
             var post = _postRepository.GetById(postId);
             var imageInPost = _imageInPostRepository.GetByPostId(postId);
-            if (post == null || imageInPost == null)
+
+            if (imageInPost != null)
+            {
+                _imageInPostRepository.Delete(imageInPost);
+            }
+
+            _commentRepository.DeleteCommentsByPostId(postId);
+
+            if (post != null)
+            {
+                _postRepository.Delete(post);
+                return RedirectToAction("Profile");
+            }
+            else
             {
                 return new NoContentResult();
             }
-
-            _postRepository.Delete(post);
-            _imageInPostRepository.Delete(imageInPost);
-            return RedirectToAction("Profile");
         }
 
         [HttpGet]

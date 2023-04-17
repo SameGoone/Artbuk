@@ -18,7 +18,7 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Comment> GetComments(Guid postId)
+        public List<Comment> GetComments(Guid? postId)
         {
             return _dbContext.Comments
                 .Include(c => c.User)
@@ -30,6 +30,27 @@ namespace Artbuk.Infrastructure
         public void Add(Comment comment)
         {
             _dbContext.Comments.Add(comment);
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteCommentsByPostId(Guid? postId)
+        {
+            var comments = GetComments(postId);
+
+            if (comments.Count > 0)
+            {
+                _dbContext.Comments.RemoveRange(comments);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteRange(IEnumerable<Comment> comments)
+        {
+            foreach(var comment in comments)
+            {
+                _dbContext.Comments.Remove(comment);
+            }
+
             _dbContext.SaveChanges();
         }
     }

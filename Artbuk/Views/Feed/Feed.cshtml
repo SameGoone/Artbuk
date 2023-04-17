@@ -29,25 +29,15 @@
     }
     <br />
     <br />
-        <table>
-        <tr>
-        <td>Содержимое</td>
-            <td>Дата</td>
-            <td>Лайки</td>
-        </tr>
-            @foreach (var postData in Model.PostDatas)
-            {
-                <tr>
-                    <td><img width="200px" height="200px" src=@Url.Content(@postData.ImageInPost.ImagePath) runat="server" /></td>
-                    <td><a href="~/Post/Post?postId=@postData.Post.Id">@postData.Post.Body</a></td>
-                    <td>@postData.Post.CreatedDate</td>
-                    <td>@postData.LikesCount</td>
-                    <td>
-                        <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@postData.Post.Id');" checked="@postData.IsLiked" />
-                    </td>      
-                </tr>
-            }
-    </table>
+
+    @foreach (var postData in Model.PostDatas)
+    {
+        <div>
+            <a href="~/Post/Post?postId=@postData.Post.Id">
+                <img width="200px" height="200px" src=@Url.Content(@postData.ImagePath) runat="server" />
+            </a>
+        </div>
+    }
 
     <a href="~/Feed/CreatePost">Добавить пост</a>
     <a href="~/Profile/Registration">Регистрация</a>

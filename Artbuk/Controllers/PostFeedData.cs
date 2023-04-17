@@ -7,18 +7,12 @@ namespace Artbuk.Controllers
     {
         public Post Post { get; set; }
 
-        public int LikesCount { get; set; }
+        public string ImagePath { get; set; }
 
-        public bool IsLiked { get; set; }
-
-        public ImageInPost ImageInPost { get; set; }
-
-        public PostFeedData(LikeRepository likeRepository, Post post, Guid userId, ImageInPostRepository imageInPostRepository)
+        public PostFeedData(Post post, ImageInPostRepository imageInPostRepository)
         {
             Post = post;
-            LikesCount = likeRepository.GetPostLikesCount(post.Id);
-            IsLiked = likeRepository.CheckIsPostLikedByUser(post.Id, userId);
-            ImageInPost = imageInPostRepository.GetByPostId(post.Id);
+            ImagePath = Tools.GetImagePath(post.Id, imageInPostRepository);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Artbuk.Controllers
             Genres = genres;
             Software = softwares;
             PostDatas = posts
-                .Select(i => new PostFeedData(likeRepository, i, userId, imageInPostRepository))
+                .Select(p => new PostFeedData(p, imageInPostRepository))
                 .ToList();
         }
     }
