@@ -74,5 +74,27 @@ namespace Artbuk.Controllers
             _commentRepository.Add(comment);
             return RedirectToAction("Post", new { postId = postId });
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteComment(Guid commentId)
+        {
+            if (commentId == null)
+            {
+                return new NoContentResult();
+            }
+
+            var comment = _commentRepository.GetById(commentId);
+
+            if (comment != null)
+            {
+                _commentRepository.Delete(comment);
+                return RedirectToAction("Post", "Post", new { postId = comment.PostId });
+            }
+            else
+            {
+                return new NoContentResult();
+            }
+        }
     }
 }

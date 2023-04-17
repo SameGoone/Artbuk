@@ -41,11 +41,26 @@
         {
             <div>
                 <p>
-                    @comment.User.Login: @comment.Body
+                    @comment.User: @comment.Body
                 </p>
+                @if(comment.IsRemovable)
+                {
+                    <form method="post" action="~/Post/DeleteComment">
+                        <input type="hidden" name="commentId" value="@comment.Id" />
+                        <button type="submit">Удалить</button>
+                    </form>
+                }
             </div>
         }
     </div>
+
+    @if (Model.IsRemovable)
+    {
+        <form method="post" action="~/Profile/DeletePost">
+            <input type="hidden" name="postId" value="@Model.Post.Id" />
+            <button type="submit">Удалить</button>
+        </form>
+    }
     <a href="~/Feed/Feed">Назад</a>
 </body>
 </html>

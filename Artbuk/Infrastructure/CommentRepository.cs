@@ -1,5 +1,6 @@
 ﻿using Artbuk.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Artbuk.Infrastructure
 {
@@ -12,9 +13,9 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Genre GetById(Guid id)
+        public Comment GetById(Guid id)
         {
-            return _dbContext.Genres
+            return _dbContext.Comments
                 .FirstOrDefault(i => i.Id == id);
         }
 
@@ -44,13 +45,9 @@ namespace Artbuk.Infrastructure
             }
         }
 
-        public void DeleteRange(IEnumerable<Comment> comments)
+        public void Delete(Comment comment)
         {
-            foreach(var comment in comments)
-            {
-                _dbContext.Comments.Remove(comment);
-            }
-
+            _dbContext.Comments.Remove(comment);
             _dbContext.SaveChanges();
         }
     }

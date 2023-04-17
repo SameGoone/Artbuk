@@ -17,9 +17,11 @@ namespace Artbuk.Controllers
 
         public int LikesCount { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<CommentData> Comments { get; set; }
 
         public string ImagePath { get; set; }
+
+        public bool IsRemovable { get; set; }
 
         public PostPageData(Guid postId, Guid userId, LikeRepository likeRepository, PostRepository postRepository,
             PostInGenreRepository postInGenreRepository,
@@ -31,8 +33,20 @@ namespace Artbuk.Controllers
             Post = postRepository.GetById(postId);
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
-            Comments = commentRepository.GetComments(postId);
+
+            Comments = commentRepository.GetComments(postId)
+                .Select(c => new CommentData 
+                    {
+                        Id = c.Id,
+                        Body = c.Body,
+                        User = c.User?.Login,
+                        IsRemovable = c.UserId == userId 
+                    }
+                )
+                .ToList();
+
             ImagePath = Tools.GetImagePath(postId, imageInPostRepository);
+            IsRemovable = Post.UserId == userId;
         }
     }
 }

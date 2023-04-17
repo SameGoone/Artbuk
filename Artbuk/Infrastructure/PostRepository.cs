@@ -52,7 +52,7 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Delete(Guid postId)
+        public void DeleteById(Guid postId)
         {
             throw new NotImplementedException();
         }
