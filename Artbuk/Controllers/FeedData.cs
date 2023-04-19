@@ -7,7 +7,8 @@ namespace Artbuk.Controllers
     {
         public List<Genre> Genres { get; set; }
         public List<Software> Software { get; set; }
-        public List<PostFeedData> PostDatas { get; set; }
+        public List<PostFeedData> Posts { get; set; }
+        public Guid CurrentUserId { get; set; }
 
         public FeedData(
             LikeRepository likeRepository, 
@@ -19,7 +20,8 @@ namespace Artbuk.Controllers
         {
             Genres = genres;
             Software = softwares;
-            PostDatas = posts
+            CurrentUserId = userId;
+            Posts = posts
                 .Select(p => new PostFeedData(p, imageInPostRepository))
                 .ToList();
         }

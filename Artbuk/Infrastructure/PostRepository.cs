@@ -21,7 +21,7 @@ namespace Artbuk.Infrastructure
         public List<Post> GetAll()
         {
             return _dbContext.Posts
-                .OrderByDescending(i => i.CreatedDate)
+                .OrderByDescending(i => i.CreatedOn)
                 .ToList();
         }
 
@@ -29,7 +29,7 @@ namespace Artbuk.Infrastructure
         {
             return _dbContext.Posts
                 .Where(i => i.UserId == userId)
-                .OrderByDescending(i => i.CreatedDate)
+                .OrderByDescending(i => i.CreatedOn)
                 .ToList();
         }
 

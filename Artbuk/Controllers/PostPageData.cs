@@ -39,7 +39,7 @@ namespace Artbuk.Controllers
                     {
                         Id = c.Id,
                         Body = c.Body,
-                        User = c.User?.Login,
+                        User = c.User?.Name,
                         IsRemovable = c.UserId == userId 
                     }
                 )

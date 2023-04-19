@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace Artbuk.Controllers
@@ -27,26 +28,44 @@ namespace Artbuk.Controllers
         RoleRepository _roleRepository;
         ImageInPostRepository _imageInPostRepository;
         CommentRepository _commentRepository;
+        SubscriptionRepository _subscriptionRepository;
 
         public ProfileController(PostRepository postRepository, UserRepository userRepository, 
             RoleRepository roleRepository, ImageInPostRepository imageInPostRepository,
-            CommentRepository commentRepository)
+            CommentRepository commentRepository, SubscriptionRepository subscriptionRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _imageInPostRepository = imageInPostRepository;
             _commentRepository = commentRepository;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         [Authorize]
-        public IActionResult Profile()
+        [HttpGet]
+        public IActionResult Profile(Guid userId)
         {
-            var userId = Tools.GetUserId(_userRepository, User);
-            return View(_postRepository.GetPostsByUserId(userId));
+            var user = _userRepository.GetById(userId);
+            var currentUserId = Tools.GetUserId(_userRepository, User);
+            var userPosts = _postRepository.GetPostsByUserId(userId);
+
+            var data = new ProfileData()
+            {
+                UserId = userId,
+                UserName = user.Name,
+                UserImagePath = Tools.GetImagePath(user.ImagePath),
+                IsMe = currentUserId == userId,
+                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, userId),
+
+                Posts = PostFeedData.GetDataRange(userPosts, _imageInPostRepository)
+            };
+
+            return View(data);
         }
 
         [Authorize]
+        [HttpPost]
         public IActionResult DeletePost(Guid? postId)
         {
             if (postId == null)
@@ -86,12 +105,12 @@ namespace Artbuk.Controllers
         {
             if (user != null)
             {
-                if (string.IsNullOrEmpty(user.Login) && string.IsNullOrEmpty(user.Password))
+                if (string.IsNullOrEmpty(user.Name) && string.IsNullOrEmpty(user.Password))
                 {
                     ViewBag.Message = "Заполните поля!";
                     return View();
                 }
-                else if (string.IsNullOrEmpty(user.Login))
+                else if (string.IsNullOrEmpty(user.Name))
                 {
                     ViewBag.Message = "Введите логин!";
                     return View();
@@ -102,10 +121,10 @@ namespace Artbuk.Controllers
                     return View();
                 }
 
-                var checkUserLogin = _userRepository.CheckUserExistsWithLogin(user.Login);
+                var checkUserName = _userRepository.CheckUserExistsWithName(user.Name);
                 var checkUserEmail = _userRepository.CheckUserExistsWithEmail(user.Email);
 
-                if (checkUserLogin)
+                if (checkUserName)
                 {
                     ViewBag.Message = "Пользователь с таким логином уже существует.";
                     return View();
@@ -123,7 +142,7 @@ namespace Artbuk.Controllers
 
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
                         new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)
                     };
                     // создаем объект ClaimsIdentity
@@ -148,12 +167,12 @@ namespace Artbuk.Controllers
         {
             var form = Request.Form;
 
-            if (string.IsNullOrEmpty(form["Login"]) && string.IsNullOrEmpty(form["Password"]))
+            if (string.IsNullOrEmpty(form["Name"]) && string.IsNullOrEmpty(form["Password"]))
             {
                 ViewBag.Message = "Заполните поля!";
                 return View();
             }
-            else if (string.IsNullOrEmpty(form["Login"]))
+            else if (string.IsNullOrEmpty(form["Name"]))
             {
                 ViewBag.Message = "Введите логин!";
                 return View();
@@ -164,10 +183,10 @@ namespace Artbuk.Controllers
                 return View();
             }
 
-            string login = form["Login"];
+            string name = form["Name"];
             string password = form["Password"];
 
-            User? user = _userRepository.GetByCredentials(login, password);
+            User? user = _userRepository.GetByCredentials(name, password);
 
             if (user is null)
             {
@@ -179,7 +198,7 @@ namespace Artbuk.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)
             };
 
@@ -196,6 +215,57 @@ namespace Artbuk.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Feed", "Feed");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult ChooseUserImage(Guid? userId)
+        {
+            ViewBag.UserId = userId;
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChooseUserImage(Guid? userId, IFormFile? formFile)
+        {
+            var filePath = Tools.SaveUserImage(formFile, userId);
+            var user = _userRepository.GetById(userId);
+            user.ImagePath = filePath;
+            _userRepository.Update(user);
+
+            return RedirectToAction("Profile", "Profile", new { userId = userId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Subscribe(Guid? followedId)
+        {
+            var userId = Tools.GetUserId(_userRepository, User);
+
+            if (_subscriptionRepository.CheckIsSubrcribedTo(userId, followedId.Value))
+            {
+                return NoContent();
+            }
+
+            _subscriptionRepository.Add(userId, followedId.Value);
+            return RedirectToAction("Profile", new { userId = followedId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Unsubscribe(Guid? followedId)
+        {
+            var userId = Tools.GetUserId(_userRepository, User);
+            var subscribtion = _subscriptionRepository.GetBySubscriberAndFollowed(userId, followedId.Value);
+
+            if (subscribtion == null)
+            {
+                return NoContent();
+            }
+
+            _subscriptionRepository.Remove(subscribtion);
+            return RedirectToAction("Profile", new { userId = followedId });
         }
     }
 }

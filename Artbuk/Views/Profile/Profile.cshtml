@@ -1,4 +1,4 @@
-﻿@model List<Post>
+﻿@model Artbuk.Controllers.ProfileData
 @{
     //Layout = null;
 }
@@ -7,34 +7,49 @@
 <head>
     <title>Профиль</title>
 </head>
-<style>
-    .genre {
-        display: inline-block
-    }
-</style>
 <body>
     <h3>Профиль</h3>
     <br />
     <br />
-    <table>
-        <tr>
-            <td>Содержимое</td>
-            <td>Дата</td>
-            <td></td>
-        </tr>
-        @foreach (var post in Model)
+    <div>
+        <h4>@Model.UserName</h4>
+    </div>
+    <div>
+        <img width="200px" height="200px" src=@Url.Content(@Model.UserImagePath) runat="server" />
+        @if(Model.IsMe)
         {
-            <tr>
-                <td>@post.Body</td>
-                <td>@post.CreatedDate</td>
-                <td>
-                    <form method="post" action="~/Profile/DeletePost">
-                        <input type="hidden" name="postId" value="@post.Id" />
-                        <button type="submit">Удалить</button>
-                    </form>
-                </td>
-            </tr>
+            <form method="get" action="~/Profile/ChooseUserImage">
+                <input type="hidden" name="userId" value="@Model.UserId" />
+                <button type="submit">Установить аватарку</button>
+            </form>
         }
-    </table>
+
+        @if (!Model.IsMe)
+        {
+            if (Model.IsSubscribed)
+            {
+                <form method="get" action="~/Profile/Unsubscribe">
+                    <input type="hidden" name="followedId" value="@Model.UserId" />
+                    <button type="submit">Отписаться</button>
+                </form>
+            }
+            else
+            {
+                <form method="get" action="~/Profile/Subscribe">
+                    <input type="hidden" name="followedId" value="@Model.UserId" />
+                    <button type="submit">Подписаться</button>
+                </form>
+            }
+        }
+    </div>
+
+    @foreach (var postData in Model.Posts)
+    {
+        <div>
+            <a href="~/Post/Post?postId=@postData.PostId">
+                <img width="200px" height="200px" src=@Url.Content(@postData.ImagePath) runat="server" />
+            </a>
+        </div>
+    }
 </body>
 </html>

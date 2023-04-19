@@ -94,7 +94,7 @@ namespace Artbuk.Controllers
                 _postRepository.Add(post);
                 postInGenre.PostId = post.Id;
                 postInSoftware.PostId = post.Id;
-                var filePath = Tools.SaveImage(formFile, post.UserId, post.Id);
+                var filePath = Tools.SavePostImage(formFile, post.UserId, post.Id);
                 _postInGenreRepository.Add(postInGenre);
                 _postInSoftwareRepository.Add(postInSoftware);
                 _imageInPostRepository.Add(new ImageInPost { ImagePath = filePath, PostId = post.Id});

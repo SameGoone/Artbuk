@@ -1,0 +1,26 @@
+﻿@model List<Artbuk.Models.User>
+@{
+    //Layout = null;
+}
+
+<html>
+    <head>
+        <title>Пользователи</title>
+    </head>
+    <body>
+    <h3>Пользователи</h3>
+        @foreach (var user in Model)
+        {
+            <div>
+                <a href="~/Profile/Profile?userId=@user.Id">
+                    <div display="inline-block">
+                        <img width="200px" height="200px" src=@Url.Content(@user.ImagePath) runat="server" />
+                    </div>
+                    <div display="inline-block">
+                        <span>@user.Name</span>
+                    </div>
+                </a>
+            </div>
+        }
+    </body>
+</html>

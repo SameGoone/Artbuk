@@ -1,0 +1,17 @@
+﻿<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Выбор аватарки</title>
+</head>
+<body>
+    <h2>Выберите изображение</h2>
+    <div><h5 style="color:red">@ViewBag.Message</h5></div>
+    <div class="col-2">
+        <form method='post' enctype="multipart/form-data">
+            <input type="hidden" name="userId" value="@ViewBag.UserId">
+            <input class="form-control" type="file" name="formFile" id="formFile" accept="image/png, image/jpeg">
+            <input type='submit' value='Сохранить' />
+        </form>
+    </div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 ﻿using Artbuk.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Artbuk.Infrastructure
 {
@@ -12,10 +13,22 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public User GetById(Guid id)
+        public User GetById(Guid? id)
         {
             return _dbContext.Users
                 .FirstOrDefault(i => i.Id == id);
+        }
+
+        public List<User> GetByIds(List<Guid> Ids)
+        {
+            return _dbContext.Users
+                .Where(u => Ids.Contains(u.Id))
+                .ToList();
+        }
+
+        public List<User> GetAll()
+        {
+            return _dbContext.Users.ToList();
         }
 
         public void Add(User user)
@@ -30,16 +43,22 @@ namespace Artbuk.Infrastructure
             _dbContext.SaveChanges();
         }
 
-        public User GetByLogin(string login)
+        public User GetByName(string name)
         {
             return _dbContext.Users
-                .FirstOrDefault(i => i.Login == login);
+                .FirstOrDefault(i => i.Name == name);
         }
 
-        public bool CheckUserExistsWithLogin(string login)
+        public string GetNameById(Guid userId)
+        {
+            var user = GetById(userId);
+            return user != null ? user.Name : string.Empty;
+        }
+
+        public bool CheckUserExistsWithName(string name)
         {
             return _dbContext.Users
-                .Any(u => u.Login == login);
+                .Any(u => u.Name == name);
         }
 
         public bool CheckUserExistsWithEmail(string email)
@@ -48,10 +67,10 @@ namespace Artbuk.Infrastructure
                 .Any(u => u.Email == email);
         }
 
-        public User GetByCredentials(string login, string password)
+        public User GetByCredentials(string name, string password)
         {
             return _dbContext.Users
-                .FirstOrDefault(u => u.Login == login && u.Password == password);
+                .FirstOrDefault(u => u.Name == name && u.Password == password);
         }
     }
 }

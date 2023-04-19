@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
         public string Body { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedOn { get; set; }
         public User? User { get; set; }
         public Guid? UserId { get; set; }
 
@@ -13,7 +13,7 @@
         public Post(string body)
         {
             Body = body;
-            CreatedDate = DateTime.Now;
+            CreatedOn = DateTime.Now;
         }
     }
 }

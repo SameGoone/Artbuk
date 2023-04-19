@@ -12,7 +12,7 @@ namespace Artbuk
         public static Guid GetUserId(UserRepository userRepository, ClaimsPrincipal user)
         {
             var userName = user.Identity.Name;
-            var userEntity = userRepository.GetByLogin(userName);
+            var userEntity = userRepository.GetByName(userName);
 
             if (userEntity == null)
             {
@@ -22,7 +22,7 @@ namespace Artbuk
             return userEntity.Id;
         }
 
-        public static string SaveImage(IFormFile formFile, Guid? userId, Guid postId)
+        public static string SavePostImage(IFormFile? formFile, Guid? userId, Guid? postId)
         {
             var dirPath = $"wwwroot/images/{userId}";
 
@@ -52,6 +52,29 @@ namespace Artbuk
             return dirPath.Replace("wwwroot", "");
         }
 
+        public static string SaveUserImage(IFormFile? formFile, Guid? userId)
+        {
+            var dirPath = $"wwwroot/images/users";
+
+            var dirInfo = new DirectoryInfo(dirPath);
+
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+
+            var fileType = formFile.ContentType.Split('/')[1];
+            var fileName = $"{userId}.{fileType}";
+            dirPath += $"/{fileName}";
+
+            using (var stream = new FileStream(dirPath, FileMode.Create))
+            {
+                formFile.CopyTo(stream);
+            }
+
+            return dirPath.Replace("wwwroot", "");
+        }
+
         public static void DeleteImage(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -66,6 +89,11 @@ namespace Artbuk
         {
             var imageInPost = imageInPostRepository.GetByPostId(postId);
             return imageInPost?.ImagePath ?? _defaultImage;
+        }
+
+        public static string GetImagePath(string imagePath)
+        {
+            return imagePath ?? _defaultImage;
         }
 
         public static string GetSoftwareName(Guid postId, SoftwareRepository softwareRepository, PostInSoftwareRepository postInSoftwareRepository)

@@ -30,11 +30,11 @@
     <br />
     <br />
 
-    @foreach (var postData in Model.PostDatas)
+    @foreach (var post in Model.Posts)
     {
         <div>
-            <a href="~/Post/Post?postId=@postData.Post.Id">
-                <img width="200px" height="200px" src=@Url.Content(@postData.ImagePath) runat="server" />
+            <a href="~/Post/Post?postId=@post.PostId">
+                <img width="200px" height="200px" src=@Url.Content(post.ImagePath) runat="server" />
             </a>
         </div>
     }
@@ -42,7 +42,8 @@
     <a href="~/Feed/CreatePost">Добавить пост</a>
     <a href="~/Profile/Registration">Регистрация</a>
     <a href="~/Profile/Login">Авторизация</a>
-    <a href="~/Profile/Profile">Профиль</a>
+    <a href="~/Profile/Profile?userId=@Model.CurrentUserId">Профиль</a>
+    <a href="~/Users/Users">Пользователи</a>
     <a href="~/Profile/Logout">Выйти</a>
 
     <script src="js/site.js" asp-append-version="true"></script>
