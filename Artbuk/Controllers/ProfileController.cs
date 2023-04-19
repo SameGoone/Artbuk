@@ -241,6 +241,11 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Subscribe(Guid? followedId)
         {
+            if (!followedId.HasValue)
+            {
+                return NoContent();
+            }
+
             var userId = Tools.GetUserId(_userRepository, User);
 
             if (_subscriptionRepository.CheckIsSubrcribedTo(userId, followedId.Value))
@@ -248,7 +253,13 @@ namespace Artbuk.Controllers
                 return NoContent();
             }
 
-            _subscriptionRepository.Add(userId, followedId.Value);
+            var subscribtion = new Subscription()
+            {
+                SubcriberId = userId,
+                FollowedId = followedId,
+            };
+
+            _subscriptionRepository.Add(subscribtion);
             return RedirectToAction("Profile", new { userId = followedId });
         }
 
@@ -256,6 +267,11 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Unsubscribe(Guid? followedId)
         {
+            if (!followedId.HasValue)
+            {
+                return NoContent();
+            }
+
             var userId = Tools.GetUserId(_userRepository, User);
             var subscribtion = _subscriptionRepository.GetBySubscriberAndFollowed(userId, followedId.Value);
 

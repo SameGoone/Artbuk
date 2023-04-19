@@ -1,32 +1,49 @@
 ﻿using Artbuk.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Artbuk.Infrastructure
 {
     public class SubscriptionRepository
     {
-        public bool CheckIsSubrcribedTo(Guid subscriberId, Guid followedId)
+        private readonly ArtbukContext _dbContext;
+
+        public SubscriptionRepository(ArtbukContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public void Add(Guid subscriberId, Guid followedId)
+        public bool CheckIsSubrcribedTo(Guid subscriberId, Guid followedId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Subscriptions
+                .FirstOrDefault(s => s.SubcriberId == subscriberId && s.FollowedId == followedId) != null;
+        }
+
+        public Guid Add(Subscription subscription)
+        {
+            _dbContext.Subscriptions.Add(subscription);
+            _dbContext.SaveChanges();
+
+            return subscription.Id;
         }
 
         public Subscription GetBySubscriberAndFollowed(Guid subscriberId, Guid followedId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Subscriptions
+                .FirstOrDefault(s => s.SubcriberId == subscriberId && s.FollowedId == followedId);
         }
 
         public List<Guid> GetFollowedIds(Guid subscriberId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Subscriptions
+                .Where(s => s.SubcriberId == subscriberId && s.FollowedId != null)
+                .Select(s => s.FollowedId.Value)
+                .ToList();
         }
 
         public int Remove(Subscription subscription)
         {
-            throw new NotImplementedException();
+            _dbContext.Subscriptions.Remove(subscription);
+            return _dbContext.SaveChanges();
         }
     }
 }
