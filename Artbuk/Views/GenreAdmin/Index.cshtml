@@ -1,0 +1,26 @@
+﻿@model List<Genre>
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Категории</title>
+</head>
+<body>
+    <a href="~/GenreAdmin/CreateGenre">Создать жанр</a>
+    @foreach (var genre in Model)
+    {
+        <form method="post" action="~/GenreAdmin/Delete">
+            <div>
+                <input type="hidden" name="Id" value="@genre.Id"/>
+                <input type="hidden" name="Name" value="@genre.Name"/>
+                <a href="~/GenreAdmin/Genre?genreId=@genre.Id">@genre.Name</a>
+                <button type="submit">Удалить</button>
+            </div>
+        </form>
+    }
+
+    <script src="js/site.js" asp-append-version="true"></script>
+</body>
+</html>

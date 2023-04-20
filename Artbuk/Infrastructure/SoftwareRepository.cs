@@ -35,5 +35,11 @@ namespace Artbuk.Infrastructure
             _dbContext.Entry(software).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public void Delete(Software software)
+        {
+            _dbContext.Remove(software);
+            _dbContext.SaveChanges();
+        }
     }
 }

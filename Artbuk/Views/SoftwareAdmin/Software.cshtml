@@ -1,0 +1,27 @@
+﻿@model Software;
+
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Лента</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+</head>
+
+<body>
+    <p>Изменить название инструмента:</p>
+    <div class="col-4">
+        <form method='post' enctype="multipart/form-data" asp-controller="SoftwareAdmin" asp-action="Update">
+            <input type="hidden" name="Id" value="@Model.Id"/>
+            <p>
+                <label>Название инструмента:</label><br />
+                <input type="text" name="Name" value="@Model.Name"/>
+            </p>
+            <input type='submit' value='Обновить' />
+        </form>
+    </div>
+</body>
+</html>

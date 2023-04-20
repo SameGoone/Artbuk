@@ -35,5 +35,11 @@ namespace Artbuk.Infrastructure
             _dbContext.Entry(genre).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public void Delete(Genre genre)
+        {
+            _dbContext.Remove(genre);
+            _dbContext.SaveChanges();
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@model List<Software>
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Категории</title>
+</head>
+<body>
+    <a href="~/SoftwareAdmin/CreateSoftware">Создать жанр</a>
+    @foreach (var software in Model)
+    {
+        <form method="post" action="~/SoftwareAdmin/Delete">
+            <div>
+                <input type="hidden" name="Id" value="@software.Id"/>
+                <input type="hidden" name="Name" value="@software.Name" />
+                <a href="~/SoftwareAdmin/Software?softwareId=@software.Id">@software.Name</a>
+                <button type="submit">Удалить</button>
+            </div>
+        </form>
+    }
+
+    <script src="js/site.js" asp-append-version="true"></script>
+</body>
+</html>

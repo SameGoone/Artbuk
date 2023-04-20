@@ -6,7 +6,7 @@ namespace Artbuk
 {
     public class Tools
     {
-        private const string _defaultImage = "wwwroot/images/defaultImage";
+        private const string _defaultImage = "wwwroot/images/defaultImage.jpg";
         private const string _defaultName = "null";
 
         public static Guid GetUserId(UserRepository userRepository, ClaimsPrincipal user)
