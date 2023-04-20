@@ -1,9 +1,11 @@
 ﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Artbuk.Controllers
 {
+    [Authorize(Roles = Constants.RoleNames.Admin)]
     public class GenreAdminController : Controller
     {
         GenreRepository _genreRepository;
