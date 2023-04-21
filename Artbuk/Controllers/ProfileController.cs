@@ -45,21 +45,22 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Profile(Guid userId)
+        public IActionResult Profile(Guid? userId)
         {
-            var user = userId == Guid.Empty 
+            var user = userId == null
                 ? _userRepository.GetById(Tools.GetUserId(_userRepository, User))
-                : _userRepository.GetById(userId);
+                : _userRepository.GetById(userId.Value);
+
             var currentUserId = Tools.GetUserId(_userRepository, User);
-            var userPosts = _postRepository.GetPostsByUserId(userId);
+            var userPosts = _postRepository.GetPostsByUserId(userId.Value);
 
             var data = new ProfileData()
             {
-                UserId = userId,
+                UserId = userId.Value,
                 UserName = user.Name,
                 UserImagePath = Tools.GetImagePath(user.ImagePath),
                 IsMe = currentUserId == userId,
-                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, userId),
+                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, userId.Value),
 
                 Posts = PostFeedData.GetDataRange(userPosts, _imageInPostRepository)
             };
@@ -76,15 +77,15 @@ namespace Artbuk.Controllers
                 return new NoContentResult();
             }
 
-            var post = _postRepository.GetById(postId);
-            var imageInPost = _imageInPostRepository.GetByPostId(postId);
+            var post = _postRepository.GetById(postId.Value);
+            var imageInPost = _imageInPostRepository.GetByPostId(postId.Value);
 
             if (imageInPost != null)
             {
                 _imageInPostRepository.Remove(imageInPost);
             }
 
-            _commentRepository.RemoveCommentsByPostId(postId);
+            _commentRepository.RemoveCommentsByPostId(postId.Value);
 
             if (post != null)
             {
@@ -140,8 +141,8 @@ namespace Artbuk.Controllers
                 else
                 {
                     var roleId = _roleRepository.GetUserRoleId();
-                    user.RoleId = roleId;
-                    var roleName = _roleRepository.GetRoleNameById(roleId);
+                    user.RoleId = roleId.Value;
+                    var roleName = _roleRepository.GetRoleNameById(roleId.Value);
 
                     var claims = new List<Claim>
                     {
@@ -233,7 +234,7 @@ namespace Artbuk.Controllers
         public IActionResult ChooseUserImage(Guid? userId, IFormFile? formFile)
         {
             var filePath = Tools.SaveUserImage(formFile, userId);
-            var user = _userRepository.GetById(userId);
+            var user = _userRepository.GetById(userId.Value);
             user.ImagePath = filePath;
             _userRepository.Update(user);
 
