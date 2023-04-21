@@ -1,4 +1,4 @@
-﻿namespace Artbuk.Controllers
+﻿namespace Artbuk.Infrastructure.ViewData
 {
     public class ProfileData
     {

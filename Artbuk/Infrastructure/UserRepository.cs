@@ -13,7 +13,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public User GetById(Guid? id)
+        public User? GetById(Guid id)
         {
             return _dbContext.Users
                 .FirstOrDefault(i => i.Id == id);
@@ -31,19 +31,21 @@ namespace Artbuk.Infrastructure
             return _dbContext.Users.ToList();
         }
 
-        public void Add(User user)
+        public Guid Add(User user)
         {
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+
+            return user.Id;
         }
 
-        public void Update(User user)
+        public int Update(User user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
-        public User GetByName(string name)
+        public User? GetByName(string name)
         {
             return _dbContext.Users
                 .FirstOrDefault(i => i.Name == name);
@@ -52,7 +54,9 @@ namespace Artbuk.Infrastructure
         public string GetNameById(Guid userId)
         {
             var user = GetById(userId);
-            return user != null ? user.Name : string.Empty;
+            return user != null
+                ? user.Name
+                : string.Empty;
         }
 
         public bool CheckUserExistsWithName(string name)
@@ -67,7 +71,7 @@ namespace Artbuk.Infrastructure
                 .Any(u => u.Email == email);
         }
 
-        public User GetByCredentials(string name, string password)
+        public User? GetByCredentials(string name, string password)
         {
             return _dbContext.Users
                 .FirstOrDefault(u => u.Name == name && u.Password == password);

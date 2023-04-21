@@ -26,7 +26,7 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Subscribtions(Guid userId)
         {
-            var followedIds = _subscriptionRepository.GetFollowedIds(userId);
+            var followedIds = _subscriptionRepository.GetSubcribedToIds(userId);
             return View(_userRepository.GetByIds(followedIds));
         }
     }

@@ -10,7 +10,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Like GetById(Guid likeId)
+        public Like? GetById(Guid likeId)
         {
             return _dbContext.Likes
                 .FirstOrDefault(i => i.Id == likeId);
@@ -23,14 +23,16 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Create(Guid postId, Guid userId)
+        public Guid Create(Guid postId, Guid userId)
         {
             Like like = new Like(postId, userId);
             _dbContext.Likes.Add(like);
             _dbContext.SaveChanges();
+
+            return like.Id;
         }
 
-        public void Delete(Like like)
+        public void Remove(Like like)
         {
             _dbContext.Likes.Remove(like);
             _dbContext.SaveChanges();
@@ -49,7 +51,7 @@ namespace Artbuk.Infrastructure
                 .Count();
         }
 
-        public Like GetLikeOnPostByUser(Guid postId, Guid userId)
+        public Like? GetLikeOnPostByUser(Guid postId, Guid userId)
         {
             return _dbContext.Likes
                 .FirstOrDefault(i => i.PostId == postId && i.UserId == userId);

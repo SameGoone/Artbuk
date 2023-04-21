@@ -11,23 +11,25 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public void Add(ImageInPost imageInPost)
+        public Guid Add(ImageInPost imageInPost)
         {
             _dbContext.ImageInPosts.Add(imageInPost);
             _dbContext.SaveChanges();
+
+            return imageInPost.Id;
         }
 
-        public ImageInPost GetByPostId(Guid? postId)
+        public ImageInPost GetByPostId(Guid postId)
         {
             return _dbContext.ImageInPosts
                 .FirstOrDefault(x => x.PostId == postId);
         }
 
-        public void Delete(ImageInPost imageInPost)
+        public int Remove(ImageInPost imageInPost)
         {
             Tools.DeleteImage(imageInPost.ImagePath);
             _dbContext.ImageInPosts.Remove(imageInPost);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

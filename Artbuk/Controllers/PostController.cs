@@ -1,4 +1,5 @@
 ﻿using Artbuk.Infrastructure;
+using Artbuk.Infrastructure.ViewData;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -88,7 +89,7 @@ namespace Artbuk.Controllers
 
             if (comment != null)
             {
-                _commentRepository.Delete(comment);
+                _commentRepository.Remove(comment);
                 return RedirectToAction("Post", "Post", new { postId = comment.PostId });
             }
             else

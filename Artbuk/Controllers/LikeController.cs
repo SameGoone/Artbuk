@@ -29,7 +29,7 @@ namespace Artbuk.Controllers
             }
             else
             {
-                _likeRepository.Delete(like);
+                _likeRepository.Remove(like);
             }
 
             return _likeRepository.GetPostLikesCount(postId);

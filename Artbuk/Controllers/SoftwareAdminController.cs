@@ -71,7 +71,7 @@ namespace Artbuk.Controllers
                 return BadRequest();
             }
 
-            _softwareRepository.Delete(software);
+            _softwareRepository.Remove(software);
             return RedirectToAction("Index");
         }
     }

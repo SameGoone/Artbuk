@@ -1,4 +1,5 @@
 ﻿using Artbuk.Models;
+using System;
 
 namespace Artbuk.Infrastructure
 {
@@ -11,44 +12,38 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Role GetById(Guid id)
+        public Role? GetById(Guid id)
         {
             return _dbContext.Roles
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public Guid GetUserRoleId()
+        public Guid? GetUserRoleId()
         {
             return GetRoleIdByName(Constants.RoleNames.User);
         }
-        public Guid GetAdminRoleId()
+        public Guid? GetAdminRoleId()
         {
             return GetRoleIdByName(Constants.RoleNames.Admin);
         }
 
-        public Guid GetRoleIdByName(string name)
+        public Guid? GetRoleIdByName(string name)
         {
             var role = _dbContext.Roles
                 .FirstOrDefault(i => i.Name == name);
 
-            if (role == null)
-            {
-                throw new Exception($"Role with name {name} not exists.");
-            }
-
-            return role.Id;
+            return role != null
+                ? role.Id
+                : null;
         }
 
-        public string GetRoleNameById(Guid roleId)
+        public string? GetRoleNameById(Guid roleId)
         {
             var role = GetById(roleId);
 
-            if (role == null)
-            {
-                throw new Exception($"Role with Id {roleId} not exists.");
-            }
-
-            return role.Name;
+            return role != null 
+                ? role.Name 
+                : null;
         }
     }
 }

@@ -13,13 +13,13 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Comment GetById(Guid id)
+        public Comment? GetById(Guid id)
         {
             return _dbContext.Comments
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Comment> GetComments(Guid? postId)
+        public List<Comment> GetComments(Guid postId)
         {
             return _dbContext.Comments
                 .Include(c => c.User)
@@ -28,27 +28,26 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Add(Comment comment)
+        public Guid Add(Comment comment)
         {
             _dbContext.Comments.Add(comment);
             _dbContext.SaveChanges();
+
+            return comment.Id;
         }
 
-        public void DeleteCommentsByPostId(Guid? postId)
+        public int RemoveCommentsByPostId(Guid postId)
         {
             var comments = GetComments(postId);
+            _dbContext.Comments.RemoveRange(comments);
 
-            if (comments.Count > 0)
-            {
-                _dbContext.Comments.RemoveRange(comments);
-                _dbContext.SaveChanges();
-            }
+            return _dbContext.SaveChanges();
         }
 
-        public void Delete(Comment comment)
+        public int Remove(Comment comment)
         {
             _dbContext.Comments.Remove(comment);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

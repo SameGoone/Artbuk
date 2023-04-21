@@ -11,10 +11,12 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public void Add(PostInGenre postInGenre)
+        public Guid Add(PostInGenre postInGenre)
         {
             _dbContext.PostInGenres.Add(postInGenre);
             _dbContext.SaveChanges();
+
+            return postInGenre.Id;
         }
 
         public List<Guid> GetPostIdsByGenreId(Guid genreId)
@@ -26,7 +28,7 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public PostInGenre GetPostInGenreByPostId(Guid postId)
+        public PostInGenre? GetPostInGenreByPostId(Guid postId)
         {
             return _dbContext.PostInGenres
                 .FirstOrDefault(i => i.PostId == postId);

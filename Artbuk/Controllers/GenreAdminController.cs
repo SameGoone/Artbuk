@@ -70,7 +70,7 @@ namespace Artbuk.Controllers
                 return BadRequest();
             }
 
-            _genreRepository.Delete(genre);
+            _genreRepository.Remove(genre);
             return RedirectToAction("Index");
         }
     }

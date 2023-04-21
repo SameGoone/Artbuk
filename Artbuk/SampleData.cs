@@ -1,4 +1,5 @@
-﻿using Artbuk.Models;
+﻿using Artbuk.Infrastructure;
+using Artbuk.Models;
 using Microsoft.VisualBasic;
 
 namespace Artbuk

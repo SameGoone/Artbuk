@@ -3,7 +3,7 @@ using Artbuk.Models;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace Artbuk.Controllers
+namespace Artbuk.Infrastructure.ViewData
 {
     public class PostPageData
     {
@@ -35,13 +35,13 @@ namespace Artbuk.Controllers
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
 
             Comments = commentRepository.GetComments(postId)
-                .Select(c => new CommentData 
-                    {
-                        Id = c.Id,
-                        Body = c.Body,
-                        User = c.User?.Name,
-                        IsRemovable = c.UserId == userId 
-                    }
+                .Select(c => new CommentData
+                {
+                    Id = c.Id,
+                    Body = c.Body,
+                    User = c.User?.Name,
+                    IsRemovable = c.UserId == userId
+                }
                 )
                 .ToList();
 

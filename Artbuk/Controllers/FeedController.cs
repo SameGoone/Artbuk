@@ -1,4 +1,5 @@
 ﻿using Artbuk.Infrastructure;
+using Artbuk.Infrastructure.ViewData;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -85,9 +86,9 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware, IFormFile formFile)
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware, IFormFile? formFile)
         {
-            if (post.Body != null && postInGenre != null && postInSoftware != null && formFile != null)
+            if (post != null && post.Body != null && postInGenre != null && postInSoftware != null && formFile != null)
             {
                 post.UserId = Tools.GetUserId(_userRepository, User);
 

@@ -1,4 +1,5 @@
 ﻿using Artbuk.Infrastructure;
+using Artbuk.Infrastructure.ViewData;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -80,14 +81,14 @@ namespace Artbuk.Controllers
 
             if (imageInPost != null)
             {
-                _imageInPostRepository.Delete(imageInPost);
+                _imageInPostRepository.Remove(imageInPost);
             }
 
-            _commentRepository.DeleteCommentsByPostId(postId);
+            _commentRepository.RemoveCommentsByPostId(postId);
 
             if (post != null)
             {
-                _postRepository.Delete(post);
+                _postRepository.Remove(post);
                 return RedirectToAction("Profile");
             }
             else
@@ -241,41 +242,41 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Subscribe(Guid? followedId)
+        public IActionResult Subscribe(Guid? subcribeToId)
         {
-            if (!followedId.HasValue)
+            if (!subcribeToId.HasValue)
             {
                 return NoContent();
             }
 
             var userId = Tools.GetUserId(_userRepository, User);
 
-            if (_subscriptionRepository.CheckIsSubrcribedTo(userId, followedId.Value))
+            if (_subscriptionRepository.CheckIsSubrcribedTo(userId, subcribeToId.Value))
             {
                 return NoContent();
             }
 
             var subscribtion = new Subscription()
             {
-                SubcriberId = userId,
-                FollowedId = followedId,
+                SubcribedById = userId,
+                SubcribedToId = subcribeToId,
             };
 
             _subscriptionRepository.Add(subscribtion);
-            return RedirectToAction("Profile", new { userId = followedId });
+            return RedirectToAction("Profile", new { userId = subcribeToId });
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult Unsubscribe(Guid? followedId)
+        public IActionResult Unsubscribe(Guid? unsubcribeToId)
         {
-            if (!followedId.HasValue)
+            if (!unsubcribeToId.HasValue)
             {
                 return NoContent();
             }
 
             var userId = Tools.GetUserId(_userRepository, User);
-            var subscribtion = _subscriptionRepository.GetBySubscriberAndFollowed(userId, followedId.Value);
+            var subscribtion = _subscriptionRepository.GetBySubscribePair(userId, unsubcribeToId.Value);
 
             if (subscribtion == null)
             {
@@ -283,7 +284,7 @@ namespace Artbuk.Controllers
             }
 
             _subscriptionRepository.Remove(subscribtion);
-            return RedirectToAction("Profile", new { userId = followedId });
+            return RedirectToAction("Profile", new { userId = unsubcribeToId });
         }
     }
 }

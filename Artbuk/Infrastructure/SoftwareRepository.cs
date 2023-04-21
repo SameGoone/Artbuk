@@ -12,7 +12,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Software GetById(Guid id)
+        public Software? GetById(Guid id)
         {
             return _dbContext.Software
                 .FirstOrDefault(i => i.Id == id);
@@ -24,22 +24,24 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Add(Software software)
+        public Guid Add(Software software)
         {
             _dbContext.Software.Add(software);
             _dbContext.SaveChanges();
+
+            return software.Id;
         }
 
-        public void Update(Software software)
+        public int Update(Software software)
         {
             _dbContext.Entry(software).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
-        public void Delete(Software software)
+        public int Remove(Software software)
         {
             _dbContext.Remove(software);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

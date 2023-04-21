@@ -1,7 +1,7 @@
 ﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
 
-namespace Artbuk.Controllers
+namespace Artbuk.Infrastructure.ViewData
 {
     public class FeedData
     {
@@ -11,11 +11,11 @@ namespace Artbuk.Controllers
         public Guid CurrentUserId { get; set; }
 
         public FeedData(
-            LikeRepository likeRepository, 
-            List<Genre> genres, 
-            List<Post> posts, 
-            List<Software> softwares, 
-            Guid userId, 
+            LikeRepository likeRepository,
+            List<Genre> genres,
+            List<Post> posts,
+            List<Software> softwares,
+            Guid userId,
             ImageInPostRepository imageInPostRepository)
         {
             Genres = genres;

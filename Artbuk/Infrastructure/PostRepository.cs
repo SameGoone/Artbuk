@@ -12,7 +12,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Post GetById(Guid? id)
+        public Post? GetById(Guid id)
         {
             return _dbContext.Posts
                 .FirstOrDefault(i => i.Id == id);
@@ -33,16 +33,18 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Add(Post post)
+        public Guid Add(Post post)
         {
             _dbContext.Posts.Add(post);
             _dbContext.SaveChanges();
+
+            return post.Id;
         }
 
-        public void Update(Post post)
+        public int Update(Post post)
         {
             _dbContext.Entry(post).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         public List<Post> GetByIds(List<Guid> ids)
@@ -52,15 +54,10 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void DeleteById(Guid postId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Post post)
+        public int Remove(Post post)
         {
             _dbContext.Posts.Remove(post);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

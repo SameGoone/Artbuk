@@ -10,13 +10,12 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public void Add(PostInSoftware postInSoftware)
+        public Guid Add(PostInSoftware postInSoftware)
         {
-            if (postInSoftware != null)
-            {
-                _dbContext.PostInSoftware.Add(postInSoftware);
-                _dbContext.SaveChanges();
-            }
+            _dbContext.PostInSoftware.Add(postInSoftware);
+            _dbContext.SaveChanges();
+
+            return postInSoftware.Id;
         }
 
         public List<Guid> GetPostIdsBySoftwareId(Guid softwareId)
@@ -28,7 +27,7 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public PostInSoftware GetPostInSoftwareByPostId(Guid postId)
+        public PostInSoftware? GetPostInSoftwareByPostId(Guid postId)
         {
             return _dbContext.PostInSoftware
                 .FirstOrDefault(i => i.PostId == postId);

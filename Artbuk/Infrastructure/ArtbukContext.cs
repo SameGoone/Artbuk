@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Artbuk.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Artbuk.Models
+namespace Artbuk.Infrastructure
 {
     public class ArtbukContext : DbContext
     {

@@ -1,7 +1,7 @@
 ﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
 
-namespace Artbuk.Controllers
+namespace Artbuk.Infrastructure.ViewData
 {
     public class PostFeedData
     {

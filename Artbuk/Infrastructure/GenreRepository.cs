@@ -12,7 +12,7 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Genre GetById(Guid id)
+        public Genre? GetById(Guid id)
         {
             return _dbContext.Genres
                 .FirstOrDefault(i => i.Id == id);
@@ -24,22 +24,26 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
-        public void Add(Genre genre)
+        public Guid Add(Genre genre)
         {
             _dbContext.Genres.Add(genre);
             _dbContext.SaveChanges();
+
+            return genre.Id;
         }
 
-        public void Update(Genre genre)
+        public Guid Update(Genre genre)
         {
             _dbContext.Entry(genre).State = EntityState.Modified;
             _dbContext.SaveChanges();
+
+            return genre.Id;
         }
 
-        public void Delete(Genre genre)
+        public int Remove(Genre genre)
         {
             _dbContext.Remove(genre);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

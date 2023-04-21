@@ -1,6 +1,5 @@
 using Artbuk;
 using Artbuk.Infrastructure;
-using Artbuk.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 

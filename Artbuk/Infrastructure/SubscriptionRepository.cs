@@ -12,10 +12,10 @@ namespace Artbuk.Infrastructure
             _dbContext = dbContext;
         }
 
-        public bool CheckIsSubrcribedTo(Guid subscriberId, Guid followedId)
+        public bool CheckIsSubrcribedTo(Guid subscribedById, Guid subscribedToId)
         {
             return _dbContext.Subscriptions
-                .FirstOrDefault(s => s.SubcriberId == subscriberId && s.FollowedId == followedId) != null;
+                .FirstOrDefault(s => s.SubcribedById == subscribedById && s.SubcribedToId == subscribedToId) != null;
         }
 
         public Guid Add(Subscription subscription)
@@ -26,17 +26,17 @@ namespace Artbuk.Infrastructure
             return subscription.Id;
         }
 
-        public Subscription GetBySubscriberAndFollowed(Guid subscriberId, Guid followedId)
+        public Subscription? GetBySubscribePair(Guid subscribedById, Guid subscribedToId)
         {
             return _dbContext.Subscriptions
-                .FirstOrDefault(s => s.SubcriberId == subscriberId && s.FollowedId == followedId);
+                .FirstOrDefault(s => s.SubcribedById == subscribedById && s.SubcribedToId == subscribedToId);
         }
 
-        public List<Guid> GetFollowedIds(Guid subscriberId)
+        public List<Guid> GetSubcribedToIds(Guid subscribedById)
         {
             return _dbContext.Subscriptions
-                .Where(s => s.SubcriberId == subscriberId && s.FollowedId != null)
-                .Select(s => s.FollowedId.Value)
+                .Where(s => s.SubcribedById == subscribedById && s.SubcribedToId != null)
+                .Select(s => s.SubcribedToId.Value)
                 .ToList();
         }
 
