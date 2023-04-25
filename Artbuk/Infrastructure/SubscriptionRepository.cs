@@ -40,6 +40,14 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
+        public List<Guid> GetSubcribedByIds(Guid subscribedToId)
+        {
+            return _dbContext.Subscriptions
+                .Where(s => s.SubcribedToId == subscribedToId && s.SubcribedById != null)
+                .Select(s => s.SubcribedById.Value)
+                .ToList();
+        }
+
         public int Remove(Subscription subscription)
         {
             _dbContext.Subscriptions.Remove(subscription);

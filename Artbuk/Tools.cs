@@ -120,15 +120,15 @@ namespace Artbuk
             return genreRepository.GetById(postInGenre.GenreId)?.Name ?? _defaultName;
         }
 
-        //public static int GetRoleId(RoleRepository roleRepository, string roleName)
-        //{
-        //    var role = roleRepository.ListAsync().Result.FirstOrDefault(r => r.Name == roleName);
-        //    if (role == null)
-        //    {
-        //        throw new Exception($"Роль с именем {roleName} не найдена.");
-        //    }
+        public static Guid GetRoleId(RoleRepository roleRepository, string roleName)
+        {
+            var roleId = roleRepository.GetRoleIdByName(roleName);
+            if (roleId == null)
+            {
+                throw new Exception($"Роль с именем {roleName} не найдена.");
+            }
 
-        //    return role.Id;
-        //}
+            return roleId.Value;
+        }
     }
 }

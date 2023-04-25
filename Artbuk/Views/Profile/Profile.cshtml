@@ -28,15 +28,15 @@
         {
             if (Model.IsSubscribed)
             {
-                <form method="get" action="~/Profile/Unsubscribe">
-                    <input type="hidden" name="followedId" value="@Model.UserId" />
+                <form method="post" action="~/Profile/Unsubscribe">
+                    <input type="hidden" name="unsubcribeToId" value="@Model.UserId" />
                     <button type="submit">Отписаться</button>
                 </form>
             }
             else
             {
-                <form method="get" action="~/Profile/Subscribe">
-                    <input type="hidden" name="followedId" value="@Model.UserId" />
+                <form method="post" action="~/Profile/Subscribe">
+                    <input type="hidden" name="subcribeToId" value="@Model.UserId" />
                     <button type="submit">Подписаться</button>
                 </form>
             }

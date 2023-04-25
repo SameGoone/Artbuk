@@ -242,7 +242,7 @@ namespace Artbuk.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         public IActionResult Subscribe(Guid? subcribeToId)
         {
             if (!subcribeToId.HasValue)
@@ -268,7 +268,7 @@ namespace Artbuk.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         public IActionResult Unsubscribe(Guid? unsubcribeToId)
         {
             if (!unsubcribeToId.HasValue)

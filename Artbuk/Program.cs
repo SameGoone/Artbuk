@@ -55,16 +55,20 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    try
-    {
-        var context = services.GetRequiredService<ArtbukContext>();
-        SampleData.Initialize(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred seeding the DB.");
-    }
+    var context = services.GetRequiredService<ArtbukContext>();
+    var roleRepository = services.GetRequiredService<RoleRepository>();
+    SampleData.Initialize(context, roleRepository);
+    //try
+    //{
+    //    var context = services.GetRequiredService<ArtbukContext>();
+    //    var roleRepository = services.GetRequiredService<RoleRepository>();
+    //    SampleData.Initialize(context, roleRepository);
+    //}
+    //catch (Exception ex)
+    //{
+    //    var logger = services.GetRequiredService<ILogger<Program>>();
+    //    logger.LogError(ex, "An error occurred seeding the DB.");
+    //}
 }
 
 app.Run();

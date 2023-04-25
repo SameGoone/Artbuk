@@ -1,15 +1,23 @@
-﻿@model List<Artbuk.Models.User>
+﻿@model Artbuk.Infrastructure.ViewData.UsersData
 @{
     //Layout = null;
 }
 
 <html>
     <head>
-        <title>Пользователи</title>
+        <title>@Model.PageHeader</title>
     </head>
     <body>
-    <h3>Пользователи</h3>
-        @foreach (var user in Model)
+        <h3>@Model.PageHeader</h3>
+
+        @if (Model.Users.Count == 0)
+        {
+            <div>
+                <span>Здесь пусто...</span>
+            </div>
+        }
+
+        @foreach (var user in Model.Users)
         {
             <div>
                 <a href="~/Profile/Profile?userId=@user.Id">
