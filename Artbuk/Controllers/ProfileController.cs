@@ -165,7 +165,7 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new List<string> { string.Empty });
         }
 
         [HttpPost]
@@ -173,20 +173,22 @@ namespace Artbuk.Controllers
         {
             var form = Request.Form;
 
+            var userData = new List<string> { form["Name"].ToString() };
+
             if (string.IsNullOrEmpty(form["Name"]) && string.IsNullOrEmpty(form["Password"]))
             {
                 ViewBag.Message = "Заполните поля!";
-                return View();
+                return View(userData);
             }
             else if (string.IsNullOrEmpty(form["Name"]))
             {
                 ViewBag.Message = "Введите логин!";
-                return View();
+                return View(userData);
             }
             else if (string.IsNullOrEmpty(form["Password"]))
             {
                 ViewBag.Message = "Введите пароль!";
-                return View();
+                return View(userData);
             }
 
             string name = form["Name"];
@@ -197,7 +199,7 @@ namespace Artbuk.Controllers
             if (user is null)
             {
                 ViewBag.Message = "Такого пользователя не существует.";
-                return View();
+                return View(userData);
             };
 
             var roleName = _roleRepository.GetRoleNameById(user.RoleId);
