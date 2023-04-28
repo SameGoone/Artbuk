@@ -47,7 +47,7 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Profile(Guid? userId)
         {
-            var user = userId == null
+            var user = userId == Guid.Empty || userId == null
                 ? _userRepository.GetById(Tools.GetUserId(_userRepository, User))
                 : _userRepository.GetById(userId.Value);
 
