@@ -67,7 +67,7 @@ namespace Artbuk.Controllers
 
             return View(data);
         }
-
+       
         [Authorize]
         [HttpPost]
         public IActionResult DeletePost(Guid? postId)
@@ -101,7 +101,7 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            return View();
+            return View(new List<string> { string.Empty, string.Empty } );
         }
 
         [HttpPost]
@@ -109,20 +109,22 @@ namespace Artbuk.Controllers
         {
             if (user != null)
             {
+                var userData = new List<string> { user.Name, user.Email };
+
                 if (string.IsNullOrEmpty(user.Name) && string.IsNullOrEmpty(user.Password))
                 {
                     ViewBag.Message = "Заполните поля!";
-                    return View();
+                    return View(userData);
                 }
                 else if (string.IsNullOrEmpty(user.Name))
                 {
                     ViewBag.Message = "Введите логин!";
-                    return View();
+                    return View(userData);
                 }
                 else if (string.IsNullOrEmpty(user.Password))
                 {
                     ViewBag.Message = "Введите пароль!";
-                    return View();
+                    return View(userData);
                 }
 
                 var checkUserName = _userRepository.CheckUserExistsWithName(user.Name);
@@ -131,12 +133,12 @@ namespace Artbuk.Controllers
                 if (checkUserName)
                 {
                     ViewBag.Message = "Пользователь с таким логином уже существует.";
-                    return View();
+                    return View(userData);
                 }
                 else if (checkUserEmail)
                 {
                     ViewBag.Message = "Пользователь с такой почтой уже существует.";
-                    return View();
+                    return View(userData);
                 }
                 else
                 {

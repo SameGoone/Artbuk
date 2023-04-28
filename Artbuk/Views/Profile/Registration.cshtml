@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<string>
+@{
     //Layout = null;
 }
 
@@ -14,11 +15,11 @@
         <form method="post">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Введите почту</label>
-                <input type="email" class="form-control" name="Email">
+                <input type="email" class="form-control" name="Email" value="@Model[1]">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
-                <input type="text" class="form-control" name="Name">
+                <input type="text" class="form-control" name="Name" value="@Model[0]">
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
