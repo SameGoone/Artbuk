@@ -52,15 +52,15 @@ namespace Artbuk.Controllers
                 : _userRepository.GetById(userId.Value);
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
-            var userPosts = _postRepository.GetPostsByUserId(userId.Value);
+            var userPosts = _postRepository.GetPostsByUserId(user.Id);
 
             var data = new ProfileData()
             {
-                UserId = userId.Value,
+                UserId = user.Id,
                 UserName = user.Name,
                 UserImagePath = Tools.GetImagePath(user.ImagePath),
-                IsMe = currentUserId == userId,
-                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, userId.Value),
+                IsMe = currentUserId == user.Id,
+                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, user.Id),
 
                 Posts = PostFeedData.GetDataRange(userPosts, _imageInPostRepository)
             };
