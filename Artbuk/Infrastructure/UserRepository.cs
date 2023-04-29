@@ -71,6 +71,14 @@ namespace Artbuk.Infrastructure
                 .Any(u => u.Email == email);
         }
 
+        public string GetHashedPasswordByName(string name)
+        {
+            return _dbContext.Users
+                .Where(u => u.Name == name)
+                .Select(u => u.Password)
+                .FirstOrDefault();
+        }
+
         public User? GetByCredentials(string name, string password)
         {
             return _dbContext.Users
