@@ -19,11 +19,20 @@ namespace Artbuk.Infrastructure
                 .FirstOrDefault(i => i.Id == id);
         }
 
-        public List<Comment> GetComments(Guid postId)
+        public List<Comment> GetCommentsByPostId(Guid postId)
         {
             return _dbContext.Comments
                 .Include(c => c.User)
                 .Where(c => c.PostId == postId)
+                .OrderByDescending(c => c.CreatedOn)
+                .ToList();
+        }
+
+        public List<Comment> GetCommentsByUserId(Guid userId)
+        {
+            return _dbContext.Comments
+                .Include(c => c.User)
+                .Where(c => c.UserId == userId)
                 .OrderByDescending(c => c.CreatedOn)
                 .ToList();
         }
@@ -38,10 +47,18 @@ namespace Artbuk.Infrastructure
 
         public int RemoveCommentsByPostId(Guid postId)
         {
-            var comments = GetComments(postId);
+            var comments = GetCommentsByPostId(postId);
             _dbContext.Comments.RemoveRange(comments);
 
             return _dbContext.SaveChanges();
+        }
+
+        public void RemoveCommentsByUserId(Guid userId)
+        {
+            var comments = GetCommentsByUserId(userId);
+            _dbContext.Comments.RemoveRange(comments);
+
+            _dbContext.SaveChanges();
         }
 
         public int Remove(Comment comment)

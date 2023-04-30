@@ -34,7 +34,7 @@ namespace Artbuk.Infrastructure.ViewData
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
 
-            Comments = commentRepository.GetComments(postId)
+            Comments = commentRepository.GetCommentsByPostId(postId)
                 .Select(c => new CommentData
                 {
                     Id = c.Id,

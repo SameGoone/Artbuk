@@ -1,7 +1,7 @@
 ﻿using Artbuk.Infrastructure;
 using Artbuk.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Artbuk.Controllers
 {
@@ -10,11 +10,13 @@ namespace Artbuk.Controllers
     {
         UserRepository _userRepository;
         RoleRepository _roleRepository;
+        CommentRepository _commentRepository;
 
-        public UsersAdminController(UserRepository userRepository, RoleRepository roleRepository)
+        public UsersAdminController(UserRepository userRepository, RoleRepository roleRepository, CommentRepository commentRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _commentRepository = commentRepository;
         }
 
         [HttpGet]
@@ -124,6 +126,19 @@ namespace Artbuk.Controllers
             }
 
             _userRepository.Delete(user);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult RemoveAllUserComments(Guid userId)
+        {
+            if (userId == Guid.Empty || userId == null)
+            {
+                return BadRequest();
+            }
+
+            _commentRepository.RemoveCommentsByUserId(userId);
+
             return RedirectToAction("Index");
         }
     }
