@@ -44,10 +44,12 @@ namespace Artbuk
             if (!context.Users.Any())
             {
                 var userRoleId = Tools.GetRoleId(roleRepository, RoleNames.User);
+                var adminRoleId = Tools.GetRoleId(roleRepository, RoleNames.Admin);
                 context.Users.AddRange
                 (
-                    new User { Name = "Вадим", Password = "Вадим", RoleId = userRoleId },
-                    new User { Name = "Никита", Password = "Никита", RoleId = userRoleId }
+                    new User { Name = "Вадим", Password = Tools.HashPassword("Вадим"), RoleId = userRoleId },
+                    new User { Name = "Никита", Password = Tools.HashPassword("Никита"), RoleId = userRoleId },
+                    new User { Name = "Админ", Password = Tools.HashPassword("Админ"), RoleId = adminRoleId }
                 );
                 context.SaveChanges();
             }

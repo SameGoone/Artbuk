@@ -1,0 +1,26 @@
+﻿@model List<User>
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Категории</title>
+</head>
+<body>
+    <a href="~/UsersAdmin/CreateUser">Создать пользователя</a>
+    @foreach (var user in Model)
+    {
+            <form method="post" action="~/UsersAdmin/Delete">
+                <div display="inline-block">
+                    <input type="hidden" name="userId" value="@user.Id"/>
+                    <a href="~/UsersAdmin/User?userId=@user.Id">@user.Name</a>
+                    <p>@user.Email</p>
+                    <button type="submit">Удалить</button>
+                </div>
+            </form>
+    }
+
+    <script src="js/site.js" asp-append-version="true"></script>
+</body>
+</html>

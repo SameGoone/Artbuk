@@ -1,0 +1,36 @@
+﻿@model User;
+
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Лента</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+</head>
+
+<body>
+    <p>Изменить пользователя:</p>
+    <div class="col-4">
+        <form method='post' enctype="multipart/form-data" asp-controller="UsersAdmin" asp-action="Update">
+            <input type="hidden" name="Id" value="@Model.Id"/>
+            <input type="hidden" name="RoleId" value="@Model.RoleId"/>
+            <p>
+                <label>Почта:</label><br />
+                <input type="text" name="Email" value="@Model.Email"/>
+            </p>
+            <p>
+                <label>Имя пользователя:</label><br />
+                <input type="text" name="Name" value="@Model.Name"/>
+            </p>
+            <p>
+                <label>Пароль:</label><br />
+                <input type="text" name="Password"/>
+            </p>
+            <input type='submit' value='Обновить' />
+        </form>
+    </div>
+</body>
+</html>

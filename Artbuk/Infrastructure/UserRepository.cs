@@ -39,6 +39,12 @@ namespace Artbuk.Infrastructure
             return user.Id;
         }
 
+        public void Delete(User user)
+        {
+            _dbContext.Remove(user);
+            _dbContext.SaveChanges();
+        }
+
         public int Update(User user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
@@ -75,6 +81,14 @@ namespace Artbuk.Infrastructure
         {
             return _dbContext.Users
                 .Where(u => u.Name == name)
+                .Select(u => u.Password)
+                .FirstOrDefault();
+        }
+
+        public string GetHashedPasswordById(Guid id)
+        {
+            return _dbContext.Users
+                .Where(u => u.Id == id)
                 .Select(u => u.Password)
                 .FirstOrDefault();
         }
