@@ -23,10 +23,19 @@ namespace Artbuk.Infrastructure.ViewData
 
         public bool IsRemovable { get; set; }
 
-        public PostPageData(Guid postId, Guid userId, LikeRepository likeRepository, PostRepository postRepository,
+        public PostPageData(
+            Guid postId, 
+            Guid userId, 
+            LikeRepository likeRepository, 
+            PostRepository postRepository,
             PostInGenreRepository postInGenreRepository,
-            GenreRepository genreRepository, PostInSoftwareRepository postInSoftwareRepository,
-            SoftwareRepository softwareRepository, CommentRepository commentRepository, ImageInPostRepository imageInPostRepository)
+            GenreRepository genreRepository, 
+            PostInSoftwareRepository postInSoftwareRepository,
+            SoftwareRepository softwareRepository, 
+            CommentRepository commentRepository, 
+            ImageInPostRepository imageInPostRepository,
+            RoleRepository roleRepository,
+            UserRepository userRepository)
         {
             Software = Tools.GetSoftwareName(postId, softwareRepository, postInSoftwareRepository);
             Genre = Tools.GetGenreName(postId, genreRepository, postInGenreRepository);
@@ -34,15 +43,18 @@ namespace Artbuk.Infrastructure.ViewData
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
 
+            var currentUser = userRepository.GetById(userId); 
+
             Comments = commentRepository.GetCommentsByPostId(postId)
                 .Select(c => new CommentData
                 {
                     Id = c.Id,
                     Body = c.Body,
                     User = c.User?.Name,
-                    IsRemovable = c.UserId == userId
-                }
-                )
+                    IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
+                        ? true
+                        : c.UserId == userId
+                })
                 .ToList();
 
             ImagePath = Tools.GetImagePath(postId, imageInPostRepository);

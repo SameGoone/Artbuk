@@ -17,11 +17,19 @@ namespace Artbuk.Controllers
         LikeRepository _likeRepository;
         CommentRepository _commentRepository;
         ImageInPostRepository _imageInPostRepository;
+        RoleRepository _roleRepository;
 
-        public PostController(PostRepository postRepository, PostInGenreRepository postInGenreRepository,
-            GenreRepository genreRepository, PostInSoftwareRepository postInSoftwareRepository,
-            SoftwareRepository softwareRepository, LikeRepository likeRepository, UserRepository userRepository,
-            CommentRepository commentRepository, ImageInPostRepository imageInPostRepository)
+        public PostController(
+            PostRepository postRepository, 
+            PostInGenreRepository postInGenreRepository,
+            GenreRepository genreRepository,
+            PostInSoftwareRepository postInSoftwareRepository,
+            SoftwareRepository softwareRepository, 
+            LikeRepository likeRepository, 
+            UserRepository userRepository,
+            CommentRepository commentRepository, 
+            ImageInPostRepository imageInPostRepository,
+            RoleRepository roleRepository)
         {
             _postRepository = postRepository;
             _likeRepository = likeRepository;
@@ -32,6 +40,7 @@ namespace Artbuk.Controllers
             _userRepository = userRepository;
             _commentRepository = commentRepository;
             _imageInPostRepository = imageInPostRepository;
+            _roleRepository = roleRepository;
         }
 
         [HttpGet]
@@ -49,7 +58,9 @@ namespace Artbuk.Controllers
                 _postInSoftwareRepository,
                 _softwareRepository,
                 _commentRepository,
-                _imageInPostRepository
+                _imageInPostRepository,
+                _roleRepository,
+                _userRepository
             );
 
             return View(postData);
