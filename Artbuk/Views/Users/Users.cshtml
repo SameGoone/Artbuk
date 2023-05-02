@@ -20,7 +20,7 @@
         @foreach (var user in Model.Users)
         {
             <div>
-                <a href="~/Profile/Profile?userId=@user.Id">
+                <a href="~/Profile/Profile?userId=@user.UserId">
                     <div display="inline-block">
                         <img width="200px" height="200px" src=@Url.Content(@user.ImagePath) runat="server" />
                     </div>
@@ -29,6 +29,19 @@
                     </div>
                 </a>
             </div>
+            @if (!user.IsMe)
+            {
+                var subscribeDisplayMode = (!user.IsSubscribed) ? "block" : "none";
+                var unsubscribeDisplayMode = (user.IsSubscribed) ? "block" : "none";
+
+                <div id="subscribe-@user.UserId" style="display: @subscribeDisplayMode;">
+                    <button onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@user.UserId');">Подписаться</button>
+                </div>
+
+                <div id="unsubscribe-@user.UserId" style="display: @unsubscribeDisplayMode;">
+                    <button onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@user.UserId');">Отписаться</button>
+                </div>
+            }
         }
     </body>
 </html>

@@ -12,10 +12,10 @@
     <br />
     <br />
     <div>
-        <h4>@Model.UserName</h4>
+        <h4>@Model.Name</h4>
     </div>
     <div>
-        <img width="200px" height="200px" src=@Url.Content(@Model.UserImagePath) runat="server" />
+        <img width="200px" height="200px" src=@Url.Content(@Model.ImagePath) runat="server" />
         @if(Model.IsMe)
         {
             <form method="get" action="~/Profile/ChooseUserImage">
@@ -26,20 +26,16 @@
 
         @if (!Model.IsMe)
         {
-            if (Model.IsSubscribed)
-            {
-                <form method="post" action="~/Profile/Unsubscribe">
-                    <input type="hidden" name="unsubcribeToId" value="@Model.UserId" />
-                    <button type="submit">Отписаться</button>
-                </form>
-            }
-            else
-            {
-                <form method="post" action="~/Profile/Subscribe">
-                    <input type="hidden" name="subcribeToId" value="@Model.UserId" />
-                    <button type="submit">Подписаться</button>
-                </form>
-            }
+            var subscribeDisplayMode = (!Model.IsSubscribed) ? "block" : "none";
+            var unsubscribeDisplayMode = (Model.IsSubscribed) ? "block" : "none";
+
+            <div id="subscribe-@Model.UserId" style="display: @subscribeDisplayMode;">
+                <button onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@Model.UserId');">Подписаться</button>
+            </div>
+
+            <div id="unsubscribe-@Model.UserId" style="display: @unsubscribeDisplayMode;">
+                <button onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
+            </div>
         }
     </div>
 

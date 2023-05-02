@@ -54,17 +54,14 @@ namespace Artbuk.Controllers
                 : _userRepository.GetById(userId.Value);
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
-            var userPosts = _postRepository.GetPostsByUserId(user.Id);
 
-            var data = new ProfileData()
+            var data = new ProfileData(user, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository)
             {
                 UserId = user.Id,
-                UserName = user.Name,
-                UserImagePath = Tools.GetImagePath(user.ImagePath),
+                Name = user.Name,
+                ImagePath = Tools.GetImagePath(user.ImagePath),
                 IsMe = currentUserId == user.Id,
-                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, user.Id),
-
-                Posts = PostFeedData.GetDataRange(userPosts, _imageInPostRepository)
+                IsSubscribed = _subscriptionRepository.CheckIsSubrcribedTo(currentUserId, user.Id)
             };
 
             return View(data);
@@ -257,14 +254,14 @@ namespace Artbuk.Controllers
         {
             if (!subcribeToId.HasValue)
             {
-                return NoContent();
+                return NotFound("Пустой идентификатор");
             }
 
             var userId = Tools.GetUserId(_userRepository, User);
 
             if (_subscriptionRepository.CheckIsSubrcribedTo(userId, subcribeToId.Value))
             {
-                return NoContent();
+                return NotFound($"Пользователь {userId} уже подписан на пользователя {subcribeToId}!");
             }
 
             var subscribtion = new Subscription()
@@ -274,7 +271,7 @@ namespace Artbuk.Controllers
             };
 
             _subscriptionRepository.Add(subscribtion);
-            return RedirectToAction("Profile", new { userId = subcribeToId });
+            return NoContent();
         }
 
         [Authorize]
@@ -283,7 +280,7 @@ namespace Artbuk.Controllers
         {
             if (!unsubcribeToId.HasValue)
             {
-                return NoContent();
+                return NotFound("Пустой идентификатор");
             }
 
             var userId = Tools.GetUserId(_userRepository, User);
@@ -291,11 +288,11 @@ namespace Artbuk.Controllers
 
             if (subscribtion == null)
             {
-                return NoContent();
+                return NotFound($"Пользователь {userId} уже отписан от пользователя {unsubcribeToId}!");
             }
 
             _subscriptionRepository.Remove(subscribtion);
-            return RedirectToAction("Profile", new { userId = unsubcribeToId });
+            return NoContent();
         }
     }
 }
