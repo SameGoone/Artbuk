@@ -8,7 +8,7 @@ namespace Artbuk.Infrastructure.ViewData
 
         public string Body { get; set; }
 
-        public string User { get; set; }
+        public User User { get; set; }
 
         public bool IsRemovable { get; set; }
     }

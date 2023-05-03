@@ -22,7 +22,7 @@
 
     @foreach(var genre in Model.Genres)
     {
-        <form class="genre" method="post" action="~/Feed/Feed">
+        <form class="genre" method="get" action="~/Feed/Feed">
             <input type="hidden" name="genreId" value="@genre.Id" />
             <button type="submit">@genre.Name</button>
         </form>

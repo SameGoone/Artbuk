@@ -22,14 +22,14 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult Genre(Guid genreId) 
+        public IActionResult Genre(Guid? genreId) 
         {
-            if (genreId == Guid.Empty)
+            if (genreId == null)
             {
                 return BadRequest();
             }
 
-            return View(_genreRepository.GetById(genreId));
+            return View(_genreRepository.GetById(genreId.Value));
         }
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateGenre(string body)
+        public IActionResult CreateGenre(string? body)
         {
             if (string.IsNullOrEmpty(body))
             {
@@ -51,7 +51,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Genre genre)
+        public IActionResult Update(Genre? genre)
         {
             if (genre == null)
             {
@@ -63,7 +63,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Genre genre)
+        public IActionResult Delete(Genre? genre)
         {
             if (genre == null)
             {

@@ -23,14 +23,14 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult Software(Guid softwareId)
+        public IActionResult Software(Guid? softwareId)
         {
-            if (softwareId == Guid.Empty)
+            if (softwareId == null)
             {
                 return BadRequest();
             }
 
-            return View(_softwareRepository.GetById(softwareId));
+            return View(_softwareRepository.GetById(softwareId.Value));
         }
 
         [HttpGet]
@@ -40,7 +40,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSoftware(string body)
+        public IActionResult CreateSoftware(string? body)
         {
             if (string.IsNullOrEmpty(body))
             {
@@ -52,7 +52,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Software software)
+        public IActionResult Update(Software? software)
         {
             if (software == null)
             {
@@ -64,7 +64,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Software software)
+        public IActionResult Delete(Software? software)
         {
             if (software == null)
             {

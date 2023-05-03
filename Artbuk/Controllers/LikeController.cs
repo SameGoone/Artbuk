@@ -18,21 +18,27 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public int AddLike(Guid postId)
+        public IActionResult AddLike(Guid? postId)
         {
+            if (postId == null)
+            {
+                return BadRequest($"Идентификатор поста пустой!");
+            }
+
             var userId = Tools.GetUserId(_userRepository, User);
-            var like = _likeRepository.GetLikeOnPostByUser(postId, userId);
+            var like = _likeRepository.GetLikeOnPostByUser(postId.Value, userId);
 
             if (like == null)
             {
-                _likeRepository.Create(postId, userId);
+                _likeRepository.Create(postId.Value, userId);
             }
             else
             {
                 _likeRepository.Remove(like);
             }
 
-            return _likeRepository.GetPostLikesCount(postId);
+            var likesCount = _likeRepository.GetPostLikesCount(postId.Value).ToString();
+            return Content(likesCount);
         }
     }
 }

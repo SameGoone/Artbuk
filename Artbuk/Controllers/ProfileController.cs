@@ -232,6 +232,11 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult ChooseUserImage(Guid? userId)
         {
+            if (userId == null)
+            {
+                return BadRequest("Пустой идентификатор пользователя!");
+            }
+
             ViewBag.UserId = userId;
             return View();
         }
@@ -240,6 +245,16 @@ namespace Artbuk.Controllers
         [HttpPost]
         public IActionResult ChooseUserImage(Guid? userId, IFormFile? formFile)
         {
+            if (userId == null)
+            {
+                return BadRequest("Пустой идентификатор пользователя!");
+            }
+
+            if (formFile == null)
+            {
+                return BadRequest("Передано некорректное изображение!");
+            }
+
             var filePath = Tools.SaveUserImage(formFile, userId);
             var user = _userRepository.GetById(userId.Value);
             user.ImagePath = filePath;
@@ -252,7 +267,7 @@ namespace Artbuk.Controllers
         [HttpPost]
         public IActionResult Subscribe(Guid? subcribeToId)
         {
-            if (!subcribeToId.HasValue)
+            if (subcribeToId == null)
             {
                 return NotFound("Пустой идентификатор");
             }
@@ -278,7 +293,7 @@ namespace Artbuk.Controllers
         [HttpPost]
         public IActionResult Unsubscribe(Guid? unsubcribeToId)
         {
-            if (!unsubcribeToId.HasValue)
+            if (unsubcribeToId == null)
             {
                 return NotFound("Пустой идентификатор");
             }

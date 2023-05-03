@@ -45,11 +45,16 @@ namespace Artbuk.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Post(Guid postId)
+        public IActionResult Post(Guid? postId)
         {
+            if (postId == null)
+            {
+                return BadRequest($"Идентификатор поста пустой!");
+            }
+
             var postData = new PostPageData
             (
-                postId,
+                postId.Value,
                 Tools.GetUserId(_userRepository, User),
                 _likeRepository,
                 _postRepository,
@@ -68,8 +73,13 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddComment(Guid postId, string body)
+        public IActionResult AddComment(Guid? postId, string? body)
         {
+            if (postId == null)
+            {
+                return BadRequest($"Идентификатор поста пустой!");
+            }
+
             if (string.IsNullOrEmpty(body))
             {
                 return RedirectToAction("Post", new { postId = postId });
@@ -89,14 +99,14 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult DeleteComment(Guid commentId)
+        public IActionResult DeleteComment(Guid? commentId)
         {
             if (commentId == null)
             {
                 return new NoContentResult();
             }
 
-            var comment = _commentRepository.GetById(commentId);
+            var comment = _commentRepository.GetById(commentId.Value);
 
             if (comment != null)
             {

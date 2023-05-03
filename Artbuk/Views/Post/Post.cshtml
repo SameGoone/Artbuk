@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>Лента</title>
+    <title>Пост</title>
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 </head>
@@ -15,20 +15,25 @@
     }
 </style>
 <body>
-    <h3>Лента</h3>
+    <h3>@Model.Post.Body</h3>
 
     <br />
     <br />
     <img width="200px" height="200px" src=@Url.Content(@Model.ImagePath) runat="server" />
+    <div>
+        <span style ="display:inline">Автор: </span>
+        <a style="display:inline" href="~/Profile/Profile?@Model.User.Id">@Model.User.Name</a>
+    </div>
     <p>Содержание: @Model.Post.Body</p>
     <p>Дата создания: @Model.Post.CreatedOn</p>
     <p>Жанр: @Model.Genre</p>
     <p>Софт: @Model.Software</p>
     <div>
-        <p>Лайки: <span id="likes-count">@Model.LikesCount</span></p>
-        <div display:"inline">
-            <input type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
-        </div>
+        <span style="display:inline">Лайки: </span>
+        <a style="display:inline" href="~/Users/PostLikedBy?postId=@Model.Post.Id">
+            <span id="likes-count">@Model.LikesCount</span>
+        </a>
+        <input style="display:inline" type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
     </div>
     <div id="comment-container">
         <h3>Комментарии</h3>
@@ -40,12 +45,15 @@
         @foreach (var comment in Model.Comments)
         {
             <div>
-                <p>
-                    @comment.User: @comment.Body
-                </p>
+                <div style="display:inline">
+                    <a style="display:inline" href="~/Profile/Profile?userId=@comment.User.Id">
+                        @comment.User.Name
+                    </a>
+                    <span>: @comment.Body</span>
+                </div>
                 @if(comment.IsRemovable)
                 {
-                    <form method="post" action="~/Post/DeleteComment">
+                    <form style="display:inline" method="post" action="~/Post/DeleteComment">
                         <input type="hidden" name="commentId" value="@comment.Id" />
                         <button type="submit">Удалить</button>
                     </form>

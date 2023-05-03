@@ -34,30 +34,20 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult Feed()
+        public IActionResult Feed(Guid? genreId)
         {
             var userId = Tools.GetUserId(_userRepository, User);
 
-            var feedData = new FeedData
-            (
-                _likeRepository,
-                _genreRepository.GetAll(),
-                _postRepository.GetAll(),
-                _softwareRepository.GetAll(),
-                userId,
-                _imageInPostRepository
-            );
-
-            return View(feedData);
-        }
-
-        [HttpPost]
-        public IActionResult Feed(Guid genreId)
-        {
-            var userId = Tools.GetUserId(_userRepository, User);
-
-            var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId);
-            var posts = _postRepository.GetByIds(postsIds);
+            List<Post> posts;
+            if (genreId == null)
+            {
+                posts = _postRepository.GetAll();
+            }
+            else
+            {
+                var postsIds = _postInGenreRepository.GetPostIdsByGenreId(genreId.Value);
+                posts = _postRepository.GetByIds(postsIds);
+            }
 
             var feedData = new FeedData
             (

@@ -56,5 +56,13 @@ namespace Artbuk.Infrastructure
             return _dbContext.Likes
                 .FirstOrDefault(i => i.PostId == postId && i.UserId == userId);
         }
+
+        public List<Guid> GetPostLikedByIds(Guid postId)
+        {
+            return _dbContext.Likes
+                .Where(i => i.PostId == postId)
+                .Select(i => i.UserId)
+                .ToList();
+        }
     }
 }

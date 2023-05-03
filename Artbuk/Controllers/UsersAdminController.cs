@@ -32,18 +32,18 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult User(Guid userId)
+        public IActionResult User(Guid? userId)
         {
-            if (userId == Guid.Empty)
+            if (userId == null)
             {
                 return BadRequest();
             }
 
-            return View(_userRepository.GetById(userId));
+            return View(_userRepository.GetById(userId.Value));
         }
 
         [HttpPost]
-        public IActionResult Update(User user)
+        public IActionResult Update(User? user)
         {
             if (user == null)
             {
@@ -59,7 +59,7 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(User user, string isAdmin)
+        public IActionResult CreateUser(User? user, string? isAdmin)
         {
             if (user != null)
             {
@@ -111,14 +111,14 @@ namespace Artbuk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Guid userId)
+        public IActionResult Delete(Guid? userId)
         {
-            if (userId == Guid.Empty || userId == null)
+            if (userId == null)
             {
                 return BadRequest();
             }
 
-            var user = _userRepository.GetById(userId);
+            var user = _userRepository.GetById(userId.Value);
 
             if (user == null)
             {
@@ -130,14 +130,14 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult RemoveAllUserComments(Guid userId)
+        public IActionResult RemoveAllUserComments(Guid? userId)
         {
             if (userId == Guid.Empty || userId == null)
             {
                 return BadRequest();
             }
 
-            _commentRepository.RemoveCommentsByUserId(userId);
+            _commentRepository.RemoveCommentsByUserId(userId.Value);
 
             return RedirectToAction("Index");
         }

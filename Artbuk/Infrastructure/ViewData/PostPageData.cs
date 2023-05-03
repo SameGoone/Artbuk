@@ -9,6 +9,8 @@ namespace Artbuk.Infrastructure.ViewData
     {
         public Post Post { get; set; }
 
+        public User User { get; set; }
+
         public string Genre { get; set; }
 
         public string Software { get; set; }
@@ -37,23 +39,25 @@ namespace Artbuk.Infrastructure.ViewData
             RoleRepository roleRepository,
             UserRepository userRepository)
         {
+            var currentUser = userRepository.GetById(userId);
+
+            User = currentUser;
             Software = Tools.GetSoftwareName(postId, softwareRepository, postInSoftwareRepository);
             Genre = Tools.GetGenreName(postId, genreRepository, postInGenreRepository);
             Post = postRepository.GetById(postId);
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
 
-            var currentUser = userRepository.GetById(userId); 
 
             Comments = commentRepository.GetCommentsByPostId(postId)
-                .Select(c => new CommentData
+                .Select(comment => new CommentData
                 {
-                    Id = c.Id,
-                    Body = c.Body,
-                    User = c.User?.Name,
+                    Id = comment.Id,
+                    Body = comment.Body,
+                    User = currentUser,
                     IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
                         ? true
-                        : c.UserId == userId
+                        : comment.UserId == userId
                 })
                 .ToList();
 
