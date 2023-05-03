@@ -62,7 +62,9 @@ namespace Artbuk.Infrastructure.ViewData
                 .ToList();
 
             ImagePath = Tools.GetImagePath(postId, imageInPostRepository);
-            IsRemovable = Post.UserId == userId;
+            IsRemovable = IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
+                ? true
+                : Post.UserId == userId;
         }
     }
 }
