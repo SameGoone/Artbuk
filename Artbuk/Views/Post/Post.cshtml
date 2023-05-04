@@ -8,6 +8,8 @@
     <title>Пост</title>
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css"/>
 </head>
 <style>
     .genre {
@@ -15,60 +17,64 @@
     }
 </style>
 <body>
-    <h3>@Model.Post.Body</h3>
-
-    <br />
-    <br />
-    <img width="200px" height="200px" src=@Url.Content(@Model.ImagePath) runat="server" />
-    <div>
-        <span style ="display:inline">Автор: </span>
-        <a style="display:inline" href="~/Profile/Profile?@Model.User.Id">@Model.User.Name</a>
-    </div>
-    <p>Содержание: @Model.Post.Body</p>
-    <p>Дата создания: @Model.Post.CreatedOn</p>
-    <p>Жанр: @Model.Genre</p>
-    <p>Софт: @Model.Software</p>
-    <div>
-        <span style="display:inline">Лайки: </span>
-        <a style="display:inline" href="~/Users/PostLikedBy?postId=@Model.Post.Id">
-            <span id="likes-count">@Model.LikesCount</span>
-        </a>
-        <input style="display:inline" type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
-    </div>
-    <div id="comment-container">
-        <h3>Комментарии</h3>
-        <form class="comment-form" method="post" action="~/Post/AddComment">
-            <input type="text" name="body" />
-            <input type="hidden" name="postId" value="@Model.Post.Id" />
-            <button type="submit">Создать комментарий</button>
-        </form>
-        @foreach (var comment in Model.Comments)
-        {
-            <div>
-                <div style="display:inline">
-                    <a style="display:inline" href="~/Profile/Profile?userId=@comment.User.Id">
-                        @comment.User.Name
-                    </a>
-                    <span>: @comment.Body</span>
-                </div>
-                @if(comment.IsRemovable)
-                {
-                    <form style="display:inline" method="post" action="~/Post/DeleteComment">
-                        <input type="hidden" name="commentId" value="@comment.Id" />
-                        <button type="submit">Удалить</button>
-                    </form>
-                }
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-9 image">
+                <img class="post-image" src=@Url.Content(@Model.ImagePath) runat="server" />
             </div>
-        }
+            <div class="col-3 post-info">
+                <div class="post-item author">
+                    <img class="user-image" src=@Url.Content(@Model.User.ImagePath) runat="server" />
+                    <h5 class="user-name"><a href="~/Profile/Profile?@Model.User.Id">@Model.User.Name</a></h5>
+                </div>
+                <div class="post-item like">
+                    <input class="like-item like-add" style="display:inline" type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
+                    <p class="like-item like-text">Понравилось:</p>
+                    <a style="display:inline" href="~/Users/PostLikedBy?postId=@Model.Post.Id">
+                        <p id="likes-count" class="like-item like-count">@Model.LikesCount</p>
+                    </a>
+                </div>
+                <div class="post-item post-description">
+                    <p class="body">@Model.Post.Body</p>
+                </div>
+                <div class="post-item genre">
+                    <p class="body">@Model.Genre</p>
+                </div>
+                <div class="post-item software">
+                    <p class="body">@Model.Software</p>
+                </div>
+                <div class="post-item comments">
+                    <div class="comment-input">
+                        <form class="comment-form" method="post" action="~/Post/AddComment">
+                            <textarea type="text" name="body"></textarea>
+                            <input type="hidden" name="postId" value="@Model.Post.Id" />
+                            <button class="btn btn-outline-dark comment-button" type="submit">Создать комментарий</button>
+                        </form>
+                    </div>
+                    <div class="comments-info">
+                        <h4>Комментарии:</h4>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div>
+                                <div style="display:inline">
+                                    <a style="display:inline" href="~/Profile/Profile?userId=@comment.User.Id">
+                                        @comment.User.Name
+                                    </a>
+                                    <span>: @comment.Body</span>
+                                </div>
+                                @if (comment.IsRemovable)
+                                {
+                                    <form style="display:inline" method="post" action="~/Post/DeleteComment">
+                                        <input type="hidden" name="commentId" value="@comment.Id" />
+                                        <button type="submit">Удалить</button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    @if (Model.IsRemovable)
-    {
-        <form method="post" action="~/Profile/DeletePost">
-            <input type="hidden" name="postId" value="@Model.Post.Id" />
-            <button type="submit">Удалить</button>
-        </form>
-    }
-    <a href="~/Feed/Feed">Назад</a>
 </body>
 </html>
