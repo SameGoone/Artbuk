@@ -22,7 +22,7 @@
     <img width="200px" height="200px" src=@Url.Content(@Model.ImagePath) runat="server" />
     <div>
         <span style ="display:inline">Автор: </span>
-        <a style="display:inline" href="~/Profile/Profile?@Model.User.Id">@Model.User.Name</a>
+        <a style="display:inline" href="~/Profile/Profile?userId=@Model.Creator.Id">@Model.Creator.Name</a>
     </div>
     <p>Содержание: @Model.Post.Body</p>
     <p>Дата создания: @Model.Post.CreatedOn</p>
@@ -46,8 +46,8 @@
         {
             <div>
                 <div style="display:inline">
-                    <a style="display:inline" href="~/Profile/Profile?userId=@comment.User.Id">
-                        @comment.User.Name
+                    <a style="display:inline" href="~/Profile/Profile?userId=@comment.Creator.Id">
+                        @comment.Creator.Name
                     </a>
                     <span>: @comment.Body</span>
                 </div>

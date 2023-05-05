@@ -1,0 +1,43 @@
+﻿@using Artbuk.Infrastructure.ViewData;
+
+@model ChatMessageCollectionData
+@{
+    //Layout = null;
+}
+
+<html>
+<head>
+    <title>Чат</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+</head>
+<style>
+    .genre {
+        display: inline-block
+    }
+</style>
+<body>
+    <h3>Чат с @Model.WithUserName</h3>
+
+    <br />
+    <br />
+
+    <div id="comment-container">
+        @foreach (var message in Model.Messages)
+        {
+            var creatorName = message.FromMe ? Model.MyName : Model.WithUserName;
+            var additionalClass = message.FromMe ? "my" : "other";
+
+            <div class="chat-message @additionalClass">
+                <span>@creatorName: @message.Message.Body</span>
+            </div>
+        }
+
+        <form class="create-message-form" method="post" action="~/Chat/AddMessage">
+            <input type="text" name="body" style="display: inline-block;" />
+            <input type="hidden" name="withUserId" value="@Model.WithUserId" />
+            <button type="submit" style="display: inline-block;">Отправить</button>
+        </form>
+    </div>
+</body>
+</html>
