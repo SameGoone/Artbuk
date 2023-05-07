@@ -118,6 +118,7 @@ namespace Artbuk.Controllers
                 return BadRequest();
             }
 
+            _commentRepository.RemoveCommentsByUserId(userId.Value);
             var user = _userRepository.GetById(userId.Value);
 
             if (user == null)

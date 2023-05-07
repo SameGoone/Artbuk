@@ -55,18 +55,20 @@
                     <div class="comments-info">
                         @foreach (var comment in Model.Comments)
                         {
-                            <div class="comment-data">
+                            <div class="comment-data row">
                                 <div class="comment-user">
-                                    <div>
+                                    @*<div class="col-2">
                                         <img class="user-image" src=@Url.Content(comment.User.ImagePath) runat="server" />
-                                    </div>
-                                    <div class="user-name">
+                                    </div>*@
+                                    <div class="user-name col-2">
                                         <a href="~/Profile/Profile?userId=@comment.User.Id">
                                             @comment.User.Name
                                         </a>
+                                    </div>
+                                    <div class="comment-text col-8">
                                         <span>: @comment.Body</span>
                                     </div>
-                                    <div class="comment-delete pull-right">
+                                    <div class="comment-delete col-1">
                                         @if (comment.IsRemovable)
                                         {
                                             <form method="post" action="~/Post/DeleteComment">

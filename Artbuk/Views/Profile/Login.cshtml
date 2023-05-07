@@ -9,20 +9,25 @@
     <title>Авторизация</title>
 </head>
 <body>
-    <h2>Авторизация</h2>
-    <div><h5 style="color: red">@ViewBag.Message</h5></div>
-    <div class="col-2">
-        <form method="post">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Введите ваш логин:</label>
-                <input type="text" class="form-control" name="Name" value="@Model[0]">
+    <div class="container">
+        <div class="row justify-content-md-center auth">
+            <div class="col-4">
+                <h2>Авторизация</h2>
+                <div><h5 style="color: red">@ViewBag.Message</h5></div>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Введите ваш логин:</label>
+                        <input type="text" class="form-control" name="Name" value="@Model[0]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Введите ваш пароль:</label>
+                        <input type="password" class="form-control" name="Password">
+                    </div>
+                    <button style="width: 100%;" type="submit" class="btn btn-dark">Авторизоваться</button>
+                    <h6>Нет профиля? <a href="~/Profile/Registration">Создать</a></h6>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Введите ваш пароль:</label>
-                <input type="password" class="form-control" name="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Авторизоваться</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

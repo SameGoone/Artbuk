@@ -13,7 +13,7 @@
             <div class="sidebar col-3">
                 <ul>
                     <li>
-                        <a href="~/GenreAdmin/Index">Категории</a>
+                        <a href="~/GenreAdmin/Index">Жанры</a>
                     </li>
                     <li>
                         <a href="~/SoftwareAdmin/Index">Инструменты</a>
@@ -34,11 +34,11 @@
                   <div class="id col-2">Название</div>
                   <div class="red col-2">Управление</div>
                 </div>
-                <div>
+                <div class="row">
                     @foreach (var genre in Model)
                     {
                         <form method="post" action="~/GenreAdmin/Delete">
-                            <div class ="row">
+                            <div class="row table-data">
                                 <input type="hidden" name="Id" value="@genre.Id"/>
                                 <input type="hidden" name="Name" value="@genre.Name"/>
                                 <div class="col-2 admin-title">

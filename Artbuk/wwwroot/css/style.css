@@ -113,8 +113,8 @@ header ul li:hover ul {
 }
 
 .user-name {
-	margin-top: 30px;
-	margin-left: 15px;
+	margin-top: 15px;
+	margin-left: 10px;
 }
 
 .user {
@@ -124,8 +124,11 @@ header ul li:hover ul {
 
 .comment-user {
 	display: flex;
-	margin-top: 10px;
 	width: 100%;
+}
+
+.comment-text {
+	margin-top: 15px;
 }
 
 .user-comment {
@@ -172,7 +175,12 @@ header ul li:hover ul {
 .comment-button-delete {
 	background: none;
 	border: none;
-	margin-top: 28px;
+	margin-top: 10px;
+}
+
+.comment-data {
+	border-bottom: 1px solid #004044;
+	min-height: 50px;
 }
 
 .user-image {
@@ -180,11 +188,13 @@ header ul li:hover ul {
 }
 
 .sidebar {
-	margin-top: 70px;
+	margin-top: 75px;
 	padding-right: 10px;
 	background: #e9e9e9;
 	border-radius: 5px;
 	box-shadow: 0 1px 4px rgb(0 0 0 / 18%);
+	position: relative;
+	height: 100%;
 }
 
 .sidebar ul {
@@ -197,7 +207,7 @@ header ul li:hover ul {
 .sidebar ul a {
 	padding: 18px;
 	display: block;
-	border-bottom: 1px solid #004044;
+	border-bottom: 1px solid grey;
 	font-size: 18px;
 }
 
@@ -211,8 +221,28 @@ header ul li:hover ul {
 .create-content {
 	margin-top: 30px;
 	width: 300px;
+	margin-left: 30px;
 }
 
+.table-data {
+	margin-top: 10px;
+	border-bottom: 1px solid grey;
+	padding-bottom: 15px;
+}
 .admin-title {
-	margin-top: 30px;
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+.title-table {
+	margin-left: 30px;
+	border-bottom: 1px solid grey;
+	font-size: 20px;
+}
+.table-data {
+	margin-left: 30px;
+}
+
+.auth {
+	margin-top: 100px;
 }
