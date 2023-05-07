@@ -59,5 +59,12 @@ namespace Artbuk.Infrastructure
             _dbContext.Posts.Remove(post);
             return _dbContext.SaveChanges();
         }
+
+        public List<Post> GetPostByContentMatch(string searchText)
+        {
+            return _dbContext.Posts
+                .Where(p => p.Body.Contains(searchText))
+                .ToList();
+        }
     }
 }

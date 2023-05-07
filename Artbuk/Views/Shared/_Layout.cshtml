@@ -20,8 +20,8 @@
                 </div>
                 <nav class="col-9">
                     <div class="col-4 search">
-                        <form class="search-item">
-                            <input type="text" class="text-input" placeholder="Поиск по постам..."/>
+                        <form class="search-item" asp-controller="Feed" asp-action="SearchPosts">
+                            <input type="text" class="text-input search-text" name="searchText" placeholder="Поиск по постам..." />
                         </form>
                     </div>
                     <ul class="col-5">

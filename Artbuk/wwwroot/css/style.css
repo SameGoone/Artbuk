@@ -260,3 +260,7 @@ header ul li:hover ul {
 .carousel {
 	border-radius: 15px;
 }
+
+.search-text {
+	color: black;
+}
