@@ -243,6 +243,20 @@ header ul li:hover ul {
 	margin-left: 30px;
 }
 
-.auth {
+.form-block {
 	margin-top: 100px;
+}
+
+.admin-add
+{
+	width: 100%;
+	margin-top: 20px;
+}
+
+.info-label {
+	padding-top: 20px;
+}
+
+.carousel {
+	border-radius: 15px;
 }

@@ -13,8 +13,34 @@
     }
 </style>
 <body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div id="carouselExampleControls" class="carousel slide col-8" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
 
-    <h3>Лента</h3>
+        </div>
+    </div>
 
     <form class="genre" method="get" action="~/Feed/Feed">
         <button type="submit">Все</button>
@@ -40,9 +66,6 @@
     }
 
     <a href="~/Feed/CreatePost">Добавить пост</a>
-    <a href="~/Profile/Registration">Регистрация</a>
-    <a href="~/Profile/Login">Авторизация</a>
-    <a href="~/Profile/Profile?userId=@Model.CurrentUserId">Профиль</a>
     <a href="~/Users/Users">Пользователи</a>
     <a href="~/Users/Subscribtions?userId=@Model.CurrentUserId">Подписки</a>
     <a href="~/Users/Subscribers?userId=@Model.CurrentUserId">Подписчики</a>

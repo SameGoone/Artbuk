@@ -8,15 +8,18 @@
     <title>Создать инструмент</title>
 </head>
 <body>
-    <h2>Создать инструмент</h2>
-    <div class="col-4">
-        <form method='post' enctype="multipart/form-data">
-            <p>
-                <label>Название инструмента:</label><br />
-                <input type="text" name="Body" />
-            </p>
-            <input type='submit' value='Создать' />
-        </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-4 form-block">
+                <h2>Создать инструмент</h2>
+                <form method='post' enctype="multipart/form-data">
+                    <h4>Название инструмента:</h4>
+                    <input class="form-control" type="text" name="Body" />
+                    <button class="btn btn-success admin-add" type='submit'>Создать</button>
+                </form>
+            </div>
+        </div>
     </div>
+    <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>
