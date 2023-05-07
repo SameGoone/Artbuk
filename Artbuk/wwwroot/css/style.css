@@ -113,13 +113,24 @@ header ul li:hover ul {
 }
 
 .user-name {
-	margin-top: 15px;
+	margin-top: 30px;
 	margin-left: 15px;
 }
 
-.author {
+.user {
 	display: flex;
 	margin-top: 10px;
+}
+
+.comment-user {
+	display: flex;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.user-comment {
+	margin-top: 10px;
+	display: block;
 }
 
 .like {
@@ -153,4 +164,55 @@ header ul li:hover ul {
 
 .comment-button {
 	width: 100%;
+}
+
+.comment-delete {
+	display: block;
+}
+.comment-button-delete {
+	background: none;
+	border: none;
+	margin-top: 28px;
+}
+
+.user-image {
+	margin-top: 15px;
+}
+
+.sidebar {
+	margin-top: 70px;
+	padding-right: 10px;
+	background: #e9e9e9;
+	border-radius: 5px;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 18%);
+}
+
+.sidebar ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	color: #5c5b5b;
+}
+
+.sidebar ul a {
+	padding: 18px;
+	display: block;
+	border-bottom: 1px solid #004044;
+	font-size: 18px;
+}
+
+.sidebar ul a:hover {
+	padding-left: 10px;
+	transition: all 0.3s;
+	color: #d3d3d3;
+	text-decoration: none;
+}
+
+.create-content {
+	margin-top: 30px;
+	width: 300px;
+}
+
+.admin-title {
+	margin-top: 30px;
 }
