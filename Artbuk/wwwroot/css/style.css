@@ -283,3 +283,20 @@ header ul li:hover ul {
 .search-text {
 	color: black;
 }
+
+.profile-data {
+	margin-top: 30px;
+}
+
+.profile-image {
+	width: 250px;
+	height: 250px;
+	border-radius: 50%;
+	box-shadow: 5px 5px 10px rgb(0 0 0 / 18%);
+}
+
+.choose-image {
+	position: absolute;
+	margin-top: 75px;
+	margin-left: 75px;
+}
