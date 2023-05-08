@@ -1,4 +1,4 @@
-﻿@model User;
+﻿@model Artbuk.Infrastructure.ViewData.UserAdminPanelData;
 
 @{
     //Layout = null;
@@ -10,27 +10,43 @@
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 </head>
-
 <body>
-    <p>Изменить пользователя:</p>
-    <div class="col-4">
-        <form method='post' enctype="multipart/form-data" asp-controller="UsersAdmin" asp-action="Update">
-            <input type="hidden" name="Id" value="@Model.Id"/>
-            <input type="hidden" name="RoleId" value="@Model.RoleId"/>
-            <p>
-                <label>Почта:</label><br />
-                <input type="text" name="Email" value="@Model.Email"/>
-            </p>
-            <p>
-                <label>Имя пользователя:</label><br />
-                <input type="text" name="Name" value="@Model.Name"/>
-            </p>
-            <p>
-                <label>Пароль:</label><br />
-                <input type="text" name="Password"/>
-            </p>
-            <input type='submit' value='Обновить' />
-        </form>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-4 form-block">
+                <h2>Изменить пользователя</h2>
+                <div><h5 style="color:red">@ViewBag.Message</h5></div>
+                <form method="post" asp-controller="UsersAdmin" asp-action="Update">
+                    <input type="hidden" name="Id" value="@Model.User.Id" />
+                    <input type="hidden" name="RoleId" value="@Model.User.RoleId" />
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Введите почту</label>
+                        <input type="email" class="form-control" name="Email" value="@Model.User.Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
+                        <input type="text" class="form-control" name="Name" value="@Model.User.Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
+                        <input type="password" class="form-control" name="Password">
+                    </div>
+                    <div class="mb-3">
+                        @if (@Model.IsAdmin)
+                        {
+                            <input type="checkbox" name="isAdmin" value="Admin" checked/>
+                            <label>Админ</label>
+                        }
+                        else {
+                            <input type="checkbox" name="isAdmin" value="Admin" />
+                            <label>Админ</label>
+                        }
+                    </div>
+                    <button style="width: 100%;" type="submit" class="btn btn-success">Обновить</button>
+                </form>
+            </div>
+        </div>
     </div>
+    <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>

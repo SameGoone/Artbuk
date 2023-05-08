@@ -1,7 +1,9 @@
 ﻿using Artbuk.Infrastructure;
+using Artbuk.Infrastructure.ViewData;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Artbuk.Controllers
 {
@@ -22,7 +24,23 @@ namespace Artbuk.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(_userRepository.GetAll());
+            var users = _userRepository.GetAll();
+
+            var userData = new List<UserAdminPanelData>();
+
+            var currentUserId = Tools.GetUserId(_userRepository, User);
+
+            foreach (var user in users)
+            {
+                userData.Add(new UserAdminPanelData
+                {
+                    User = user,
+                    IsAdmin = user.RoleId == Tools.GetRoleId(_roleRepository, "Admin"),
+                    IsMe = user.Id == currentUserId
+                });
+            }
+
+            return View(userData);
         }
 
         [HttpGet]
@@ -32,18 +50,22 @@ namespace Artbuk.Controllers
         }
 
         [HttpGet]
-        public IActionResult User(Guid? userId)
+        public IActionResult GetUser(Guid? userId)
         {
             if (userId == null)
             {
                 return BadRequest();
             }
 
-            return View(_userRepository.GetById(userId.Value));
+            var user = _userRepository.GetById(userId.Value);
+
+            var userData = new UserAdminPanelData { User = user, IsAdmin = user.RoleId == Tools.GetRoleId(_roleRepository, "Admin") };
+
+            return View("User", userData);
         }
 
         [HttpPost]
-        public IActionResult Update(User? user)
+        public IActionResult Update(User? user, string? isAdmin)
         {
             if (user == null)
             {
@@ -53,6 +75,10 @@ namespace Artbuk.Controllers
             user.Password = user.Password != null
                 ? Tools.HashPassword(user.Password)
                 : _userRepository.GetHashedPasswordById(user.Id);
+
+            user.RoleId = isAdmin == "Admin"
+                ? Tools.GetRoleId(_roleRepository, "Admin")
+                : Tools.GetRoleId(_roleRepository, "User");
 
             _userRepository.Update(user);
             return RedirectToAction("Index");
