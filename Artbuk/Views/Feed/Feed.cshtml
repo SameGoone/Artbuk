@@ -7,11 +7,6 @@
 <head>
     <title>Лента</title>
 </head>
-<style>
-    .genre {
-        display: inline-block
-    }
-</style>
 <body>
     <div class="container">
         <div class="row justify-content-center">
@@ -37,33 +32,33 @@
                 </button>
             </div>
         </div>
-        <div class="row">
-
+        <div class="row genres">
+            <div class="genre col-1">
+                <form method="get" action="~/Feed/Feed">
+                    <button type="submit">Все</button>
+                </form>
+            </div>
+            @foreach (var genre in Model.Genres)
+            {
+                <div class="col-1 genre">
+                    <form class="genre" method="get" action="~/Feed/Feed">
+                        <input type="hidden" name="genreId" value="@genre.Id" />
+                        <button type="submit">@genre.Name</button>
+                    </form>
+                </div>
+            }
+        </div>
+        <div class="row posts">
+            @foreach (var post in Model.Posts)
+            {
+                <div class="col-4 post">
+                    <a href="~/Post/Post?postId=@post.PostId">
+                        <img class="feed-image" src=@Url.Content(post.ImagePath) runat="server" />
+                    </a>
+                </div>
+            }
         </div>
     </div>
-
-    <form class="genre" method="get" action="~/Feed/Feed">
-        <button type="submit">Все</button>
-    </form>
-
-    @foreach(var genre in Model.Genres)
-    {
-        <form class="genre" method="get" action="~/Feed/Feed">
-            <input type="hidden" name="genreId" value="@genre.Id" />
-            <button type="submit">@genre.Name</button>
-        </form>
-    }
-    <br />
-    <br />
-
-    @foreach (var post in Model.Posts)
-    {
-        <div>
-            <a href="~/Post/Post?postId=@post.PostId">
-                <img width="200px" height="200px" src=@Url.Content(post.ImagePath) runat="server" />
-            </a>
-        </div>
-    }
 
     <a href="~/Feed/CreatePost">Добавить пост</a>
     <a href="~/Users/Users">Пользователи</a>
