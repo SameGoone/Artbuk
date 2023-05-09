@@ -115,6 +115,7 @@ header ul li:hover ul {
 .user-name {
 	margin-top: 15px;
 	margin-left: 10px;
+	width: 80%;
 }
 
 .user {
@@ -291,6 +292,7 @@ header ul li:hover ul {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	padding-left: 10px;
+	box-shadow: 5px 5px 10px rgb(0 0 0 / 18%);
 }
 
 .profile-image {
@@ -323,7 +325,7 @@ header ul li:hover ul {
 }
 
 .subscribe-button {
-	width: 200px;
+	width: 250px;
 	height: 40px;
 	text-align: center;
 }
@@ -336,4 +338,10 @@ header ul li:hover ul {
 	text-align: center;
 	padding-top: 5px;
 	border-radius: 5px;
+}
+
+.post-delete {
+	margin-top: 16px;
+	position: relative;
+	float: right;
 }
