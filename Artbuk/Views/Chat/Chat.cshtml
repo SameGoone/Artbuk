@@ -1,15 +1,12 @@
 ﻿@using Artbuk.Infrastructure.ViewData;
-
-@model ChatMessageCollectionData
-@{
-    //Layout = null;
-}
+@model ChatData
 
 <html>
 <head>
     <title>Чат</title>
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 </head>
 <style>
     .genre {
@@ -22,18 +19,12 @@
     <br />
     <br />
 
-    <div id="comment-container">
-        @foreach (var message in Model.Messages)
-        {
-            var creatorName = message.FromMe ? Model.MyName : Model.WithUserName;
-            var additionalClass = message.FromMe ? "my" : "other";
+    <div id="message-input">
+        <div id="messages">
+            @Html.Partial("ChatMessages", Model)
+        </div>
 
-            <div class="chat-message @additionalClass">
-                <span>@creatorName: @message.Message.Body</span>
-            </div>
-        }
-
-        <form class="create-message-form" method="post" action="~/Chat/AddMessage">
+        <form class="create-message-form" asp-action="AddMessage" asp-controller="Chat" method="POST" data-ajax="true" data-ajax-update="#messages">
             <input type="text" name="body" style="display: inline-block;" />
             <input type="hidden" name="withUserId" value="@Model.WithUserId" />
             <button type="submit" style="display: inline-block;">Отправить</button>

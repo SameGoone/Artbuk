@@ -1,0 +1,12 @@
+﻿@using Artbuk.Infrastructure.ViewData
+@model ChatData
+
+@foreach (var message in Model.Messages)
+{
+    var creatorName = message.FromMe ? Model.MyName : Model.WithUserName;
+    var additionalClass = message.FromMe ? "my" : "other";
+
+    <div class="chat-message @additionalClass">
+        <span>@creatorName: @message.Message.Body</span>
+    </div>
+}

@@ -48,7 +48,17 @@ namespace Artbuk.Infrastructure.ViewData
             LikesCount = likeRepository.GetPostLikesCount(postId);
             IsLiked = likeRepository.CheckIsPostLikedByUser(postId, currentUserId);
 
-            Comments = commentRepository.GetCommentsByPostId(postId)
+            Comments = GetCommentsData(postId, currentUser, commentRepository, userRepository, roleRepository);
+
+            ImagePath = Tools.GetImagePath(postId, imageInPostRepository);
+            IsRemovable = IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
+                ? true
+                : Post.UserId == currentUserId;
+        }
+
+        public static List<CommentData> GetCommentsData(Guid postId, User currentUser, CommentRepository commentRepository, UserRepository userRepository, RoleRepository roleRepository)
+        {
+            return commentRepository.GetCommentsByPostId(postId)
                 .Select(comment => new CommentData
                 {
                     Id = comment.Id,
@@ -56,14 +66,9 @@ namespace Artbuk.Infrastructure.ViewData
                     Creator = userRepository.GetById(comment.UserId.Value),
                     IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
                         ? true
-                        : comment.UserId == currentUserId
+                        : comment.UserId == currentUser.Id
                 })
                 .ToList();
-
-            ImagePath = Tools.GetImagePath(postId, imageInPostRepository);
-            IsRemovable = IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
-                ? true
-                : Post.UserId == currentUserId;
         }
     }
 }

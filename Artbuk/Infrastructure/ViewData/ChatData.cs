@@ -1,13 +1,13 @@
 ﻿namespace Artbuk.Infrastructure.ViewData
 {
-    public class ChatMessageCollectionData
+    public class ChatData
     {
         public Guid WithUserId { get; set; }
         public string WithUserName { get; set; }
         public string MyName { get; set; }
         public List<ChatMessageData> Messages { get; set; }
 
-        public ChatMessageCollectionData(Guid currentUserId,
+        public ChatData(Guid currentUserId,
             Guid withUserId,
             ChatMessageRepository chatMessageRepository,
             UserRepository userRepository)

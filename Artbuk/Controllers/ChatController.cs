@@ -28,7 +28,7 @@ namespace Artbuk.Controllers
             }
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
-            var messagesData = new ChatMessageCollectionData(currentUserId, withUserId.Value, _chatMessageRepository, _userRepository);
+            var messagesData = new ChatData(currentUserId, withUserId.Value, _chatMessageRepository, _userRepository);
 
             return View(messagesData);
         }
@@ -58,10 +58,9 @@ namespace Artbuk.Controllers
             };
 
             _chatMessageRepository.Add(message);
-            //return PartialView("ChatMessages", _chatMessageRepository.GetMessagesByUserIdPair(currentUserId, withUserId.Value));
 
-            var messagesData = new ChatMessageCollectionData(currentUserId, withUserId.Value, _chatMessageRepository, _userRepository);
-            return View("Chat", messagesData);
+            var messagesData = new ChatData(currentUserId, withUserId.Value, _chatMessageRepository, _userRepository);
+            return PartialView("ChatMessages", messagesData);
         }
     }
 }

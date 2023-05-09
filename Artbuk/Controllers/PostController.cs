@@ -85,16 +85,19 @@ namespace Artbuk.Controllers
                 return RedirectToAction("Post", new { postId = postId });
             }
 
+            var currentUserId = Tools.GetUserId(_userRepository, User);
+            var currentUser = _userRepository.GetById(currentUserId);
+
             Comment comment = new Comment
             {
                 PostId = postId,
                 Body = body,
-                UserId = Tools.GetUserId(_userRepository, User),
+                UserId = currentUserId,
                 CreatedOn = DateTime.Now
             };
 
             _commentRepository.Add(comment);
-            return RedirectToAction("Post", new { postId = postId });
+            return PartialView("PostComments", PostPageData.GetCommentsData(postId.Value, currentUser, _commentRepository, _userRepository, _roleRepository));
         }
 
         [Authorize]
@@ -106,12 +109,14 @@ namespace Artbuk.Controllers
                 return new NoContentResult();
             }
 
+            var currentUserId = Tools.GetUserId(_userRepository, User);
+            var currentUser = _userRepository.GetById(currentUserId);
             var comment = _commentRepository.GetById(commentId.Value);
 
             if (comment != null)
             {
                 _commentRepository.Remove(comment);
-                return RedirectToAction("Post", "Post", new { postId = comment.PostId });
+                return PartialView("PostComments", PostPageData.GetCommentsData(comment.PostId.Value, currentUser, _commentRepository, _userRepository, _roleRepository));
             }
             else
             {
