@@ -18,19 +18,27 @@
                     <h4>@Model.Name</h4>
                 </div>
                 <div class="row subscribers">
-                    <h5>Подписчиков: </h5>
-                    <a style="display:inline" href="~/Users/Subscribers?userId=@Model.UserId">
-                        <p id="subscribers-count">@Model.SubscribersCount</p>
-                    </a>
+                    <div class="col-5">
+                        <h5>Подписчиков: </h5>
+                    </div>
+                    <div class="col-5">
+                        <a style="display:flex" href="~/Users/Subscribers?userId=@Model.UserId">
+                            <p id="subscribers-count">@Model.SubscribersCount</p>
+                        </a>
+                    </div>
                 </div>
                 <div class="row subscriptions">
-                    <h5>Подписок: </h5>
-                    <a style="display:inline" href="~/Users/Subscribtions?userId=@Model.UserId">
-                        <p id="subscriptions-count">@Model.SubscriprionsCount</p>
-                    </a>
+                    <div class="col-4">
+                        <h5>Подписок: </h5>
+                    </div>
+                    <div class="col-5">
+                        <a style="display:flex" href="~/Users/Subscribtions?userId=@Model.UserId">
+                            <p style="display:block" id="subscriptions-count">@Model.SubscriprionsCount</p>
+                        </a>
+                    </div>
                 </div>
                 <div class="row post-count">
-                    <h5>Постов: </h5>
+                    <h5>Постов: @Model.Posts.Count()</h5>
                 </div>
             </div>
             

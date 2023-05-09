@@ -8,40 +8,51 @@
         <title>@Model.PageHeader</title>
     </head>
     <body>
-        <h3>@Model.PageHeader</h3>
-
-        @if (Model.Users.Count == 0)
-        {
+        <div class="container">
             <div>
-                <span>Здесь пусто...</span>
-            </div>
-        }
-
-        @foreach (var user in Model.Users)
-        {
-            <div>
-                <a href="~/Profile/Profile?userId=@user.UserId">
-                    <div display="inline-block">
-                        <img width="200px" height="200px" src=@Url.Content(@user.ImagePath) runat="server" />
+                <div class="row">
+                <strong><h3 class="sub-pageheader">@Model.PageHeader</h3></strong>
+                @if (Model.Users.Count == 0)
+                {
+                    <div>
+                        <span>Здесь пусто...</span>
                     </div>
-                    <div display="inline-block">
-                        <span>@user.Name</span>
+                }
+                </div>
+                @foreach (var user in Model.Users)
+                    {
+                    <div class="row sub-data">
+                        <div class="col-3">
+                            <a href="~/Profile/Profile?userId=@user.UserId">
+                                <img class="profile-image" src=@Url.Content(@user.ImagePath) runat="server" />
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="~/Profile/Profile?userId=@user.UserId">
+                                <div class="sub-name">
+                                    <h2>@user.Name</h2>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            @if (!user.IsMe)
+                            {
+                                var subscribeDisplayMode = (!user.IsSubscribed) ? "block" : "none";
+                                var unsubscribeDisplayMode = (user.IsSubscribed) ? "block" : "none";
+
+                                <div class="sub-button-block" id="subscribe-@user.UserId" style="display: @subscribeDisplayMode;">
+                                    <button class="btn btn-success sub-button" onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@user.UserId');">Подписаться</button>
+                                </div>
+
+                                <div class="sub-button-block" id="unsubscribe-@user.UserId" style="display: @unsubscribeDisplayMode;">
+                                    <button class="btn btn-danger sub-button" onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@user.UserId');">Отписаться</button>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </a>
+                    }
             </div>
-            @if (!user.IsMe)
-            {
-                var subscribeDisplayMode = (!user.IsSubscribed) ? "block" : "none";
-                var unsubscribeDisplayMode = (user.IsSubscribed) ? "block" : "none";
-
-                <div id="subscribe-@user.UserId" style="display: @subscribeDisplayMode;">
-                    <button onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@user.UserId');">Подписаться</button>
-                </div>
-
-                <div id="unsubscribe-@user.UserId" style="display: @unsubscribeDisplayMode;">
-                    <button onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@user.UserId');">Отписаться</button>
-                </div>
-            }
-        }
+        </div>
+    <script src="js/site.js" asp-append-version="true"></script>
     </body>
 </html>

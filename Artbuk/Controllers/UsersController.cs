@@ -16,7 +16,7 @@ namespace Artbuk.Controllers
 
         const string _usersPageHeader = "Пользователи системы";
         const string _subscribtionsPageHeader = "Подписки пользователя {0}";
-        const string _subscribersPageHeader = "Подписчики пользователя {0}";
+        const string _subscribersPageHeader = "Подписчики пользователя {0}:";
         const string _postLikedByHeader = "Лайкнули пост \"{0}\"";
 
         public UsersController(UserRepository userRepository, 
