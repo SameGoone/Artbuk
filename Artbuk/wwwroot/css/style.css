@@ -286,6 +286,11 @@ header ul li:hover ul {
 
 .profile-data {
 	margin-top: 30px;
+	background-color: #adadad;
+	border-radius: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
 }
 
 .profile-image {
@@ -299,4 +304,36 @@ header ul li:hover ul {
 	position: absolute;
 	margin-top: 75px;
 	margin-left: 75px;
+}
+
+.subscribers {
+	margin-top: 30px;
+}
+
+.subscriptions {
+	margin-top: 10px;
+}
+
+.post-count {
+	margin-top: 10px;
+}
+
+.subscribe {
+	margin-top: 70px;
+}
+
+.subscribe-button {
+	width: 200px;
+	height: 40px;
+	text-align: center;
+}
+
+.chat {
+	width: 250px;
+	height: 40px;
+	border: 1px solid;
+	margin-left: 50px;
+	text-align: center;
+	padding-top: 5px;
+	border-radius: 5px;
 }

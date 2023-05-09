@@ -13,9 +13,40 @@
             <div class="col-3 profile-header-item">
                 <img class="profile-image" src=@Url.Content(@Model.ImagePath) runat="server" />
             </div>
-            <div class="col-2 profile-header-item profile-name">
-                <h3>@Model.Name</h3>
+            <div class="col-3 profile-header-item ">
+                <div class="row profile-name">
+                    <h4>@Model.Name</h4>
+                </div>
+                <div class="row subscribers">
+                    <h5>Подписчиков: </h5>
+                </div>
+                <div class="row subscriptions">
+                    <h5>Подписок: </h5>
+                </div>
+                <div class="row post-count">
+                    <h5>Постов: </h5>
+                </div>
             </div>
+            <div class="col-3 chat">
+                <a class="chat-title" href="~/Chat/Chat?withUserId=@Model.UserId">
+                    <h5>Написать пользователю</h5>
+                </a>
+            </div>
+            <div class="col-3">
+                @if (!Model.IsMe)
+                {
+                    var subscribeDisplayMode = (!Model.IsSubscribed) ? "block" : "none";
+                    var unsubscribeDisplayMode = (Model.IsSubscribed) ? "block" : "none";
+
+                    <div id="subscribe-@Model.UserId" style="display: @subscribeDisplayMode;">
+                        <button class="btn btn-outline-success subscribe-button" onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@Model.UserId');">Подписаться</button>
+                    </div>
+
+                    <div id="unsubscribe-@Model.UserId" style="display: @unsubscribeDisplayMode;">
+                        <button class="btn btn-outline-danger subscribe-button" onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
+                    </div>
+                }
+             </div>
             @if (Model.IsMe)
                 {
                     <div class="choose-image">
@@ -26,25 +57,6 @@
                         </a>
                     </div>
                 }
-        </div>
-        <div class="row">
-            <div>
-                
-
-                @if (!Model.IsMe)
-                {
-                    var subscribeDisplayMode = (!Model.IsSubscribed) ? "block" : "none";
-                    var unsubscribeDisplayMode = (Model.IsSubscribed) ? "block" : "none";
-
-                    <div id="subscribe-@Model.UserId" style="display: @subscribeDisplayMode;">
-                        <button onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@Model.UserId');">Подписаться</button>
-                    </div>
-
-                    <div id="unsubscribe-@Model.UserId" style="display: @unsubscribeDisplayMode;">
-                        <button onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
-                    </div>
-                }
-            </div>
         </div>
         <div class="row posts">
             @foreach (var postData in Model.Posts)
