@@ -27,11 +27,16 @@
                     <h5>Постов: </h5>
                 </div>
             </div>
-            <div class="col-3 chat">
-                <a class="chat-title" href="~/Chat/Chat?withUserId=@Model.UserId">
-                    <h5>Написать пользователю</h5>
-                </a>
-            </div>
+            
+                @if(!Model.IsMe)
+                {
+                    <div class="col-3 chat">
+                        <a class="chat-title" href="~/Chat/Chat?withUserId=@Model.UserId">
+                            <h5>Написать пользователю</h5>
+                        </a>
+                    </div>
+                }
+            
             <div class="col-3">
                 @if (!Model.IsMe)
                 {
