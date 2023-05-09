@@ -374,3 +374,12 @@ header ul li:hover ul {
 	margin-top: 30px;
 	font-weight:bold;
 }
+
+.add-post {
+	margin-top: 175px;
+	margin-left: 150px;
+}
+
+.btn-dark {
+	background-color: #202A44;
+}
