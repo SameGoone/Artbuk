@@ -93,5 +93,29 @@ namespace Artbuk.Controllers
             
             return RedirectToAction("Feed");
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult SearchPosts(string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return RedirectToAction("Feed");
+            }
+
+            var userId = Tools.GetUserId(_userRepository, User);
+
+            var feedData = new FeedData
+            (
+                _likeRepository,
+                _genreRepository.GetAll(),
+                _postRepository.GetPostByContentMatch(searchText),
+                _softwareRepository.GetAll(),
+                userId,
+                _imageInPostRepository
+            );
+
+            return View("Feed", feedData);
+        }
     }
 }

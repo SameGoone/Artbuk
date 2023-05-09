@@ -9,24 +9,30 @@
     <title>Регистрация</title>
 </head>
 <body>
-    <h2>Регистрация</h2>
-    <div><h5 style="color:red">@ViewBag.Message</h5></div>
-    <div class="col-2">
-        <form method="post">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Введите почту</label>
-                <input type="email" class="form-control" name="Email" value="@Model[1]">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-4 form-block">
+                <h2>Регистрация</h2>
+                <div><h5 style="color:red">@ViewBag.Message</h5></div>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Введите почту</label>
+                        <input type="email" class="form-control" name="Email" value="@Model[1]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
+                        <input type="text" class="form-control" name="Name" value="@Model[0]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
+                        <input type="password" class="form-control" name="Password">
+                    </div>
+                    <button style="width: 100%;" type="submit" class="btn btn-dark">Зарегистрироваться</button>
+                    <h6>Уже есть профиль? <a href="~/Profile/Login">Войти</a></h6>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
-                <input type="text" class="form-control" name="Name" value="@Model[0]">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
-                <input type="password" class="form-control" name="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-        </form>
+        </div>
     </div>
+    <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>

@@ -9,26 +9,32 @@
     <title>Создать пользователя</title>
 </head>
 <body>
-    <h2>Создать пользователя</h2>
-    <div class="col-4">
-        <form method="post">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Введите почту</label>
-                <input type="email" class="form-control" name="Email"value="@Model[1]">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-4 form-block">
+                <h2>Создать пользователя</h2>
+                <div><h5 style="color:red">@ViewBag.Message</h5></div>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Введите почту</label>
+                        <input type="email" class="form-control" name="Email" value="@Model[1]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
+                        <input type="text" class="form-control" name="Name" value="@Model[0]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
+                        <input type="password" class="form-control" name="Password">
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" name="isAdmin" value="Admin" /><label>  Админ</label>
+                    </div>
+                    <button style="width: 100%;" type="submit" class="btn btn-success">Создать пользователя</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Придумайте логин</label>
-                <input type="text" class="form-control" name="Name" value="@Model[0]">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Придумайте пароль</label>
-                <input type="password" class="form-control" name="Password">
-            </div>
-            <div class="mb-3">
-                <input type="checkbox" name="isAdmin" value="Admin"/><label>Админ</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Создать пользователя</button>
-        </form>
+        </div>
     </div>
+    <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>
