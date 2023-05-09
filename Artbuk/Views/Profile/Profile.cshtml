@@ -43,6 +43,12 @@
                     <div id="unsubscribe-@Model.UserId" style="display: @unsubscribeDisplayMode;">
                         <button onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
                     </div>
+
+                    <div>
+                        <a href="~/Chat/Chat?withUserId=@Model.UserId">
+                            Чат
+                        </a>
+                    </div>
                 }
             </div>
         </div>
