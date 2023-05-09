@@ -1,0 +1,40 @@
+﻿@model Artbuk.Infrastructure.ViewData.CreateEditPostData
+@{
+}
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Редактирование поста</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 form-block">
+                <h2>Редактировать пост</h2>
+                <form method='post' enctype="multipart/form-data">
+                    <input type="hidden" name="postId" value="@Model.Post.Id"/>
+                    <p class="info-label">Содержимое:</p>
+                    <textarea class="form-control" type="text" name="Body">@Model.Post.Body</textarea>
+                    <p class="info-label">Категории:</p>
+                    <select name="GenreId" class="form-select">
+                        <option value="@Model.CurrentGenre.Id">@Model.CurrentGenre.Name</option>
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+                    </select>
+                    <p class="info-label">Инструменты:</p>
+                    <select name="SoftwareId" class="form-select">
+                        <option value="@Model.CurrentSoftware.Id">@Model.CurrentSoftware.Name</option>
+                        @foreach (var software in Model.Software)
+                        {
+                            <option value="@software.Id">@software.Name</option>
+                        }
+                    </select>
+                    <button type='submit' class="btn btn-success admin-add">Обновить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

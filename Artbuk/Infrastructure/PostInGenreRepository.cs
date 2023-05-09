@@ -1,4 +1,5 @@
 ﻿using Artbuk.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Artbuk.Infrastructure
 {
@@ -32,6 +33,12 @@ namespace Artbuk.Infrastructure
         {
             return _dbContext.PostInGenres
                 .FirstOrDefault(i => i.PostId == postId);
+        }
+
+        public void Update(PostInGenre postInGenre)
+        {
+            _dbContext.Entry(postInGenre).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
     }
 }

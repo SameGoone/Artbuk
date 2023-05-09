@@ -32,10 +32,19 @@
                         <h5 class="user-name"><a href="~/Profile/Profile?userId=@Model.Creator.Id">@Model.Creator.Name</a></h5>
                     </div>
                     <div class="col-2">
-                        @if (Model.IsRemovable)
-                        {
-                            <a class="post-delete" href="~/Post/DeletePost?postId=@Model.Post.Id">Удалить</a>
-                        }
+                        <div class="row">
+                            @if (Model.IsRemovable)
+                            {
+                                <a class="post-delete" href="~/Post/DeletePost?postId=@Model.Post.Id">Удалить</a>
+                            }
+                        </div>
+                        <div class="row">
+                            @if (Model.IsRemovable)
+                            {
+                                <a class="post-delete" href="~/Post/EditPost?postId=@Model.Post.Id">Редакт.</a>
+                            }
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="post-item like">

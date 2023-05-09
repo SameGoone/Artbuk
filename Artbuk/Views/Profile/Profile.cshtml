@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-5">
                         <a style="display:flex" href="~/Users/Subscribers?userId=@Model.UserId">
-                            <p id="subscribers-count">@Model.SubscribersCount</p>
+                            <h5 id="subscribers-count">@Model.SubscribersCount</h5>
                         </a>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-5">
                         <a style="display:flex" href="~/Users/Subscribtions?userId=@Model.UserId">
-                            <p style="display:block" id="subscriptions-count">@Model.SubscriprionsCount</p>
+                            <h5 style="display:block" id="subscriptions-count">@Model.SubscriprionsCount</h5>
                         </a>
                     </div>
                 </div>
@@ -58,11 +58,11 @@
                     var unsubscribeDisplayMode = (Model.IsSubscribed) ? "block" : "none";
 
                     <div id="subscribe-@Model.UserId" style="display: @subscribeDisplayMode;">
-                        <button class="btn btn-outline-success subscribe-button" onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@Model.UserId');">Подписаться</button>
+                        <button class="btn btn-success subscribe-button" onclick="onSubscribeClick('@Url.Action("Subscribe", "Profile")', '@Model.UserId');">Подписаться</button>
                     </div>
 
                     <div id="unsubscribe-@Model.UserId" style="display: @unsubscribeDisplayMode;">
-                        <button class="btn btn-outline-danger subscribe-button" onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
+                        <button class="btn btn-danger subscribe-button" onclick="onUnsubscribeClick('@Url.Action("Unsubscribe", "Profile")', '@Model.UserId');">Отписаться</button>
                     </div>
                 }
              </div>

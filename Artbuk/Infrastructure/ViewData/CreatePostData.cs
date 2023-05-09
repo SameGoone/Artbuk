@@ -2,12 +2,17 @@
 
 namespace Artbuk.Infrastructure.ViewData
 {
-    public class CreatePostData
+    public class CreateEditPostData
     {
+        public Post Post { get; set; }
+        public Genre CurrentGenre { get; set; }
+        public Software CurrentSoftware { get; set; }
         public List<Genre> Genres { get; set; }
         public List<Software> Software { get; set; }
 
-        public CreatePostData(List<Genre> genres, List<Software> softwares)
+        public CreateEditPostData() { }
+
+        public CreateEditPostData(List<Genre> genres, List<Software> softwares)
         {
             Genres = genres;
             Software = softwares;

@@ -154,5 +154,75 @@ namespace Artbuk.Controllers
                 return new NoContentResult();
             }
         }
+
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult CreatePost()
+        {
+            var createPostData = new CreateEditPostData
+            (
+                _genreRepository.GetAll(),
+                _softwareRepository.GetAll()
+            );
+            return View(createPostData);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware, IFormFile? formFile)
+        {
+            if (post != null && post.Body != null && postInGenre != null && postInSoftware != null && formFile != null)
+            {
+                post.UserId = Tools.GetUserId(_userRepository, User);
+
+                _postRepository.Add(post);
+                postInGenre.PostId = post.Id;
+                postInSoftware.PostId = post.Id;
+                var filePath = Tools.SavePostImage(formFile, post.UserId, post.Id);
+                _postInGenreRepository.Add(postInGenre);
+                _postInSoftwareRepository.Add(postInSoftware);
+                _imageInPostRepository.Add(new ImageInPost { ImagePath = filePath, PostId = post.Id });
+            }
+
+            return RedirectToAction("Feed");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult EditPost(Guid postId)
+        {
+            var genreInPost = _postInGenreRepository.GetPostInGenreByPostId(postId);
+            var softInPost = _postInSoftwareRepository.GetPostInSoftwareByPostId(postId);
+
+            var postEditData = new CreateEditPostData{
+                Post = _postRepository.GetById(postId),
+                CurrentGenre = _genreRepository.GetById(genreInPost.GenreId),
+                CurrentSoftware = _softwareRepository.GetById(softInPost.SoftwareId),
+                Genres = _genreRepository.GetAll(),
+                Software = _softwareRepository.GetAll()
+            };
+
+            return View(postEditData);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditPost(Guid postId, Guid genreId, Guid softwareId, string body)
+        {
+            var genreInPost = _postInGenreRepository.GetPostInGenreByPostId(postId);
+            genreInPost.GenreId = genreId;
+            _postInGenreRepository.Update(genreInPost);
+
+            var softInPost = _postInSoftwareRepository.GetPostInSoftwareByPostId(postId);
+            softInPost.SoftwareId = softwareId;
+            _postInSoftwareRepository.Update(softInPost);
+            
+            var post = _postRepository.GetById(postId);
+            post.Body = body;
+            _postRepository.Update(post);
+
+            return RedirectToAction("Post", new { postId = post.Id });
+        }
     }
 }

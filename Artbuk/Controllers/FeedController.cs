@@ -63,38 +63,6 @@ namespace Artbuk.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public IActionResult CreatePost()
-        {
-            var createPostData = new CreatePostData
-            (
-                _genreRepository.GetAll(),
-                _softwareRepository.GetAll()
-            );
-            return View(createPostData);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult CreatePost(Post? post, PostInGenre? postInGenre, PostInSoftware? postInSoftware, IFormFile? formFile)
-        {
-            if (post != null && post.Body != null && postInGenre != null && postInSoftware != null && formFile != null)
-            {
-                post.UserId = Tools.GetUserId(_userRepository, User);
-
-                _postRepository.Add(post);
-                postInGenre.PostId = post.Id;
-                postInSoftware.PostId = post.Id;
-                var filePath = Tools.SavePostImage(formFile, post.UserId, post.Id);
-                _postInGenreRepository.Add(postInGenre);
-                _postInSoftwareRepository.Add(postInSoftware);
-                _imageInPostRepository.Add(new ImageInPost { ImagePath = filePath, PostId = post.Id});
-            }
-            
-            return RedirectToAction("Feed");
-        }
-
-        [Authorize]
         [HttpPost]
         public IActionResult SearchPosts(string searchText)
         {
