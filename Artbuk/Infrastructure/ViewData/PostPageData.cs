@@ -9,7 +9,7 @@ namespace Artbuk.Infrastructure.ViewData
     {
         public Post Post { get; set; }
 
-        public User User { get; set; }
+        public User Creator { get; set; }
 
         public string Genre { get; set; }
 
@@ -27,7 +27,7 @@ namespace Artbuk.Infrastructure.ViewData
 
         public PostPageData(
             Guid postId, 
-            Guid userId, 
+            Guid currentUserId, 
             LikeRepository likeRepository, 
             PostRepository postRepository,
             PostInGenreRepository postInGenreRepository,
@@ -39,32 +39,31 @@ namespace Artbuk.Infrastructure.ViewData
             RoleRepository roleRepository,
             UserRepository userRepository)
         {
-            var currentUser = userRepository.GetById(userId);
+            var currentUser = userRepository.GetById(currentUserId);
 
-            User = currentUser;
+            Post = postRepository.GetById(postId);
+            Creator = userRepository.GetById(Post.UserId.Value);
             Software = Tools.GetSoftwareName(postId, softwareRepository, postInSoftwareRepository);
             Genre = Tools.GetGenreName(postId, genreRepository, postInGenreRepository);
-            Post = postRepository.GetById(postId);
             LikesCount = likeRepository.GetPostLikesCount(postId);
-            IsLiked = likeRepository.CheckIsPostLikedByUser(postId, userId);
-
+            IsLiked = likeRepository.CheckIsPostLikedByUser(postId, currentUserId);
 
             Comments = commentRepository.GetCommentsByPostId(postId)
                 .Select(comment => new CommentData
                 {
                     Id = comment.Id,
                     Body = comment.Body,
-                    User = currentUser,
+                    Creator = userRepository.GetById(comment.UserId.Value),
                     IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
                         ? true
-                        : comment.UserId == userId
+                        : comment.UserId == currentUserId
                 })
                 .ToList();
 
             ImagePath = Tools.GetImagePath(postId, imageInPostRepository);
             IsRemovable = IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
                 ? true
-                : Post.UserId == userId;
+                : Post.UserId == currentUserId;
         }
     }
 }

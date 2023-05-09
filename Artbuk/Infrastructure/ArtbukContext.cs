@@ -16,6 +16,7 @@ namespace Artbuk.Infrastructure
         public DbSet<PostInSoftware> PostInSoftware { get; set; }
         public DbSet<Software> Software { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public ArtbukContext(DbContextOptions<ArtbukContext> options)
             : base(options)
