@@ -118,5 +118,36 @@ namespace Artbuk.Controllers
                 return new NoContentResult();
             }
         }
+
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult DeletePost(Guid? postId)
+        {
+            if (postId == null)
+            {
+                return new NoContentResult();
+            }
+
+            var post = _postRepository.GetById(postId.Value);
+            var imageInPost = _imageInPostRepository.GetByPostId(postId.Value);
+
+            if (imageInPost != null)
+            {
+                _imageInPostRepository.Remove(imageInPost);
+            }
+
+            _commentRepository.RemoveCommentsByPostId(postId.Value);
+
+            if (post != null)
+            {
+                _postRepository.Remove(post);
+                return RedirectToAction("Profile", "Profile");
+            }
+            else
+            {
+                return new NoContentResult();
+            }
+        }
     }
 }
