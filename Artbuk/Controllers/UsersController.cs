@@ -15,8 +15,8 @@ namespace Artbuk.Controllers
         LikeRepository _likeRepository;
 
         const string _usersPageHeader = "Пользователи системы";
-        const string _subscribtionsPageHeader = "Мои подписки";
-        const string _subscribersPageHeader = "Мои подпичешники";
+        const string _subscribtionsPageHeader = "Подписки пользователя {0}";
+        const string _subscribersPageHeader = "Подписчики пользователя {0}";
         const string _postLikedByHeader = "Лайкнули пост \"{0}\"";
 
         public UsersController(UserRepository userRepository, 
@@ -61,10 +61,12 @@ namespace Artbuk.Controllers
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
             var subcribedToIds = _subscriptionRepository.GetSubcribedToIds(userId.Value);
+            var user = _userRepository.GetById(userId.Value);
+            var pageHeader = string.Format(_subscribtionsPageHeader, user.Name);
 
             var subscribtionsData = new UsersData()
             {
-                PageHeader = _subscribtionsPageHeader,
+                PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedToIds)
                     .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
@@ -85,10 +87,12 @@ namespace Artbuk.Controllers
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
             var subcribedByIds = _subscriptionRepository.GetSubcribedByIds(userId.Value);
+            var user = _userRepository.GetById(userId.Value);
+            var pageHeader = string.Format(_subscribersPageHeader, user.Name);
 
             var subscribersData = new UsersData()
             {
-                PageHeader = _subscribersPageHeader,
+                PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedByIds)
                     .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
@@ -110,10 +114,11 @@ namespace Artbuk.Controllers
             var currentUserId = Tools.GetUserId(_userRepository, User);
             var subcribedByIds = _likeRepository.GetPostLikedByIds(postId.Value);
             var post = _postRepository.GetById(postId.Value);
+            var pageHeader = string.Format(_postLikedByHeader, post.Body);
 
             var postLikedByData = new UsersData()
             {
-                PageHeader = string.Format(_postLikedByHeader, post.Body),
+                PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedByIds)
                     .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))

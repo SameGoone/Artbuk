@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="post-item like">
-                    <input class="like-item like-add" style="display:inline" type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
+                    <input id="like-add" class="like-item like-add" style="display:inline" type="checkbox" onclick="onLikeClick('@Url.Action("AddLike", "Like")', '@Model.Post.Id');" checked="@Model.IsLiked" />
                     <p class="like-item like-text">Понравилось:</p>
                     <a style="display:inline" href="~/Users/PostLikedBy?postId=@Model.Post.Id">
                         <p id="likes-count" class="like-item like-count">@Model.LikesCount</p>

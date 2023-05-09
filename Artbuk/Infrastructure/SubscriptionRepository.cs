@@ -40,12 +40,26 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
+        public int GetSubcribedToCount(Guid subscribedById)
+        {
+            return _dbContext.Subscriptions
+                .Where(s => s.SubcribedById == subscribedById && s.SubcribedToId != null)
+                .Count();
+        }
+
         public List<Guid> GetSubcribedByIds(Guid subscribedToId)
         {
             return _dbContext.Subscriptions
                 .Where(s => s.SubcribedToId == subscribedToId && s.SubcribedById != null)
                 .Select(s => s.SubcribedById.Value)
                 .ToList();
+        }
+
+        public int GetSubcribedByCount(Guid subscribedToId)
+        {
+            return _dbContext.Subscriptions
+                .Where(s => s.SubcribedToId == subscribedToId && s.SubcribedById != null)
+                .Count();
         }
 
         public int Remove(Subscription subscription)

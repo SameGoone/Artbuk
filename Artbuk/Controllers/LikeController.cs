@@ -16,29 +16,66 @@ namespace Artbuk.Controllers
             _likeRepository = likeRepository;
         }
 
+        /// <summary>
+        /// Проставить лайк
+        /// </summary>
+        /// <param name="postId">Идентификатор поста.</param>
+        /// <param name="likeCheckboxState">Значение чекбокса лайка после нажатия пользователем.</param>
+        /// <returns>json с данными о лайках.</returns>
         [Authorize]
         [HttpPost]
-        public IActionResult AddLike(Guid? postId)
+        public IActionResult AddLike(Guid? postId, bool? likeCheckboxState)
         {
             if (postId == null)
             {
                 return BadRequest($"Идентификатор поста пустой!");
             }
 
+            if (likeCheckboxState == null)
+            {
+                return BadRequest($"Неизвестное значение чекбокса!");
+            }
+
             var userId = Tools.GetUserId(_userRepository, User);
             var like = _likeRepository.GetLikeOnPostByUser(postId.Value, userId);
 
+            // Значение лайка после работы метода.
+            var isLikedResult = "false";
+
             if (like == null)
             {
-                _likeRepository.Create(postId.Value, userId);
+                // Если попытка поставить лайк, и лайка еще нет, добавляем лайк.
+                if (likeCheckboxState.Value)
+                {
+                    _likeRepository.Create(postId.Value, userId);
+                    isLikedResult = "true";
+                }
+
+                // Если попытка поставить лайк, и лайк уже стоит, обновляем чекбокс лайка, не добавляя лайк.
+                else
+                {
+                    isLikedResult = "false";
+                }
             }
             else
             {
-                _likeRepository.Remove(like);
+                // Если попытка поставить лайк, но лайк уже стоит, обновляем чекбокс лайка, не добавляя лайк.
+                if (likeCheckboxState.Value)
+                {
+                    isLikedResult = "true";
+                }
+
+                // Если попытка снять лайк, и лайк стоит, снимаем лайк.
+                else
+                {
+                    _likeRepository.Remove(like);
+                    isLikedResult = "false";
+                }
             }
 
             var likesCount = _likeRepository.GetPostLikesCount(postId.Value).ToString();
-            return Content(likesCount);
+            var json = $"{{\"likesCount\": {likesCount}, \"isLiked\": {isLikedResult}}}";
+            return Content(json);
         }
     }
 }

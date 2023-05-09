@@ -1,10 +1,14 @@
-﻿function onLikeClick(url, postId) {
+﻿function onLikeClick(url, postId, likeCheckboxState) {
+    let likeCheckbox = document.getElementById("like-add");
+
     $.ajax({
         type: 'POST',
         url: url,
-        data: { postId: postId },
-        success: function (likesCount) {
-            $("#likes-count").text(likesCount);
+        data: { postId: postId, likeCheckboxState: likeCheckbox.checked },
+        success: function (likesInfoJson) {
+            let likesInfo = JSON.parse(likesInfoJson)
+            $("#likes-count").text(likesInfo.likesCount);
+            likeCheckbox.checked = likesInfo.isLiked;
         },
         error: function (error) {
             console.error("Error: " + error);

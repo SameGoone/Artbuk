@@ -10,6 +10,8 @@ namespace Artbuk.Infrastructure.ViewData
         public bool IsMe { get; set; }
         public bool IsSubscribed { get; set; }
         public List<PostFeedData> Posts { get; set; }
+        public int SubscriprionsCount { get; set; }
+        public int SubscribersCount { get; set; }
 
         public ProfileData(User user, Guid currentUserId,
             SubscriptionRepository subscriptionRepository,
@@ -24,6 +26,8 @@ namespace Artbuk.Infrastructure.ViewData
             IsMe = currentUserId == user.Id;
             IsSubscribed = subscriptionRepository.CheckIsSubrcribedTo(currentUserId, user.Id);
             Posts = PostFeedData.GetDataRange(userPosts, imageInPostRepository);
+            SubscriprionsCount = subscriptionRepository.GetSubcribedToCount(user.Id);
+            SubscribersCount = subscriptionRepository.GetSubcribedByCount(user.Id);
         }
     }
 }
