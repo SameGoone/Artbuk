@@ -42,7 +42,7 @@ namespace Artbuk.Controllers
                 return BadRequest($"Идентификатор пользователя пустой!");
             }
 
-            if (body == null)
+            if (string.IsNullOrEmpty(body))
             {
                 return NoContent();
             }

@@ -82,7 +82,7 @@ namespace Artbuk.Controllers
 
             if (string.IsNullOrEmpty(body))
             {
-                return RedirectToAction("Post", new { postId = postId });
+                return NoContent();
             }
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
