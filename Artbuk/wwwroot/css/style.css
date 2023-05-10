@@ -443,3 +443,7 @@ header ul li:hover ul {
 	text-align: center;
 	font-size: 30px;
 }
+
+.header-title {
+	color:rgb(212, 11, 212);
+}
