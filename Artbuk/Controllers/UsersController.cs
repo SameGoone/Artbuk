@@ -13,6 +13,7 @@ namespace Artbuk.Controllers
         PostRepository _postRepository;
         ImageInPostRepository _imageInPostRepository;
         LikeRepository _likeRepository;
+        RoleRepository _roleRepository;
 
         const string _usersPageHeader = "Пользователи системы";
         const string _subscribtionsPageHeader = "Подписки пользователя {0}";
@@ -23,13 +24,15 @@ namespace Artbuk.Controllers
             SubscriptionRepository subscriptionRepository, 
             PostRepository postRepository, 
             ImageInPostRepository imageInPostRepository,
-            LikeRepository likeRepository)
+            LikeRepository likeRepository,
+            RoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _subscriptionRepository = subscriptionRepository;
             _postRepository = postRepository;
             _imageInPostRepository = imageInPostRepository;
             _likeRepository = likeRepository;
+            _roleRepository = roleRepository;
         }
 
         [Authorize]
@@ -43,7 +46,7 @@ namespace Artbuk.Controllers
                 PageHeader = _usersPageHeader,
                 Users = _userRepository
                     .GetAll()
-                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
+                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository, _roleRepository, _userRepository))
                     .ToList(),
             };
 
@@ -69,7 +72,7 @@ namespace Artbuk.Controllers
                 PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedToIds)
-                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
+                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository, _roleRepository, _userRepository))
                     .ToList(),
             };
 
@@ -95,7 +98,7 @@ namespace Artbuk.Controllers
                 PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedByIds)
-                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
+                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository, _roleRepository, _userRepository))
                     .ToList(),
             };
 
@@ -121,7 +124,7 @@ namespace Artbuk.Controllers
                 PageHeader = pageHeader,
                 Users = _userRepository
                     .GetByIds(subcribedByIds)
-                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository))
+                    .Select(u => new ProfileData(u, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository, _roleRepository, _userRepository))
                     .ToList(),
             };
 

@@ -55,7 +55,7 @@ namespace Artbuk.Controllers
 
             var currentUserId = Tools.GetUserId(_userRepository, User);
 
-            var data = new ProfileData(user, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository)
+            var data = new ProfileData(user, currentUserId, _subscriptionRepository, _postRepository, _imageInPostRepository, _roleRepository, _userRepository)
             {
                 UserId = user.Id,
                 Name = user.Name,

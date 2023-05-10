@@ -6,6 +6,7 @@
     <title>Чат</title>
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <script src="js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 </head>
 <style>
@@ -14,21 +15,23 @@
     }
 </style>
 <body>
-    <h3>Чат с @Model.WithUserName</h3>
-
-    <br />
-    <br />
-
-    <div id="message-input">
-        <div id="messages">
-            @Html.Partial("ChatMessages", Model)
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <h3>Чат с @Model.WithUserName</h3>
         </div>
+        <div class="row justify-content-center">
+            <div id="message-input">
+                <div id="messages">
+                    @Html.Partial("ChatMessages", Model)
+                </div>
 
-        <form class="create-message-form" asp-action="AddMessage" asp-controller="Chat" method="POST" data-ajax="true" data-ajax-update="#messages">
-            <input type="text" name="body" style="display: inline-block;" />
-            <input type="hidden" name="withUserId" value="@Model.WithUserId" />
-            <button type="submit" style="display: inline-block;">Отправить</button>
-        </form>
+                <form class="create-message-form" asp-action="AddMessage" asp-controller="Chat" method="POST" data-ajax="true" data-ajax-update="#messages">
+                    <input type="text" name="body" style="display: inline-block;" />
+                    <input type="hidden" name="withUserId" value="@Model.WithUserId" />
+                    <button type="submit" style="display: inline-block;">Отправить</button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>

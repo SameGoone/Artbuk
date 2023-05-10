@@ -42,16 +42,39 @@
                 </div>
             </div>
             
-                @if(!Model.IsMe)
-                {
-                    <div class="col-3 chat">
-                        <a class="chat-title" href="~/Chat/Chat?withUserId=@Model.UserId">
-                            <h5>Написать пользователю</h5>
-                        </a>
+            @if(!Model.IsMe)
+            {
+                <div class="col-3 chat">
+                    <a class="chat-title" href="~/Chat/Chat?withUserId=@Model.UserId">
+                        <h5>Написать пользователю</h5>
+                    </a>
+                </div>
+            }
+
+            @if(Model.IsMe)
+            {
+                <div class="col-3 exit">
+                    <div class="row">
+                        <div class="chat">
+                            <a class="chat-title" href="~/Profile/Logout">
+                                <h5>Выйти</h5>
+                            </a>
+                        </div>
                     </div>
-                }
+                    @if (Model.IsAdmin)
+                    {
+                    <div class="row">
+                        <div class="chat admin-panel">
+                            <a class="chat-title" href="~/GenreAdmin/Index">
+                                <h5>Админ-панель</h5>
+                            </a>
+                        </div>
+                    </div>
+                    }
+                </div>
+            }
             
-            <div class="col-3">
+            <div class="col-2">
                 @if (!Model.IsMe)
                 {
                     var subscribeDisplayMode = (!Model.IsSubscribed) ? "block" : "none";

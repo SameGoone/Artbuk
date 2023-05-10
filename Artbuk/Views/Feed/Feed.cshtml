@@ -9,28 +9,24 @@
 </head>
 <body>
     <div class="container">
+
         <div class="row justify-content-center">
-            <div id="carouselExampleControls" class="carousel slide col-8" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img style="width: 500px; height: 400px;" src="~/images/3e287378-a1a2-47c8-d8bc-08db49c870d4/2360b4b3-c2e5-473d-1b37-08db4cebfab5/710c045a-85a8-4939-a4af-efd4eab0c398.jpeg" class="d-block w-100" alt="...">
-                    </div>
+            @foreach (var feedType in Model.FeedTypes)
+            {
+                var feedTypeClass = "feed-type";
+
+                if (feedType.Id == Model.Options.FeedTypeId)
+                {
+                    feedTypeClass += " choosen";
+                }
+                <div class="col-3 @feedTypeClass">
+                    <form class="@feedTypeClass" method="get" action="~/Feed/Feed">
+                        <input type="hidden" name="genreId" value="@Model.Options.GenreId" />
+                        <input type="hidden" name="feedType" value="@feedType.Id" />
+                        <button class="feed-button" type="submit">@feedType.Name</button>
+                    </form>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+            }
         </div>
 
         <div class="row genres">
@@ -42,10 +38,10 @@
             {
                 allGenreClass += " choosen";
             }
-            <div class="col-1 @allGenreClass">
+            <div class="col-2 block-genre @allGenreClass">
                 <form class="@allGenreClass" method="get" action="~/Feed/Feed">
                     <input type="hidden" name="feedType" value="@Model.Options.FeedTypeId" />
-                    <button type="submit">Все</button>
+                    <button class="button-genre" type="submit">Все</button>
                 </form>
             </div>
 
@@ -57,30 +53,11 @@
                 {
                     genreClass += " choosen";
                 }
-                <div class="col-1 @genreClass">
+                <div class="col-2 block-genre @genreClass">
                     <form class="@genreClass" method="get" action="~/Feed/Feed">
                         <input type="hidden" name="genreId" value="@genre.Id" />
                         <input type="hidden" name="feedType" value="@Model.Options.FeedTypeId" />
-                        <button type="submit">@genre.Name</button>
-                    </form>
-                </div>
-            }
-        </div>
-
-        <div class="row feed-types">
-            @foreach (var feedType in Model.FeedTypes)
-            {
-                var feedTypeClass = "feed-type";
-
-                if (feedType.Id == Model.Options.FeedTypeId)
-                {
-                    feedTypeClass += " choosen";
-                }
-                <div class="col-1 @feedTypeClass">
-                    <form class="@feedTypeClass" method="get" action="~/Feed/Feed">
-                        <input type="hidden" name="genreId" value="@Model.Options.GenreId" />
-                        <input type="hidden" name="feedType" value="@feedType.Id" />
-                        <button type="submit">@feedType.Name</button>
+                        <button class="button-genre" type="submit">@genre.Name</button>
                     </form>
                 </div>
             }
@@ -97,13 +74,6 @@
             }
         </div>
     </div>
-
-    @*<a href="~/Users/Users">Пользователи</a>
-    <a href="~/Users/Subscribtions?userId=@Model.CurrentUserId">Подписки</a>
-    <a href="~/Users/Subscribers?userId=@Model.CurrentUserId">Подписчики</a>*@
-    <a href="~/GenreAdmin/Index">Админ-панель</a>
-    <a href="~/Profile/Logout">Выйти</a>
-
     <script src="js/site.js" asp-append-version="true"></script>
 </body>
 </html>
