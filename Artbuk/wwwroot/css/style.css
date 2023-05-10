@@ -319,6 +319,7 @@ header ul li:hover ul {
 }
 
 .choose-image {
+	width: 150px;
 	position: absolute;
 	margin-top: 75px;
 	margin-left: 75px;

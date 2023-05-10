@@ -26,7 +26,12 @@ namespace Artbuk
                 (
                     new Genre { Name = "Животные" },
                     new Genre { Name = "Архитектура" },
-                    new Genre { Name = "Автомобили" }
+                    new Genre { Name = "Автомобили" },
+                    new Genre { Name = "Комикс" },
+                    new Genre { Name = "Спорт" },
+                    new Genre { Name = "Ретро" },
+                    new Genre { Name = "Плакат" },
+                    new Genre { Name = "Фэшн" }
                 );
                 context.SaveChanges();
             }
@@ -35,9 +40,14 @@ namespace Artbuk
             {
                 context.Software.AddRange
                 (
-                    new Software { Name = "3dMax" },
-                    new Software { Name = "Photoshop" },
-                    new Software { Name = "Paint" }
+                    new Software { Name = "Corel Painter" },
+                    new Software { Name = "Adobe Photoshop" },
+                    new Software { Name = "Adobe Illustrator" },
+                    new Software { Name = "Paint" },
+                    new Software { Name = "3D Max" },
+                    new Software { Name = "Maya" },
+                    new Software { Name = "ZBrush" },
+                    new Software { Name = "GIMP" }
                 );
                 context.SaveChanges();
             }
@@ -58,9 +68,11 @@ namespace Artbuk
                 var adminRoleId = Tools.GetRoleId(roleRepository, RoleNames.Admin);
                 context.Users.AddRange
                 (
-                    new User { Name = "Вадим", Password = Tools.HashPassword("Вадим"), RoleId = userRoleId },
-                    new User { Name = "Никита", Password = Tools.HashPassword("Никита"), RoleId = userRoleId },
-                    new User { Name = "Админ", Password = Tools.HashPassword("Админ"), RoleId = adminRoleId }
+                    new User { Name = "Вадим", Password = Tools.HashPassword("Вадим"), Email = "vadim@mail.ru", RoleId = userRoleId },
+                    new User { Name = "Никита", Password = Tools.HashPassword("Никита"), Email = "nikita@mail.ru", RoleId = userRoleId },
+                    new User { Name = "Соня", Password = Tools.HashPassword("Соня"), Email = "sonya@mail.ru", RoleId = userRoleId },
+                    new User { Name = "Евгений", Password = Tools.HashPassword("Евгений"), Email = "zheka@mail.ru", RoleId = userRoleId },
+                    new User { Name = "Админ", Password = Tools.HashPassword("Админ"), Email = "admin@mail.ru", RoleId = adminRoleId }
                 );
                 context.SaveChanges();
             }

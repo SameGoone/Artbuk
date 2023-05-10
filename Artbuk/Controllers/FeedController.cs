@@ -119,6 +119,7 @@ namespace Artbuk.Controllers
             }
 
             var userId = Tools.GetUserId(_userRepository, User);
+            var globalFeedType = _feedTypeRepository.GetGlobalTypeId();
 
             var feedData = new FeedData
             (
@@ -127,7 +128,12 @@ namespace Artbuk.Controllers
                 _postRepository.GetPostsByContentMatch(searchText),
                 _softwareRepository.GetAll(),
                 userId,
-                _imageInPostRepository
+                _imageInPostRepository,
+                new FeedOptions
+                {
+                    GenreId = null,
+                    FeedTypeId = globalFeedType
+                }
             );
 
             return View("Feed", feedData);
