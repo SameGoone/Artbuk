@@ -129,7 +129,8 @@ header ul li:hover ul {
 }
 
 .comment-text {
-	margin-top: 15px;
+	margin-top: 10px;
+	padding-bottom: 15px;
 }
 
 .user-comment {
