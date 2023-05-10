@@ -150,6 +150,22 @@ header ul li:hover ul {
 	display: block;
 }
 
+.genre.choosen {
+	background-color: #ff1eed;
+}
+
+.feed-types {
+	display: flex;
+}
+
+.feed-type {
+	display: block;
+}
+
+.feed-type.choosen {
+	background-color: #ff1eed;
+}
+
 .post {
 	margin-top: 30px;
 }

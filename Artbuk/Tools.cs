@@ -132,6 +132,17 @@ namespace Artbuk
             return roleId.Value;
         }
 
+        public static Guid GetFeedTypeId(FeedTypeRepository feedTypeRepository, string feedTypeName)
+        {
+            var feedTypeId  = feedTypeRepository.GetTypeIdByName(feedTypeName);
+            if (feedTypeId == null)
+            {
+                throw new Exception($"Тип ленты с именем {feedTypeName} не найден.");
+            }
+
+            return feedTypeId.Value;
+        }
+
         public static string HashPassword(string password)
         {
             byte[] salt;

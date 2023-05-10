@@ -20,6 +20,7 @@ builder.Services.AddScoped<CommentRepository>();
 builder.Services.AddScoped<ImageInPostRepository>();
 builder.Services.AddScoped<SubscriptionRepository>();
 builder.Services.AddScoped<ChatMessageRepository>();
+builder.Services.AddScoped<FeedTypeRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

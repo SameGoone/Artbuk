@@ -25,6 +25,14 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
+        public List<Guid> GetAllIds()
+        {
+            return _dbContext.Posts
+                .OrderByDescending(i => i.CreatedOn)
+                .Select(i => i.Id)
+                .ToList();
+        }
+
         public List<Post> GetPostsByUserId(Guid userId)
         {
             return _dbContext.Posts
@@ -60,7 +68,7 @@ namespace Artbuk.Infrastructure
             return _dbContext.SaveChanges();
         }
 
-        public List<Post> GetPostByContentMatch(string searchText)
+        public List<Post> GetPostsByContentMatch(string searchText)
         {
             return _dbContext.Posts
                 .Where(p => p.Body.Contains(searchText))

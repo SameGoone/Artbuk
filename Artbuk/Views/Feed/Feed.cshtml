@@ -32,22 +32,60 @@
                 </button>
             </div>
         </div>
+
         <div class="row genres">
-            <div class="genre col-1">
-                <form method="get" action="~/Feed/Feed">
+            @{
+                var allGenreClass = "genre";
+            }
+
+            @if (Model.Options.GenreId == null)
+            {
+                allGenreClass += " choosen";
+            }
+            <div class="col-1 @allGenreClass">
+                <form class="@allGenreClass" method="get" action="~/Feed/Feed">
+                    <input type="hidden" name="feedType" value="@Model.Options.FeedTypeId" />
                     <button type="submit">Все</button>
                 </form>
             </div>
+
             @foreach (var genre in Model.Genres)
             {
-                <div class="col-1 genre">
-                    <form class="genre" method="get" action="~/Feed/Feed">
+                var genreClass = "genre";
+
+                if (genre.Id == Model.Options.GenreId)
+                {
+                    genreClass += " choosen";
+                }
+                <div class="col-1 @genreClass">
+                    <form class="@genreClass" method="get" action="~/Feed/Feed">
                         <input type="hidden" name="genreId" value="@genre.Id" />
+                        <input type="hidden" name="feedType" value="@Model.Options.FeedTypeId" />
                         <button type="submit">@genre.Name</button>
                     </form>
                 </div>
             }
         </div>
+
+        <div class="row feed-types">
+            @foreach (var feedType in Model.FeedTypes)
+            {
+                var feedTypeClass = "feed-type";
+
+                if (feedType.Id == Model.Options.FeedTypeId)
+                {
+                    feedTypeClass += " choosen";
+                }
+                <div class="col-1 @feedTypeClass">
+                    <form class="@feedTypeClass" method="get" action="~/Feed/Feed">
+                        <input type="hidden" name="genreId" value="@Model.Options.GenreId" />
+                        <input type="hidden" name="feedType" value="@feedType.Id" />
+                        <button type="submit">@feedType.Name</button>
+                    </form>
+                </div>
+            }
+        </div>
+
         <div class="row posts">
             @foreach (var post in Model.Posts)
             {

@@ -9,6 +9,17 @@ namespace Artbuk
     {
         public static void Initialize(ArtbukContext context, RoleRepository roleRepository)
         {
+            if (!context.FeedTypes.Any())
+            {
+                context.FeedTypes.AddRange
+                (
+                    new FeedType { Name = FeedTypes.Global, Order = 0 },
+                    new FeedType { Name = FeedTypes.SubscriptionsOnly, Order = 1 },
+                    new FeedType { Name = FeedTypes.Liked, Order = 2 }
+                );
+                context.SaveChanges();
+            }
+
             if (!context.Genres.Any())
             {
                 context.Genres.AddRange

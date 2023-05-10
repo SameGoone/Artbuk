@@ -185,7 +185,7 @@ namespace Artbuk.Controllers
                 _imageInPostRepository.Add(new ImageInPost { ImagePath = filePath, PostId = post.Id });
             }
 
-            return RedirectToAction("Feed");
+            return RedirectToAction("Feed", "Feed");
         }
 
         [Authorize]
