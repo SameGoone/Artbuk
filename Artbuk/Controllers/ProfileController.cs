@@ -235,7 +235,7 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Subscribe(Guid? subcribeToId)
+        public IActionResult Subscribe(Guid subcribeToId)
         {
             if (subcribeToId == null)
             {
@@ -244,7 +244,7 @@ namespace Artbuk.Controllers
 
             var userId = Tools.GetUserId(_userRepository, User);
 
-            if (_subscriptionRepository.CheckIsSubrcribedTo(userId, subcribeToId.Value))
+            if (_subscriptionRepository.CheckIsSubrcribedTo(userId, subcribeToId))
             {
                 return NotFound($"Пользователь {userId} уже подписан на пользователя {subcribeToId}!");
             }

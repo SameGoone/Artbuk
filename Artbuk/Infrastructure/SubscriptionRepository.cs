@@ -36,7 +36,7 @@ namespace Artbuk.Infrastructure
         {
             return _dbContext.Subscriptions
                 .Where(s => s.SubcribedById == subscribedById && s.SubcribedToId != null)
-                .Select(s => s.SubcribedToId.Value)
+                .Select(s => s.SubcribedToId)
                 .ToList();
         }
 
@@ -51,7 +51,7 @@ namespace Artbuk.Infrastructure
         {
             return _dbContext.Subscriptions
                 .Where(s => s.SubcribedToId == subscribedToId && s.SubcribedById != null)
-                .Select(s => s.SubcribedById.Value)
+                .Select(s => s.SubcribedById)
                 .ToList();
         }
 
