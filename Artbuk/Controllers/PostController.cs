@@ -73,7 +73,7 @@ namespace Artbuk.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddComment(Guid postId, string? body)
+        public IActionResult AddComment(Guid? postId, string? body)
         {
             if (postId == null)
             {
@@ -97,7 +97,7 @@ namespace Artbuk.Controllers
             };
 
             _commentRepository.Add(comment);
-            return PartialView("PostComments", PostPageData.GetCommentsData(postId, currentUser, _commentRepository, _userRepository, _roleRepository));
+            return PartialView("PostComments", PostPageData.GetCommentsData(postId.Value, currentUser, _commentRepository, _userRepository, _roleRepository));
         }
 
         [Authorize]
@@ -116,7 +116,7 @@ namespace Artbuk.Controllers
             if (comment != null)
             {
                 _commentRepository.Remove(comment);
-                return PartialView("PostComments", PostPageData.GetCommentsData(comment.PostId, currentUser, _commentRepository, _userRepository, _roleRepository));
+                return PartialView("PostComments", PostPageData.GetCommentsData(comment.PostId.Value, currentUser, _commentRepository, _userRepository, _roleRepository));
             }
             else
             {

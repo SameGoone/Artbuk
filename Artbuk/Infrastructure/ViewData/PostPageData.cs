@@ -63,7 +63,7 @@ namespace Artbuk.Infrastructure.ViewData
                 {
                     Id = comment.Id,
                     Body = comment.Body,
-                    Creator = userRepository.GetById(comment.UserId),
+                    Creator = userRepository.GetById(comment.UserId.Value),
                     IsRemovable = currentUser.RoleId == roleRepository.GetRoleIdByName("Admin")
                         ? true
                         : comment.UserId == currentUser.Id
