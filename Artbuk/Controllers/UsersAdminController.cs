@@ -13,20 +13,12 @@ namespace Artbuk.Controllers
         UserRepository _userRepository;
         RoleRepository _roleRepository;
         CommentRepository _commentRepository;
-        ChatMessageRepository _chatMessageRepository;
-        PostRepository _postRepository;
 
-        public UsersAdminController(UserRepository userRepository,
-            RoleRepository roleRepository,
-            CommentRepository commentRepository,
-            ChatMessageRepository chatMessageRepository,
-            PostRepository postRepository)
+        public UsersAdminController(UserRepository userRepository, RoleRepository roleRepository, CommentRepository commentRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _commentRepository = commentRepository;
-            _chatMessageRepository = chatMessageRepository;
-            _postRepository = postRepository;
         }
 
         [HttpGet]
@@ -152,6 +144,7 @@ namespace Artbuk.Controllers
                 return BadRequest();
             }
 
+            _commentRepository.RemoveCommentsByUserId(userId.Value);
             var user = _userRepository.GetById(userId.Value);
 
             if (user == null)
