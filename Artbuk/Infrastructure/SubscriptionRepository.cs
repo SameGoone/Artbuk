@@ -62,28 +62,6 @@ namespace Artbuk.Infrastructure
                 .Count();
         }
 
-        public void RemoveSubcribedByIdByUserId(Guid userId)
-        {
-            var subscriptions = _dbContext.Subscriptions
-                .Where(s => s.SubcribedById == userId)
-                .Select(s => s)
-                .ToList();
-
-            _dbContext.Subscriptions
-                .RemoveRange(subscriptions);
-        }
-
-        public void RemoveSubcribedToIdByUserId(Guid userId)
-        {
-            var subscriptions = _dbContext.Subscriptions
-                .Where(s => s.SubcribedToId == userId)
-                .Select(s => s)
-                .ToList();
-
-            _dbContext.Subscriptions
-                .RemoveRange(subscriptions);
-        }
-
         public int Remove(Subscription subscription)
         {
             _dbContext.Subscriptions.Remove(subscription);

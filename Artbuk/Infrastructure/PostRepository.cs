@@ -68,11 +68,12 @@ namespace Artbuk.Infrastructure
             return _dbContext.SaveChanges();
         }
 
-        public void RemovePostsByUserId(Guid userId)
+        public int RemovePostsByUserId(Guid userId)
         {
             var posts = GetPostsByUserId(userId);
             _dbContext.Posts.RemoveRange(posts);
-            _dbContext.SaveChanges();
+
+            return _dbContext.SaveChanges();
         }
 
         public List<Post> GetPostsByContentMatch(string searchText)

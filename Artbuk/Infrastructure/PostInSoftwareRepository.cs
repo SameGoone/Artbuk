@@ -39,22 +39,5 @@ namespace Artbuk.Infrastructure
             _dbContext.Entry(postInSoftware).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
-
-        public List<PostInSoftware> GetByPostIds(List<Post> posts)
-        {
-            var postsIds = posts.Select(p => p.Id).ToList();
-
-            return _dbContext.PostInSoftware
-                .Where(i => postsIds.Contains(i.PostId))
-                .ToList();
-        }
-
-        public void RemoveByPosts(List<Post> posts)
-        {
-            var postInSoftwares = GetByPostIds(posts);
-
-            _dbContext.PostInSoftware.RemoveRange(postInSoftwares);
-            _dbContext.SaveChanges();
-        }
     }
 }
