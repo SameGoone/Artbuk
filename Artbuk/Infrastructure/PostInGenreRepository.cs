@@ -29,6 +29,23 @@ namespace Artbuk.Infrastructure
                 .ToList();
         }
 
+        public List<PostInGenre> GetByPostIds(List<Post> posts)
+        {
+            var postsIds = posts.Select(p => p.Id).ToList();
+
+            return _dbContext.PostInGenres
+                .Where(i => postsIds.Contains(i.PostId))
+                .ToList();
+        }
+
+        public void RemoveByPosts(List<Post> posts)
+        {
+            var postInGenres = GetByPostIds(posts);
+
+            _dbContext.PostInGenres.RemoveRange(postInGenres);
+            _dbContext.SaveChanges();
+        }
+
         public PostInGenre? GetPostInGenreByPostId(Guid postId)
         {
             return _dbContext.PostInGenres

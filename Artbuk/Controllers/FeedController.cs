@@ -13,7 +13,6 @@ namespace Artbuk.Controllers
         GenreRepository _genreRepository;
         PostInGenreRepository _postInGenreRepository;
         SoftwareRepository _softwareRepository;
-        PostInSoftwareRepository _postInSoftwareRepository;
         UserRepository _userRepository;
         LikeRepository _likeRepository;
         ImageInPostRepository _imageInPostRepository;
@@ -21,16 +20,15 @@ namespace Artbuk.Controllers
         SubscriptionRepository _subscriptionRepository;
 
         public FeedController(PostRepository postRepository, GenreRepository genreRepository,
-            PostInGenreRepository postInGenreRepository, SoftwareRepository softwareRepository,
-            PostInSoftwareRepository postInSoftwareRepository, UserRepository userRepository,
-            LikeRepository likeRepository, ImageInPostRepository imageInPostRepository,
-            FeedTypeRepository feedTypeRepository, SubscriptionRepository subscriptionRepository)
+            PostInGenreRepository postInGenreRepository, SoftwareRepository softwareRepository, 
+            UserRepository userRepository, LikeRepository likeRepository, 
+            ImageInPostRepository imageInPostRepository, FeedTypeRepository feedTypeRepository, 
+            SubscriptionRepository subscriptionRepository)
         {
             _postRepository = postRepository;
             _genreRepository = genreRepository;
             _postInGenreRepository = postInGenreRepository;
             _softwareRepository = softwareRepository;
-            _postInSoftwareRepository = postInSoftwareRepository;
             _userRepository = userRepository;
             _likeRepository = likeRepository;
             _imageInPostRepository = imageInPostRepository;
