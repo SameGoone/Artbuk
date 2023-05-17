@@ -3,7 +3,6 @@ using Artbuk.Infrastructure.ViewData;
 using Artbuk.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Artbuk.Controllers
 {
@@ -15,18 +14,31 @@ namespace Artbuk.Controllers
         CommentRepository _commentRepository;
         ChatMessageRepository _chatMessageRepository;
         PostRepository _postRepository;
+        PostInGenreRepository _postInGenreRepository;
+        PostInSoftwareRepository _postInSoftwareRepository;
+        ImageInPostRepository _imageInPostRepository;
+        SubscriptionRepository _subscriptionRepository;
 
-        public UsersAdminController(UserRepository userRepository,
+        public UsersAdminController(
+            UserRepository userRepository,
             RoleRepository roleRepository,
             CommentRepository commentRepository,
             ChatMessageRepository chatMessageRepository,
-            PostRepository postRepository)
+            PostRepository postRepository,
+            PostInGenreRepository postInGenreRepository,
+            PostInSoftwareRepository postInSoftwareRepository,
+            ImageInPostRepository imageInPostRepository,
+            SubscriptionRepository subscriptionRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _commentRepository = commentRepository;
             _chatMessageRepository = chatMessageRepository;
             _postRepository = postRepository;
+            _postInGenreRepository = postInGenreRepository;
+            _postInSoftwareRepository = postInSoftwareRepository;
+            _imageInPostRepository = imageInPostRepository;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         [HttpGet]
@@ -151,6 +163,20 @@ namespace Artbuk.Controllers
             {
                 return BadRequest();
             }
+
+            _chatMessageRepository.RemoveMessagesByUserId(userId.Value);
+            _commentRepository.RemoveCommentsByUserId(userId.Value);
+
+            var userPosts = _postRepository.GetPostsByUserId(userId.Value);
+
+            var postsIds = userPosts.Select(p => p.Id).ToList();
+
+            _imageInPostRepository.RemoveByPosts(userPosts);
+            _postInGenreRepository.RemoveByPosts(userPosts);
+            _postInSoftwareRepository.RemoveByPosts(userPosts);
+            _subscriptionRepository.RemoveSubcribedToIdByUserId(userId.Value);
+            _subscriptionRepository.RemoveSubcribedByIdByUserId(userId.Value);
+            _postRepository.RemovePostsByUserId(userId.Value);
 
             var user = _userRepository.GetById(userId.Value);
 
